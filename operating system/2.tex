@@ -1,0 +1,129 @@
+% !TEX program = xelatex
+\documentclass{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{os-common}
+\renewcommand{\tableautorefname}{表}
+
+
+\title{第二次操作系统作业}
+\author{卢雨轩 19071125}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+\begin{enumerate}
+\item 论述短期、中期、长期调度之间的区别。
+
+短期调度指从就绪队列选择进程到CPU上执行。运行频率较高，是最频繁的调度。
+
+中期调度指换出挂起的进程，选择进入内存。
+和短期调度相比，中期调度不是选择内存就绪的进程，而是将等待的进程挂起、将就绪的进程激活。
+可以提高内存的利用率。
+
+长期调度指从进程池中选择进程进入内存，搭配CPU bound与IO bound程序。提高CPU利用率与系统整体运行效率。
+
+\item 两个进程进行上下文切换的操作
+    \begin{enumerate}
+        \item 『保护现场』：保存旧进程PC、所有寄存器
+        \item 『切换地址空间』：换页表
+        \item 『恢复现场』：恢复新进程寄存器，并跳转到新进程PC执行
+    \end{enumerate}
+\end{enumerate}
+
+\section*{补充作业}
+
+\begin{enumerate}
+\item 假设有一个进程，它的工作流程是先运行150ms，然后进行I/O，最后执行250ms结束。如果系统中的进程有三个状态，当时间片为200ms时，请写出进程A从被系统接纳到运行结束所经历的状态转换并说明原因。
+
+\begin{center}
+    \begin{ganttchart}[
+        canvas/.append style={fill=none, draw=black!5, line width=.75pt},
+        hgrid style/.style={draw=black!5, line width=.75pt},
+        vgrid={*1{draw=black!5, line width=.75pt}},
+        % today=4,
+        today rule/.style={
+          draw=black!64,
+          dash pattern=on 3.5pt off 4.5pt,
+          line width=1.5pt
+        },
+        today label font=\small\bfseries,
+        title/.style={draw=none, fill=none},
+        title label font=\bfseries\footnotesize,
+        title label node/.append style={below right=7pt and .75pt},
+        include title in canvas=false,
+        bar label font=\mdseries\small\color{black!70},
+        bar label node/.append style={left=2cm},
+        bar/.append style={draw=none, fill=barblue},
+        bar progress label font=\mdseries\footnotesize\color{black!70},
+        link/.style={-latex, line width=1.5pt, linkred},
+        link label font=\scriptsize\bfseries,
+        link label node/.append style={below left=-2pt and 0pt},
+        x unit=1cm
+      ]{1}{9}
+      \gantttitle[
+        title label node/.append style={below left=7pt and -3pt}
+      ]{Time(ms)\ 0}{0}
+      \gantttitlelist{50,100,...,450}{1} \\
+      \ganttbar[
+        name=PROCESS1
+      ]{Process}{1}{3}
+      \ganttbar[
+        name=PROCESS2
+      ]{}{5}{8}
+      \ganttbar[
+        name=PROCESS3
+      ]{}{9}{9} \\
+      \ganttbar[
+        name=IDLE
+      ]{Idle}{4}{4} \\
+      \ganttbar[
+        name=SCHEDULER
+      ]{Scheduler}{9}{8}
+      \ganttlink[
+        link type=running-waiting,
+        link label node/.append style=left
+      ]{PROCESS1}{IDLE}
+      \ganttlink[
+        link type=waiting-running,
+        link label node/.append style=right
+      ]{IDLE}{PROCESS2}
+      \ganttlink[
+        link type=running-ready,
+        link label node/.append style=left
+      ]{PROCESS2}{SCHEDULER}
+      \ganttlink[
+        link type=ready-running,
+        link label node/.append style=right
+      ]{SCHEDULER}{PROCESS3}
+    \end{ganttchart}
+\end{center}
+\begin{enumerate}
+    \item 运行 \textrightarrow 等待：进行IO
+    \item 等待 \textrightarrow 运行：IO结束
+    \item 运行 \textrightarrow 就绪：时间片
+    \item 就绪 \textrightarrow 运行：重新调度
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
