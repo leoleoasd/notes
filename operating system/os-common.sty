@@ -1,4 +1,9 @@
 \RequirePackage{pgfgantt}
+\RequirePackage{minted}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{wrapfig}
+\RequirePackage{graphicx}
+\RequirePackage{adjustbox}
 \definecolor{barblue}{RGB}{153,204,254}
 \definecolor{linkred}{RGB}{165,0,33}
 \newganttlinktypealias{running-waiting}{default}
@@ -9,4 +14,3 @@
 \setganttlinklabel{running-ready}{运行 \textrightarrow 就绪}
 \setganttlinklabel{ready-running}{就绪 \textrightarrow 运行}
 \setganttlinklabel{waiting-running}{等待 \textrightarrow 运行}
-

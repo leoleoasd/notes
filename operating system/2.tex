@@ -1,4 +1,5 @@
 % !TEX program = xelatex
+% !TEX options = -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
 \documentclass{ctexart}
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
@@ -45,9 +46,9 @@
 
 \item 两个进程进行上下文切换的操作
     \begin{enumerate}
-        \item 『保护现场』：保存旧进程PC、所有寄存器
+        \item 『保护现场』：保存旧进程PC、所有寄存器、堆栈状态到就进程PCB中
         \item 『切换地址空间』：换页表
-        \item 『恢复现场』：恢复新进程寄存器，并跳转到新进程PC执行
+        \item 『恢复现场』：从新进程PCB恢复新进程寄存器，并跳转到新进程PC执行
     \end{enumerate}
 \end{enumerate}
 
