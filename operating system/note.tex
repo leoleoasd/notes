@@ -305,6 +305,10 @@
         \2 资源共享
         \2 通信简单
         \2 经济
+    \1 \emph{线程的分类}
+        \2 用户级线程
+        \2 内核级线程
+        \2 混和
 \end{outline}
 \subsection{进程的同步}
 \subsubsection{基础理论}
@@ -384,6 +388,86 @@ do {
 }
     \end{minted}
 
+    \1 \emph{Swap}
+    \begin{minted}[linenos]{cpp}
+void Swap(bool *a, bool *b){
+    bool value = *a;
+    *a = *b;
+    *b = value;
+}
+.....
+bool lock;
+do {
+    bool key = True;
+    // Try to acquire the lock.
+    // If can't, busy spin.
+    while(Swap(&lock, &key));
+    // Lock acquired.
+    // Do CRITICAL STUFF.
+    lock = False;
+    // Release lock for other process.
+    // Do REMAINING STUFF.
+}
+    \end{minted}
+    \1 \emph{互斥锁（Mutex Locks）}
+        \2 底层用TestAndSet或者Swap实现
+        \2 acquire()
+        \2 release()
+    \1 软件和硬件解决方案的问题：
+        \2 忙等待（busy waiting）浪费CPU
+            \3 解决方案：让出CPU
+        \2 优先级反转
+            \3 解决方案：优先级捐献
+    \1 信号量方法
+        \2 两个或多个进程可以用信号进行协作
+        \2 进程可以在任何地方停下来等信号
+        \2 信号通过Semaphore特殊变量传递信号
+        \2 Semaphore操作：
+            \3 有一个整形
+            \3 wait（P）用来接受信号
+            \3 signal（V）用来发送信号
+            \3 初值设置为资源数量
+        \2 错误使用：
+            \3 死锁
+            \3 饥饿
+    \1 生产者消费者问题
+        \2 生产者将任务放入缓冲区
+        \2 消费者从缓冲区取出任务
+        \2 缓冲区要互斥
+            \3 否则会出错
+        \2 生产者消费者问题的解决
+        \begin{minted}[linenos]{cpp}
+semaphore n=0; // 防止consumer消费空队列
+semaphore s=1; // 保证put和take操作原子性
+semaphore e=N; // 防止producer写入满队列
+void producer(){
+    while(true){
+        a=produce();
+        wait(e); // 等待“队列中剩余空位数量”
+        wait(s); // 获取队列锁
+        put(a);
+        signal(s); // 释放队列锁
+        signal(n); // 增加“等待处理的任务数量”
+    }
+}
+void consumer(){
+    while(true){
+        wait(n); // 等待“等待处理的任务数量”
+        wait(s); // 获取队列锁
+        a=take();
+        signal(s); // 释放队列锁
+        signal(e); // 增加“队列中剩余空位数量”
+        consume(a);
+    }
+}
+        \end{minted}
+    \1 哲学家进餐问题
+        \2 5个哲学家住在一起，每个人的生活由\emph{吃饭}和\emph{思考}组成
+        \2 桌子上有一盘菜，每人一个盘子一支叉子
+        \2 想吃饭的哲学家会走到桌子变的位置，拿起左右的叉子，从中间的盘子中去菜放到自己的盘子中
+        \2 要求：
+            \3 保证叉子互斥
+            \3 防止死锁和饥饿
 \end{outline}
 
 

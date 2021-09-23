@@ -1,0 +1,58 @@
+\documentclass{ctexart}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{outlines}
+\renewcommand{\tableautorefname}{表}
+
+\title{第二次计算机系统结构作业}
+\author{卢雨轩 19071125}
+\date{2021年9月16日}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = 第\chinese{section}章
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+    \item[2-5] 某模型机有8条指令，使用频率分别为：0.3，0.3，0.2，0.1，0.05，0.02，0.02，0.01。
+        试分别用霍夫曼编码和扩展编码对其操作码进行编码，限定扩展编码只能有两种长度。则它们的平均编码长度各比定长操作码的平均编码长度减少多少？ 
+    
+        \begin{center}
+            \captionof{table}{操作码的哈夫曼编码及拓展操作码编码}
+            \label{table:1}
+            \begin{tabular}{cccccc}
+                \toprule
+                指令 & 频度 & 哈夫曼编码 & 长度 & 拓展操作码 & 长度 \\
+                \midrule
+                $I_1$ & 0.3 & 10 & 2 & 10 & 2 \\
+                $I_2$ & 0.3 & 11 & 2 & 11 & 2 \\
+                $I_3$ & 0.2 & 01 & 2 & 01 & 2 \\
+                $I_4$ & 0.1 & 001 & 3 & 00001 & 5 \\
+                $I_5$ & 0.05 & 0001 & 4 & 00010 & 5 \\
+                $I_6$ & 0.02 & 00001 & 5 & 00011 & 5 \\
+                $I_7$ & 0.02 & 000001 & 6 & 00100 & 5 \\
+                $I_8$ & 0.01 & 000000 & 6 & 00101 & 5 \\
+                \bottomrule
+            \end{tabular}
+        \end{center}
+        哈夫曼编码平均长度： $2.38$，比定长编码长度减少了$0.62$\\
+        拓展操作码平均长度： $2.60$，比定长编码长度减少了$0.40$
+\end{itemize}
+
+\end{document}
