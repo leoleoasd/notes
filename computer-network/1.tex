@@ -1,0 +1,60 @@
+\documentclass{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+
+\title{第一次计网作业}
+\author{卢雨轩 19071125}
+\date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+    \item [10.] 使用层次协议的两个理由是什么？
+    
+    降低网络设计的复杂性，可以将问题分解为更小的问题。同时，可以更换某一层的协议而不影响或修改其他层的协议。缺点是，性能可能比不分层的协议差。
+    
+    \item [12.] 两个网络都可以提供可靠的面向连接的服务。其中一个提供可靠的字节流，另一个提供可靠的报文流。试问这俩者是否相同？如果你认为相同，为什么要有这样的区别？如果不相同，请给出一个例子说明他们如何不同。
+    
+    我认为不相同。在报文流中，报文与报文之间的界线是清晰的，一次性读取一个报文不会读出两个连在一起的报文。但是在字节流中，没有清晰的报文边界，就需要应用层协议自己定义报文。
+    
+    『TCP协议的「粘包」问题』就是一个经典的、混淆了二者的例子。TCP协议显然是一个字节流协议，如果把他当成报文流协议，就会遇到『报文被拆开』、『两个报文一起收到』等问题。
+    
+    \item [15.] 在有些网络中，数据链路层处理传输错误的做法是请求发送方重传被损毁的帧。如果一帧被损坏的概率为p，试问发送一帧所需要的平均传输次数是多少？假设确认帧永远不会丢失。
+    
+    $$
+    \begin{aligned}
+    C & = 1 \times (1-p) + 2 \times p \times (1-p) + \dots \\
+      & = 1 + p + p^2 + p^3 + \dots \\
+      & = 1 + \sum_{i=1}^{\infty} p^i \\
+      & = \frac{1}{1-p}
+    \end{aligned}
+    $$
+    
+    \item [16.] 一个系统具有$n$层协议。应用层产生长度为$M$字节的报文，在每一层加上长度为$h$字节的报文头。试问报文头所占网络带宽的比例是多少？
+    
+    $$
+    ratio = \frac{h \times (n - 1)}{h \times (n-1) + M}
+    $$
+    
+    \item [20.] 当两台计算机之间传输一个文件时，可以采用两种不同的确认策略。在第一种策略中，该文件被分解成许多个数据包，接受方独立的确认每一个数据包，但没有对整体文件进行确认。在第二种策略中，这些数据包没有被单独的确认，但是当整个文件到达接受方时会被确认。请讨论这两种方案。
+    
+    在一般的网络环境下，每个包都确认一次可以减少需要重传的次数。如果网络环境极佳（如整条链路都是自己可以控制的高品质网络），则每个文件确认一次可以减少确认包所需要的带宽。
+\end{itemize}
+\end{document}

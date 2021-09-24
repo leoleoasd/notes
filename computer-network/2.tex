@@ -1,0 +1,111 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+
+\renewcommand{\tableautorefname}{表}
+
+\title{第二次计算机网络作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+    \item[1.] 一个上层数据包被分成了10个帧，每一帧有80\%的机会无损地到达目的地。
+    如果数据链路层协议没有提供错误控制，试问，该报文平均需要发送多少次才能完整的到达接受方？
+
+    整个数据包传输失败的概率p为：
+    \begin{equation*}
+        p = 1 - 0.8^{10} \approx 0.893
+    \end{equation*}
+    所以整个报文发送的次数为：
+    \begin{align*}
+        T & = \sum_{i=1}^{\infty}i\paren{1-p}p^{i-1} \\
+          & = (1-p)\sum_{i=1}^{\infty}ip^{i-1} \\
+          & = 1-p + 2p(1-p) + 3p^2(1-p) + \dots \\
+          & = 1 + p + p^2 + p^3 + \dots \\
+          & = \frac{1}{1-p} \\
+          & \approx 9.313
+    \end{align*}
+    \item[2.] 数据链路协议使用了下面的字符编码：
+    \begin{center}
+        A: 01000111;\quad B:11100011; 
+        \quad FLAG: 01111110;\quad ESC: 11100000
+    \end{center} 
+    为了传输一个包括4个字符的帧： A B ESC FLAG，试问使用下面的成帧方法时所发送
+    的比特序列是什么？
+    \begin{enumerate}
+        \item 字节计数
+        \begin{equation*}
+            \underbrace{0000 0101}_{5}
+            \underbrace{01000111}_A
+            \underbrace{11100011}_B
+            \underbrace{11100000}_{ESC}
+            \underbrace{01111110}_{FLAG}
+        \end{equation*}
+        \item 字节填充的标志字节
+        \begin{equation*}
+            \underbrace{01111110}_{FLAG}
+            \underbrace{01000111}_A
+            \underbrace{11100011}_B
+            \underbrace{11100000}_{ESC}
+            \underbrace{11100000}_{ESC}
+            \underbrace{11100000}_{ESC}
+            \underbrace{01111110}_{FLAG}
+            \underbrace{01111110}_{FLAG}
+        \end{equation*}
+        \item 比特填充的头尾标志字节
+        \begin{equation*}
+            \underbrace{01111110}_{BEGIN}
+            \underbrace{01000111}_A
+            \underbrace{11\underline{0}100011}_B
+            \underbrace{111\underline{0}00000}_{ESC}
+            \underbrace{011111\underline{0}10}_{FLAG}
+            \underbrace{01111110}_{END}
+        \end{equation*}
+        （插入的$0$用$\underline{0}$表示）
+    \end{enumerate}
+    \item[3.] 一个数据流中出现了这样的数据段： A B ESC C ESC FLAG FLAG D，
+    假设采用本章介绍的字节填充算法，试问经过填充之后输出的是什么？
+    
+    A B ESC ESC C ESC ESC ESC FLAG ESC FLAG D
+
+    \item[6.] 需要在数据链路层上被发送一个比特串：
+    011110111110111110，试问，经过比特填充后实际发送出去的是什么？
+
+    $01111011111\underline{0}011111\underline{0}0$
+
+    \item[20.] 考虑一个具有4kbps速率和20毫秒传输延迟的信到。试问帧的大小
+    在什么范围内，停-等式协议才能获得至少50\%的效率？
+
+    设以4kbps速率发送该帧所需要的时间为$x$。则有：
+    \begin{equation*}
+        \frac{x}{x + 40ms} \geq 0.5
+    \end{equation*}
+    所以$x \geq 40ms$，即帧的大小$size \geq 164 bits$
+\end{itemize}
+
+\end{document}

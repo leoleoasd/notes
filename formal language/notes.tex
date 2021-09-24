@@ -384,6 +384,51 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     
 \end{definition}
 
+\begin{definition}
+    对于文法 $G_1, G_2$，如果$L(G_1) = L(G_2)$，则称$G_1$与$G_2$等价。
+\end{definition}
+
+\subsection{文法的构造}
+\begin{outline}
+    \1 $L(G) = \set*{0,1,00,11}$
+        \2 $G_1: S \to 0 | 1 | 00 | 11$
+        \2 $G_2: S \to A | B | AA | BB, A \to 0, B \to 1$
+        \2 $G_3: S \to 0 | 1 | 0A | 1B, A \to 0, B \to 1$
+        \2 $G_4: S \to A | B | AA | BB, A \to 0, B \to 1, C \to 1$
+    \1 $\set*{x | x \text{是至少3个1的0，1串}}$
+        \2 $G: S \to A1A1A1A, A \to \epsilon| 0A| 1A$
+        \2 $G: S \to A1A1A1B, A \to \epsilon | 0A, B \to \epsilon | 0B | 1B$
+        \2 $G: S \to AAAB, A \to 1 | 0A, B \to \epsilon | 0B | 1B$
+\end{outline}
+
+\subsection{文法的乔姆斯体系}
+\begin{definition}
+    对于文法$G = (V,T,P,S)$： \\
+    G叫做0型文法，Type 0 Grammar，也叫短语结构文法（PSG，Phrase Structure Grammar） \\
+    $L(G)$是0型语言，也叫短结构语言，可递归枚举集。
+\end{definition}
+\begin{definition}
+    对于0型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    则G是1型文法，或上下文有关文法。
+\end{definition}
+\begin{definition}
+    对于1型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    并且$\alpha \in V$
+    则G是2型文法，或上下文无关文法。
+\end{definition}
+\begin{definition}
+    对于2型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$： \\
+    如果形如$A \to wB$和$A \to w$，其中$A,B \in V, w \in T+$：G是右线性文法。 \\
+    如果形如$A \to Bw$和$A \to w$，其中$A,B \in V, w \in T+$：G是右线性文法。 \\
+    则G是3型文法，或正则文法。
+\end{definition}
+
+\subsection{空产生式}
+允许在CSG，CFG，RG文法中存在空产生式。 \\
+允许在CSL，CFL，RL语言中存在空语句。
 
 习题： p67 3，4，8.2，8.6，10.3，11.3
 

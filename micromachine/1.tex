@@ -1,0 +1,80 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+
+\title{微机接口第一次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+\makeatletter
+\newcommand{\nextverbatimspread}[1]{%
+  \def\verbatim@font{%
+    \linespread{#1}\normalfont\ttfamily% Updated definition
+    \gdef\verbatim@font{\normalfont\ttfamily}}% Revert to old definition
+}
+\makeatother
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    \item 8086系统中，设段寄存器CS=1200H，指令指针寄存器IP=FF00H，此时指令的物理地址为多少，指向此地址的段地址和偏移量是唯一的吗？
+
+    答：物理地址为21F00H。不是唯一的。
+
+    \item T1状态下，8086的数据/地址线上是什么信息，用哪个信号将此信息锁存起来
+    
+    答：总线上是要寻址的储存单元或外设的地址。用ALE信号将此信息锁存器来。
+    
+    \item 若当前SS=3500H,SP=0800H,说明堆栈段在存储器中的物理地址，若此时入栈10个字节，SP内容是什么？若再出栈6个字节，SP为什么值？
+    
+    答：物理地址为：35000H到44FFFH。入栈10字节，SP=07F6H。再出栈6字节，SP=07FCH
+    
+    \item 某程序数据段中存放了两个字，1EE5H和2A8CH，已知（DS）=7850H，数据存放的偏移地址为3121H及285AH。试画图说明它们在存储器中的存放情况，若要读取这两个字，需要对存储器进行几次操作？
+    
+    答：物理地址分别为：7B621H 7AD5AH。读取位于7B621H的字需要2次操作，读取位于7AD5AH的字需要1次操作。
+    \nextverbatimspread{1}
+    \begin{verbatim}
+        +---------------+
+  7B622 |      1E       |
+        +---------------+
+  7B621 |      E5       |
+        +---------------+
+  7B620 |      xx       |
+        +---------------+
+  xxxxx |      xx       |
+        +---------------+
+  7AD5B |      2A       |
+        +---------------+
+  7AD5A |      8C       |
+        +---------------+
+  7AD59 |      xx       |
+        +---------------+
+    \end{verbatim}
+    
+    \item 8086CPU的AD15—AD0能否直接连接到系统总线上，为什么？
+    
+    不可以。因为是数据、地址复用线，需要接地址、数据锁存器才能分别接入地址总线、数据总线。
+\end{enumerate}
+
+\end{document}
