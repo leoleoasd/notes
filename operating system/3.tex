@@ -1,0 +1,160 @@
+\documentclass{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{os-common}
+\renewcommand{\tableautorefname}{表}
+
+\title{第三次操作系统作业}
+\author{卢雨轩 19071125}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+\begin{outline}[enumerate]
+    \1 考虑下面一组进程，进程占用的CPU区间长度以毫秒计算。假设在0时刻进程以P1, P2, P3, P4, P5的顺序到达。
+\begin{center}
+    \captionof{table}{进程、区间时间、优先级}
+    \begin{tabular}{ccc}
+        \toprule
+        进程 & 区间时间 & 优先级 \\
+        \midrule
+        P1 & 10 & 3 \\
+        P2 & 1 & 1 \\
+        P3 & 2 & 3 \\
+        P4 & 1 & 4 \\
+        P5 & 5 & 2 \\
+        \bottomrule
+    \end{tabular}
+\end{center}
+
+    \2 画出4个Gantt图，分别演示使用FCFS, SJF, 非抢占优先 级(数字越小表示优先级越高)和RR(时间片=1)算法调度时 进程的执行过程。
+
+        \3 FCFS
+        \begin{figure}[H]
+            \centering
+            \caption{先来先服务算法甘特图}
+            \begin{os-gantt}[
+                y unit = .5cm,
+                bar height = 1
+            ]{1}{19}
+                \gantttitle[
+                    title label node/.append style={below left=7pt and -3pt}
+                ]{Time(ms)\ 0}{0}
+                \gantttitlelist{1,...,19}{1} \\
+                \ganttbar{P1}{1}{10} \\
+                \ganttbar{P2}{11}{11} \\
+                \ganttbar{P3}{12}{13} \\
+                \ganttbar{P4}{14}{14} \\
+                \ganttbar{P5}{15}{19} \\
+            \end{os-gantt}
+        \end{figure}
+        \3 SJF
+        \begin{figure}[H]
+            \centering
+            \caption{短作业优先算法甘特图}
+            \begin{os-gantt}[
+                y unit = .5cm,
+                bar height = 1
+            ]{1}{19}
+                \gantttitle[
+                    title label node/.append style={below left=7pt and -3pt}
+                ]{Time(ms)\ 0}{0}
+                \gantttitlelist{1,...,19}{1} \\
+                \ganttbar{P1}{10}{19} \\
+                \ganttbar{P2}{1}{1} \\
+                \ganttbar{P3}{3}{4} \\
+                \ganttbar{P4}{2}{2} \\
+                \ganttbar{P5}{5}{9} \\
+            \end{os-gantt}
+        \end{figure}
+        \3 非抢占优先级调度
+        \begin{figure}[H]
+            \caption{非抢占优先级调度算法甘特图}
+            \centering
+            \begin{os-gantt}[
+                y unit = .5cm,
+                bar height = 1
+            ]{1}{19}
+                \gantttitle[
+                    title label node/.append style={below left=7pt and -3pt}
+                ]{Time(ms)\ 0}{0}
+                \gantttitlelist{1,...,19}{1} \\
+                \ganttbar{P1}{7}{16} \\
+                \ganttbar{P2}{1}{1} \\
+                \ganttbar{P3}{17}{18} \\
+                \ganttbar{P4}{19}{19} \\
+                \ganttbar{P5}{2}{6} \\
+            \end{os-gantt}
+        \end{figure}
+        \3 RR（时间片=1）
+        \begin{figure}[H]
+            \caption{时间片轮转算法甘特图}
+            \centering
+            \begin{os-gantt}[
+                y unit = .5cm,
+                bar height = 1
+            ]{1}{19}
+                \gantttitle[
+                    title label node/.append style={below left=7pt and -3pt}
+                ]{Time(ms)\ 0}{0}
+                \gantttitlelist{1,...,19}{1} \\
+                \ganttbar{P1}{1}{1} \ganttbar{P1}{6}{6} 
+                \ganttbar{P1}{9}{9} \ganttbar{P1}{11}{11} 
+                \ganttbar{P1}{13}{13} \ganttbar{P1}{15}{19} \\
+                \ganttbar{P2}{2}{2} \\
+                \ganttbar{P3}{3}{3} \ganttbar{P1}{7}{7} 
+                \ganttbar{P1}{10}{10} \ganttbar{P1}{12}{12} 
+                \ganttbar{P1}{14}{14} \\
+                \ganttbar{P4}{4}{4} \\
+                \ganttbar{P5}{5}{5} \ganttbar{P1}{8}{8}\\
+            \end{os-gantt}
+        \end{figure}
+    \2 每个进程的周转时间是多少?
+    \2 每个进程在每种调度算法下的等待时间是多少?
+    \begin{table}[H]
+        \centering
+        \caption{进程的周转时间与等待时间}
+        \begin{tabular}{*{9}{c}}
+          \toprule
+          \multirow{2}{*}[-2pt]{进程} & \multicolumn{2}{c}{FCFS} & \multicolumn{2}{c}{SJF} 
+            & \multicolumn{2}{c}{优先级} & \multicolumn{2}{c}{RR} \\
+          \cmidrule(lr){2-3}
+          \cmidrule(lr){4-5}
+          \cmidrule(lr){6-7}
+          \cmidrule(lr){8-9}
+            & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 \\
+          \midrule
+          P1 & 10ms & 0ms & 19ms & 9ms & 16ms & 6ms & 19ms & 0ms \\
+          P2 & 11ms & 10ms & 1ms & 0ms & 1ms & 0ms & 2ms & 1ms \\
+          P3 & 13ms & 11ms & 4ms & 2ms & 18ms & 16ms & 14ms & 2ms \\
+          P4 & 14ms & 13ms & 2ms & 1ms & 19ms & 18ms & 4ms & 3ms \\
+          P5 & 19ms & 14ms & 9ms & 4ms & 6ms & 1ms & 8ms & 4ms \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
+\end{outline}
+
+\section*{补充作业}
+
+
+\end{document}

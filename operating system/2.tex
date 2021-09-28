@@ -1,5 +1,3 @@
-% !TEX program = xelatex
-% !TEX options = -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error "%DOC%"
 \documentclass{ctexart}
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
@@ -9,7 +7,6 @@
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
 \usepackage{os-common}
 \renewcommand{\tableautorefname}{表}
-
 
 \title{第二次操作系统作业}
 \author{卢雨轩 19071125}
@@ -57,31 +54,11 @@
 \begin{enumerate}
 \item 假设有一个进程，它的工作流程是先运行150ms，然后进行I/O，最后执行250ms结束。如果系统中的进程有三个状态，当时间片为200ms时，请写出进程A从被系统接纳到运行结束所经历的状态转换并说明原因。
 
-\begin{center}
-    \begin{ganttchart}[
-        canvas/.append style={fill=none, draw=black!5, line width=.75pt},
-        hgrid style/.style={draw=black!5, line width=.75pt},
-        vgrid={*1{draw=black!5, line width=.75pt}},
-        % today=4,
-        today rule/.style={
-          draw=black!64,
-          dash pattern=on 3.5pt off 4.5pt,
-          line width=1.5pt
-        },
-        today label font=\small\bfseries,
-        title/.style={draw=none, fill=none},
-        title label font=\bfseries\footnotesize,
-        title label node/.append style={below right=7pt and .75pt},
-        include title in canvas=false,
-        bar label font=\mdseries\small\color{black!70},
-        bar label node/.append style={left=2cm},
-        bar/.append style={draw=none, fill=barblue},
-        bar progress label font=\mdseries\footnotesize\color{black!70},
-        link/.style={-latex, line width=1.5pt, linkred},
-        link label font=\scriptsize\bfseries,
-        link label node/.append style={below left=-2pt and 0pt},
-        x unit=1cm
-      ]{1}{9}
+\begin{figure}[H]
+    \centering
+    \begin{os-gantt}[
+      title offset=2ex
+    ]{1}{9}
       \gantttitle[
         title label node/.append style={below left=7pt and -3pt}
       ]{Time(ms)\ 0}{0}
@@ -117,8 +94,8 @@
         link type=ready-running,
         link label node/.append style=right
       ]{SCHEDULER}{PROCESS3}
-    \end{ganttchart}
-\end{center}
+    \end{os-gantt}
+\end{figure}
 \begin{enumerate}
     \item 运行 \textrightarrow 等待：进行IO
     \item 等待 \textrightarrow 运行：IO结束

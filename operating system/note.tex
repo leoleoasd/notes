@@ -468,6 +468,114 @@ void consumer(){
         \2 要求：
             \3 保证叉子互斥
             \3 防止死锁和饥饿
+    \1 读者写者问题
+        \2 可以同时读，有人写别人就不能读/写
+        \2 读者优先：
+        \begin{minted}[linenos]{cpp}
+int readcount=0;
+semaphore x=1; // 保证readcount操作原子性
+semaphore wsem=1;
+void reader()
+{
+    while(1){
+        wait(x);
+        readcount++;
+        if(readcount==1)
+            wait(wsem); // 第一个读者锁住锁
+        signal(x);
+
+        READUNIT();
+
+        wait(x);
+        readcount--;
+        if(readcount==0)
+            signal(wsem);
+        signal(x);
+    }
+}
+void writer()
+{
+    while(1)
+    {
+    wait(wsem);
+    WRITEUNIT();
+    signal(wsem);
+    }
+}
+        \end{minted}
+        \2 写者优先：
+        \begin{minted}[linenos]{cpp}
+int readcount=0, writecount=0;
+semaphore x=1, y=1, z=1, wsem=1, rsem=1;
+void reader()
+{
+    while(1){
+        wait(z);
+        wait(rsem);
+        wait(x);
+        readcount++;
+        if(readcount==1)
+            wait(wsem);
+        signal(x);
+        signal(rsem);
+        signal(z);
+        READUNIT();
+        wait(x);
+        readcount--;
+        if(readcount==0)
+            signal(wsem);
+        signal(x);
+    }
+}
+void writer()
+{
+    while(1){
+        wait(y);
+        writecount++;
+        if(writecount==1)
+            wait(rsem);
+        signal(y);
+        wait(wsem);
+        WRITEUNIT();
+        signal(wsem);
+        wait(y);
+        writecount--;
+        if(writecount==0)
+            signal(rsem);
+        signal(y);
+    }
+}
+    \1 信号量的问题：
+        \2 操作系统提供
+        \2 有效，灵活
+        \2 容易死锁
+    \1 管程
+        \2 管程用条件变量的方法支持同步。
+        \2 条件变量在管程内部，只能由管程访问。
+        \2 在条件变量C上可以有两种操作:
+        \end{minted}
+\end{outline}
+\subsubsection{死锁}
+\begin{outline}
+    \1 死锁的定义
+        \2  如果一个进程集合中每一个进程都在等待只能由 本集合中的另一个进程才能引发的事件，则称这 种状态为死锁。
+    \1 死锁的条件
+        \2 互斥
+            \3 一个资源同时只让一个进程使用
+        \2拥有并等待
+            \3 进程在拥有一个资源时又申请另一个资源，并等待分配给它。
+        \2 资源不可抢占
+            \3 分配给一个进程的资源是不可抢占的，只能由占有它的进程释放
+        \2 环路等待
+            \3 进程和资源之间存在一个拥有和需求的闭环
+    \1 资源分配图：
+        \2 有环就可能有死锁
+        \2 需要每个资源有一个实例
+    \1 死锁的解决
+        \2 忽略
+        \2 预防死锁
+        \2 避免死锁
+        \2 死锁的检测和恢复
 \end{outline}
 
 

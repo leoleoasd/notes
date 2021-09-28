@@ -1,9 +1,14 @@
+\ProvidesPackage{os-common}
 \RequirePackage{pgfgantt}
 \RequirePackage{minted}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{wrapfig}
 \RequirePackage{graphicx}
+\RequirePackage{outlines}
+\RequirePackage{multirow}
 \RequirePackage{adjustbox}
+\RequirePackage{options}
+\RequirePackage{xifthen}
 \definecolor{barblue}{RGB}{153,204,254}
 \definecolor{linkred}{RGB}{165,0,33}
 \newganttlinktypealias{running-waiting}{default}
@@ -14,3 +19,48 @@
 \setganttlinklabel{running-ready}{运行 \textrightarrow 就绪}
 \setganttlinklabel{ready-running}{就绪 \textrightarrow 运行}
 \setganttlinklabel{waiting-running}{等待 \textrightarrow 运行}
+
+\options{
+    /os-gantt/.new family,
+    /os-gantt/y unit/.new value = 1cm,
+    /os-gantt/bar height/.new value = 0.5,
+    /os-gantt/title offset/.new length = 5pt,
+}
+
+\newenvironment{os-gantt}[3][]{
+    \ifthenelse{\isempty{#1}}{
+    }{
+        \options{/os-gantt,#1}
+    }
+    \begin{os-gantt-inner}{#2}{#3}
+}{
+    \end{os-gantt-inner}
+}
+
+\newenvironment{os-gantt-inner}[2]{
+\begin{ganttchart}[
+    canvas/.append style={fill=none, draw=black!5, line width=.75pt},
+    hgrid style/.style={draw=black!5, line width=.75pt},
+    vgrid={*1{draw=black!5, line width=.75pt}},
+    today rule/.style={
+      draw=black!64,
+      dash pattern=on 3.5pt off 4.5pt,
+      line width=1.5pt
+    },
+    today label font=\small\bfseries,
+    title/.style={draw=none, fill=none},
+    title label font=\bfseries\footnotesize,
+    title label node/.append style={below right=7pt and \option{/os-gantt/title offset}},
+    include title in canvas=false,
+    bar label font=\mdseries\small\color{black!70},
+    bar label node/.append style={left=2cm},
+    bar/.append style={draw=none, fill=barblue},
+    bar progress label font=\mdseries\footnotesize\color{black!70},
+    link/.style={-latex, line width=1.5pt, linkred},
+    link label font=\scriptsize\bfseries,
+    link label node/.append style={below left=-2pt and 0pt},
+    expand chart=\textwidth,
+    y unit chart=\option{/os-gantt/y unit},
+    bar height=\option{/os-gantt/bar height},
+  ]{#1}{#2}
+}{\end{ganttchart}}
