@@ -118,43 +118,164 @@
                     title label node/.append style={below left=7pt and -3pt}
                 ]{Time(ms)\ 0}{0}
                 \gantttitlelist{1,...,19}{1} \\
-                \ganttbar{P1}{1}{1} \ganttbar{P1}{6}{6} 
-                \ganttbar{P1}{9}{9} \ganttbar{P1}{11}{11} 
-                \ganttbar{P1}{13}{13} \ganttbar{P1}{15}{19} \\
+                \ganttbar{P1}{1}{1} \ganttbar{}{6}{6} 
+                \ganttbar{}{9}{9} \ganttbar{}{11}{11} 
+                \ganttbar{1}{13}{13} \ganttbar{}{15}{19} \\
                 \ganttbar{P2}{2}{2} \\
-                \ganttbar{P3}{3}{3} \ganttbar{P1}{7}{7} 
-                \ganttbar{P1}{10}{10} \ganttbar{P1}{12}{12} 
-                \ganttbar{P1}{14}{14} \\
+                \ganttbar{P3}{3}{3} \ganttbar{}{7}{7} 
+                \ganttbar{}{10}{10} \ganttbar{}{12}{12} 
+                \ganttbar{}{14}{14} \\
                 \ganttbar{P4}{4}{4} \\
-                \ganttbar{P5}{5}{5} \ganttbar{P1}{8}{8}\\
+                \ganttbar{P5}{5}{5} \ganttbar{}{8}{8}\\
             \end{os-gantt}
         \end{figure}
     \2 每个进程的周转时间是多少?
     \2 每个进程在每种调度算法下的等待时间是多少?
-    \begin{table}[H]
-        \centering
-        \caption{进程的周转时间与等待时间}
-        \begin{tabular}{*{9}{c}}
-          \toprule
-          \multirow{2}{*}[-2pt]{进程} & \multicolumn{2}{c}{FCFS} & \multicolumn{2}{c}{SJF} 
-            & \multicolumn{2}{c}{优先级} & \multicolumn{2}{c}{RR} \\
-          \cmidrule(lr){2-3}
-          \cmidrule(lr){4-5}
-          \cmidrule(lr){6-7}
-          \cmidrule(lr){8-9}
-            & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 \\
-          \midrule
-          P1 & 10ms & 0ms & 19ms & 9ms & 16ms & 6ms & 19ms & 0ms \\
-          P2 & 11ms & 10ms & 1ms & 0ms & 1ms & 0ms & 2ms & 1ms \\
-          P3 & 13ms & 11ms & 4ms & 2ms & 18ms & 16ms & 14ms & 2ms \\
-          P4 & 14ms & 13ms & 2ms & 1ms & 19ms & 18ms & 4ms & 3ms \\
-          P5 & 19ms & 14ms & 9ms & 4ms & 6ms & 1ms & 8ms & 4ms \\
-          \bottomrule
-        \end{tabular}
-      \end{table}
+        \begin{table}[H]
+            \centering
+            \caption{进程的周转时间与等待时间}
+            \begin{tabular}{*{9}{c}}
+            \toprule
+            \multirow{2}{*}[-2pt]{进程} & \multicolumn{2}{c}{FCFS} & \multicolumn{2}{c}{SJF} 
+                & \multicolumn{2}{c}{优先级} & \multicolumn{2}{c}{RR} \\
+            \cmidrule(lr){2-3}
+            \cmidrule(lr){4-5}
+            \cmidrule(lr){6-7}
+            \cmidrule(lr){8-9}
+                & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 & 周转时间 & 等待时间 \\
+            \midrule
+            P1 & 10ms & 0ms & 19ms & 9ms & 16ms & 6ms & 19ms & 0ms \\
+            P2 & 11ms & 10ms & 1ms & 0ms & 1ms & 0ms & 2ms & 1ms \\
+            P3 & 13ms & 11ms & 4ms & 2ms & 18ms & 16ms & 14ms & 2ms \\
+            P4 & 14ms & 13ms & 2ms & 1ms & 19ms & 18ms & 4ms & 3ms \\
+            P5 & 19ms & 14ms & 9ms & 4ms & 6ms & 1ms & 8ms & 4ms \\
+            \bottomrule
+            \end{tabular}
+        \end{table}
+    \1 什么是忙等待？
+        指通过死循环等待时间发生，与暂停进程执行直到时间发生相对。
+    \1 吸烟者问题：有3个吸烟者和一个供应者。第一个吸烟者有自己的烟草；
+    第二个吸烟者有自己的纸；第三个吸烟者有自己的火柴。供应者每次随机放
+    两样东西到桌子上提供给3个吸烟者之中的一个以完成吸烟。请用信号量为
+    吸烟者和供应者进程编写程序。
+        \2 解法1:
+\begin{minted}[linenos]{cpp}
+semaphore tobacco_and_paper = 0;
+semaphore tobacco_and_lighter = 0;
+semaphore lighter_and_paper = 0;
+semaphore smoked = 0;
+void smoker(){
+    while(true) {
+        if(has tobacco){
+            wait(lighter_and_paper);
+        } else if(has lighter) {
+            wait(tobacco_and_paper);
+        } else {
+            wait(tobacco_and_lighter);
+        }
+        smoke();
+        signal(smoked);
+    }
+}
+
+void supplier(){
+    while(true){
+        item_to_supply = generate_random_item();
+        if(item_to_supply == (tobacco, paper)){
+            signal(tobacco_and_paper);
+        } else if (item_to_supply == (tobacco, lighter)){
+            signal(tobacco_and_lighter);
+        } else {
+            signal(lighter_and_paper);
+        }
+        wait(smoked);
+    }
+}
+\end{minted}
+        \2 解法2
+\begin{minted}[linenos]{cpp}
+semaphore first_tobacco = 0, second_tobacco = 0;
+semaphore first_lighter = 0, second_lighter = 0;
+semaphore first_paper = 0, second_paper = 0;
+semaphore smoked = 0;
+void smoker(){
+    while(true) {
+        if(has tobacco){
+            wait(first_lighter);
+            wait(second_paper);
+        } else if(has lighter) {
+            wait(first_paper);
+            wait(second_tobacco);
+        } else {
+            wait(first_tobacco);
+            wait(second_lighter);
+        }
+
+        smoke();
+        signal(smoked);
+    }
+}
+
+void supplier(){
+    while(true){
+        item_to_supply = generate_random_item();
+        if(item_to_supply == (tobacco, paper)){
+            // we need to serve smoker with lighter.
+            signal(first_paper);
+            signal(second_tobacco);
+        } else if (item_to_supply == (tobacco, lighter)){
+            // we need to serve smoker with paper.
+            signal(first_tobacco);
+            signal(second_lighter);
+        } else {
+            // we need to serve smoker with tobacco.
+            signal(first_lighter);
+            signal(second_paper);
+        }
+        wait(smoked);
+    }
+}
+\end{minted}
 \end{outline}
 
 \section*{补充作业}
 
+\begin{outline}[enumerate]
+    \1 假设有三个进程R、W1、W2共享缓冲区B。B中只能存放一个数。R每次从输入设备中读一个整数放入B中。如果这个整数是奇数，由W1取出打印。如果这个整数是偶数，则由W2取出打印。规定仅当B中没有数据或数据已经被打印才会启动R去读数。W1、W2对B中的数据不能重复打印，当B中没有数据时也不能打印。要求用信号量操作写出R、W1、W2三个进程的程序。（请详细描述所使用变量的含义）
+    
+    \1 有一个铁笼子，猎手放入老虎，农民放入猪，动物园等待取走老虎，饭店等待取走猪。笼子中只能放入一个动物。请使用信号量方法为猎手、农民、动物园、饭店进程编写程序。
+    \1 某寺庙，有小、老和尚若干。有一个水缸，由小和尚提水入缸供老和尚饮用。水缸可容10桶水。水取自一个井中，水井窄，每次只能容一个水桶。水桶总数为3。水缸每次进出也仅1桶水，不可以同时进行。请设置合适的信号量描述小和尚、老和尚取水、入水的算法。
+
+    \1 判断对错
+    \2 在RR调度中，上下文切换的时间应该小于时间片的长度。
+    \2 SJF调度算法是最适合分时系统的调度算法。
+    \2 FCFS调度算法只能是非抢占式的
+    \2 一个系统中进程之间可能是独立的也可能是合作的。
+    \2 如果用锁来保护临界区可以防止竞争条件。
+    \2 一个计数信号量的值只能取0或者1.
+    \2 在管程中本地变量只能由本地过程来访问。
+    \1 选择题
+    关于竞争条件那句话是对的？ \\
+    A. 几个线程要并发读同样的数据 \\
+    B. 几个线程要并发读写同样的数据 \\
+    C. 只有在执行结果与执行顺序无关的时候发生
+
+
+    \1 关于原子指令那句话是对的？ \\
+    A. 原子指令只能由一条机器指令组成 \\
+    B. 作为一个单独的，不可以中断的单元执行 \\
+    C. 不能用于解决临界区问题 \\
+    \1 一个临界区的解决方案不需要实现下面的哪一条？ \\
+    A. 互斥		B. 有空让进 \\
+    C. 原子性		D. 有限等待 \\
+
+\end{outline}
+
+\section{附加题}
+\begin{outline}[enumerate]
+    \1 独木桥问题：某条河上只有一座独木桥，两边都有人要过河，为保证安全，一个方向有人过河另一个方向的人就要等待，并且允许一个方向上的人连续过河。请使用信号量实现正确的管理。
+
+    
+\end{outline}
 
 \end{document}

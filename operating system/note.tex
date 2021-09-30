@@ -7,6 +7,9 @@
 \usepackage{caption}
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
 \usepackage{outlines}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 \usepackage{os-common}
 \renewcommand{\tableautorefname}{表}
 
@@ -545,6 +548,7 @@ void writer()
         signal(y);
     }
 }
+\end{minted}
     \1 信号量的问题：
         \2 操作系统提供
         \2 有效，灵活
@@ -553,7 +557,6 @@ void writer()
         \2 管程用条件变量的方法支持同步。
         \2 条件变量在管程内部，只能由管程访问。
         \2 在条件变量C上可以有两种操作:
-        \end{minted}
 \end{outline}
 \subsubsection{死锁}
 \begin{outline}
@@ -576,7 +579,98 @@ void writer()
         \2 预防死锁
         \2 避免死锁
         \2 死锁的检测和恢复
+    \1 死锁的避免
+    系统能按某种顺序如<P1, P2, …, Pn>为每个进程分配所需资源,
+    直到最大需求, 使每个进程都可顺序完成称系统处于安全状态，此序列称为安全序列
+        \2 安全序列不唯一
+        \2 要求预知进程所有资源。
+            \3 在资源分配过程中, 采用某种策略防止系统进入不安全状态，避免发生死锁
+            \3 若满足一个进程新提出的一项资源请求导致系统不在安全状态拒绝分配资源
+            \3 方法
+                \4 资源分配图算法：每类资源只有一个实例
+                \4 银行家算法
+                    \4 保证处于安全状态
+                    \4 获取新资源时，如果不安全，不分配。
+    \1 死锁的检测与解除
+        \2 中心思想
+            \3死锁的检测方法并不限制对资源的访问
+            \3进程可以在可能的情况下获得它所需要的资源，只是检测死锁是否存在
+            \3如果存在，则想办法恢复
+        \2对于死锁的检测可以在以下两种情况下执行
+            \3在每次进行资源申请而不被满足后进行
+            \3定期检测死锁
+            \begin{algorithm}[H]
+                \caption{死锁的检测}
+                \begin{algorithmic}[1]
+                    \State Initially, all processes are untagged.
+                    \State Tag all processes whose \verb|Allocation| is zero.
+                    \State $w \gets $\verb|Available|
+                    \While{Exists some process whose Request is smaller or equal than $w$}
+                        \State Tag that process.
+                    \EndWhile
+                    \If{There are untagged process}
+                        \State There is dead lock.
+                    \Else
+                        \State There isn't dead lock.
+                    \EndIf
+                \end{algorithmic}
+            \end{algorithm}
+        \2 死锁的恢复
+            \3 终止所有死锁进程
+            \3 一次只终止一个进程直到取消死锁循环为止
+            \3 抢占一个进程的资源，让这个进程回滚到进程占有资源之前的状态
+        
+
 \end{outline}
 
+\section{内存管理}
+\subsection{内存管理概述}
+\subsubsection{分级存储体系}
+内存是计算机系统中的一种十分重要的资源。内存的价格也十分昂贵。
+所以通过分成（L1 cache, L2 cache, \dots, Memory, Disk, NAS）
+
+\subsection{内存管理技术}
+\begin{outline}
+    \1 内存管理相关概念
+        \2 基本术语
+            \3 内存单元的地址是物理地址
+            \3 符号名是符号地址
+            \3 源程序经编译链接生成可装入程序，从0开始编址，其他地址都相对起始地址计算。此地址称为逻辑地址
+            \3 程序生成的逻辑地址的集合是逻辑地址空间
+            \3 所有物理地址的集合是物理地址空间
+        \2 重定位
+            \3 逻辑地址向物理地址的转换过程就是重定位
+            \3 时机：
+                \4 编译时 \\
+                编译时就知道进程将在内存中驻留的地址，可以直接生成绝对代码。例如，MS-DOS的COM文件
+                \4 加载时 \\
+                编译生成可重定位代码，捆绑/重定位在加载时进行 \\
+                静态重定位
+                \4 执行时 \\
+                若进程在执行时允许移动,则捆绑/重定位在执行时进行 \\
+                动态重定位
+        \2 动态重定位的硬件实现
+            \3 动态重定位是由内存管理单元（MMU）实现
+            \3 设置专门的寄存器
+            \3 基址寄存器（重定位寄存器）和界限寄存器。
+            \3 程序指令地址的重定位在指令执行的时候实现
+        \2 保护
+            \3 保护操作系统不受用户进程的影响
+            \3 保护用户进程不受其它用户进程影响
+            \3 用基地址寄存器（重定位寄存器）和界限器存器
+    \1 交换与覆盖
+        \2 覆盖 \\
+        在任何时候只能在内存中保留所需要的指令和数据。新的指令和数据可覆盖不用的指令和数据
+        \2 交换
+            \3 在内存不足的情况下，需要把一个进程整个换入和换出，称为交换
+            \3 交换空间的分配
+                \4 进程在被换出时分配交换空间 \\
+                每次换到不同的位置
+                \4 进程分配固定的交换空间
+                
+
+
+\end{outline}
+\subsection{虚拟内存管理}
 
 \end{document}
