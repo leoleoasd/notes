@@ -9,7 +9,13 @@
 \usepackage{outlines}
 \usepackage{amsthm}
 \usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
 \usetikzlibrary{automata,positioning}
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+\newcommand{\tto}{\Rightarrow}
+\graphicspath{ {./images/} }
 
 \title{形式语言与自动机理论 笔记}
 \author{Leo Lu}
@@ -18,7 +24,7 @@
     section = {
         titleformat = \raggedright,
         name = {,},
-        number = %第\chinese{section}部分
+        number = 第\chinese{section}章
     },
     paragraph = {
         runin = false
@@ -30,7 +36,9 @@
 }
 
 \newtheorem{definition}{定义}[section]
+\newtheorem{example}{例}[section]
 \DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
 
 
 \begin{document}
@@ -421,17 +429,287 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \begin{definition}
     对于2型文法文法$G = (V,T,P,S)$： \\
     如果对于$\forall \alpha \to \beta \in P$： \\
-    如果形如$A \to wB$和$A \to w$，其中$A,B \in V, w \in T+$：G是右线性文法。 \\
-    如果形如$A \to Bw$和$A \to w$，其中$A,B \in V, w \in T+$：G是右线性文法。 \\
+    如果形如$A \to wB$和$A \to w$，其中$A,B \in V, w \in T^+$：G是右线性文法。 \\
+    如果形如$A \to Bw$和$A \to w$，其中$A,B \in V, w \in T^+$：G是左线性文法。 \\
     则G是3型文法，或正则文法。
 \end{definition}
 
 \subsection{空产生式}
-允许在CSG，CFG，RG文法中存在空产生式。 \\
+允许在CSG，CFG，RG文法中存在空产生式。 
+
 允许在CSL，CFL，RL语言中存在空语句。
+
+特点：
+\begin{outline}
+    \1 对于$\forall$右线性文法$G_1$，$\exists$ 左线性文法 $G_2$ 使得 
+    $L(G_1) = L(G_2)$
+    \1 对于$\forall$左线性文法$G_1$，$\exists$ 右线性文法 $G_2$ 使得 
+    $L(G_1) = L(G_2)$ \\
+        所以，某种意义上二者等价。其中，\emph{左线性文法的表述好。}\\
+        \hl{\emph{左递归}？}
+        \emph{线性文法不是正则文法！}
+    \1 $\forall G, \exists G', L(G') = L(G)$，但是$G'$中的开好似符号不出现在任何
+    产生式的右部，且在$\epsilon \in L(G')$时，$G'$中只有$S' \to \epsilon$这样一个
+    $\epsilon$产生式。
+\end{outline}
+
+\subsubsection{语言运算}
+给定上下文无关文法$G_1,G_2$，构造$G$使得：
+\begin{outline}[enumerate]
+    \1 $L(G) = L(G_1)L(G_2)$ \\
+        其中$V_1 \cup V_2 = \phi$， $S \notin V_1 \cup V_2$
+
+        $G = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup {S \to S_1S_2}, S)$
+
+    \1 $L(G) = L(G_1) \cup L(G_2)$
+
+        $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P_3, S)$ \\
+        $P_3 = \set*{S \to S_1 | S_2}$
+
+    \1 $L(G) = L(G_1)^*$
+
+        $G_* = \paren*{V_1 \cup \set*{S}, T, P_1 \cup P_2, S}$ \\
+        $P_2 = \set*{S \to \epsilon | SS_1}$
+
+\end{outline}
+
+给定RG $G_1,G_2$，构造RG $G$使得：
+\begin{outline}[enumerate]
+    \1 $L(G) = L(G_1)L(G_2)$ \\
+        其中$V_1 \cup V_2 = \phi$， $S \notin V_1 \cup V_2$
+
+        $\begin{aligned}
+            S_1  & \tto a_1A_1 \\
+                 & \tto a_1a_2\dots a_{n-1}A_n  \\
+                 & \tto a_1a_2\dots a_nS_2
+        \end{aligned}$
+        所以，我们需要改造$P_1$。
+
+        $G = (V_1 \cup V_2 \cup {S}, T, P_1' \cup P_2 \cup P_3, S_1)$
+
+        $P_1' = \set*{A \to a B | A \to a B \in P_1}$
+        
+        $P_3 = \set*{A \to a S_2 | A \to a \in P_1}$
+
+    \1 $L(G) = L(G_1) \cup L(G_2)$
+
+        $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P, S)$ \\
+        $\begin{aligned}
+            P & = \set*{S \to \alpha | S_1 \to \alpha \in P_1} \\
+            & \cup \set*{S \to \alpha | S_2 \to \alpha \in P_2} \\
+        \end{aligned}$
+
+    \1 $L(G) = L(G_1)^*$
+
+        \hl{自己想！}
+\end{outline}
+
+例子：
+
+\begin{outline}[enumerate]
+    \1 设$L = \set*{x | 101 \text{ in } x}$，构造 $G, L(G) = L$。
+
+    朴素构造：$\begin{cases}
+        S \to A 101 A \\
+        A \to \epsilon | 0A | 1A
+    \end{cases}$
+    
+    正则构造：$\begin{cases}
+        S \to 0S | 1A \\
+        A \to 0B | 1A \\
+        B \to 1C | 0S \\
+        C \to 0C | 1C | \epsilon
+    \end{cases}$
+
+    \1 构造$G$使$L(G) = \set*{x | 101 \text{ not in } x}$
+
+    正则构造：$\begin{cases}
+        S \to 0S | 1A \\
+        A \to 0B | 1A \\
+        B \to 0S | \epsilon\\
+    \end{cases}$
+\end{outline}
+
+
+
+\subsection{小结}
+
 
 习题： p67 3，4，8.2，8.6，10.3，11.3
 
-%\end{CJK}
+\section{有穷状态自动机 Finite Automata}
+
+\subsection{FA的基本定义}
+\begin{figure}[H]
+    \centering
+    \caption{有穷状态自动机}
+    \includegraphics{FA}
+\end{figure}
+
+\begin{definition}
+    $M = (Q, \Sigma, \delta, q_0, F)$，其中：
+
+    \begin{description}
+        \item[$Q$]：状态的有穷集合
+        \item[$\Sigma$]： 输入字母表
+        \item[$\delta$]： 状态转义函数\\
+            $Q\times\Sigma \to Q$。 $\forall (q,a) \in Q\times\Sigma$，
+            $\delta(q,a) = p$表示$M$在状态$q$读入一个字符$a$，状态改为$p$并
+            指向下一个字符。
+        \item[$q_0$]：开始状态
+        \item[$F$]： 终止状态 
+    \end{description}
+\end{definition}
+\begin{definition}
+    有穷状态自动机$M = (Q, \Sigma, \delta, q_0, F)$：
+
+    状态转移图是满足如下条件的有向图。
+    \begin{enumerate}
+        \item 对于$q \in Q$， $q$是一个顶点
+        \item $\forall (q,a) \in \delta$, $q$到$p$有一条标记为$a$的弧。
+        \item 标有S的箭头所指的状态为开始状态。
+        \item 用双圈标记结束状态。
+    \end{enumerate}
+
+    扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to Q$
+    \begin{enumerate}
+        \item $\hat{\delta}(q,\epsilon) = q$
+        \item $\hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)$
+    \end{enumerate}
+    注意到 $Q \time \Sigma \subset Q \times \Sigma^*$，
+    且对$\forall (q, a) \in Q \times \Sigma^*$，$\hat{\delta}(q, a) = \delta(q, a)$
+    所以，不用区分$\delta$与$\hat{\delta}$
+\end{definition}
+
+\begin{definition}
+    有穷状态自动机$M = (Q, \Sigma, \delta, q_0, F)$识别的语言：
+    $L(M) = \set*{x | \delta(q_0, x) \in F}$
+\end{definition}
+
+\begin{definition}
+    对于有穷状态自动机$M_1, M_2$：若有$L(M_1) = L(M_2)$，则称二者等价。
+\end{definition}
+
+\begin{example}
+    构造$M$，使得$L(M) = \set*{x000 | x \in \set*{0,1}^*}$。 
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (13.8,-12.7) circle (3);
+            \draw [black] (24.7,-12.7) circle (3);
+            \draw [black] (35.3,-12.7) circle (3);
+            \draw [black] (45.1,-12.7) circle (3);
+            \draw [black] (45.1,-12.7) circle (2.4);
+            \draw [black] (16.8,-12.7) -- (21.7,-12.7);
+            \fill [black] (21.7,-12.7) -- (20.9,-12.2) -- (20.9,-13.2);
+            \draw (19.25,-12.2) node [above] {$0$};
+            \draw [black] (27.7,-12.7) -- (32.3,-12.7);
+            \fill [black] (32.3,-12.7) -- (31.5,-12.2) -- (31.5,-13.2);
+            \draw (30,-12.2) node [above] {$0$};
+            \draw [black] (38.3,-12.7) -- (42.1,-12.7);
+            \fill [black] (42.1,-12.7) -- (41.3,-12.2) -- (41.3,-13.2);
+            \draw (40.2,-12.2) node [above] {$0$};
+            \draw [black] (14.789,-9.908) arc (144.75241:35.24759:5.462);
+            \fill [black] (14.79,-9.91) -- (15.66,-9.54) -- (14.84,-8.97);
+            \draw (19.25,-7.1) node [above] {$1$};
+            \draw [black] (14.757,-9.867) arc (153.48523:26.51477:10.944);
+            \fill [black] (14.76,-9.87) -- (15.56,-9.37) -- (14.67,-8.93);
+            \draw (24.55,-3.31) node [above] {$1$};
+            \draw [black] (44.424,-15.618) arc (-18.48859:-161.51141:15.789);
+            \fill [black] (14.48,-15.62) -- (14.26,-16.54) -- (15.2,-16.22);
+            \draw (29.45,-26.9) node [below] {$1$};
+            \draw [black] (4.4,-12.7) -- (10.8,-12.7);
+            \draw (3.9,-12.7) node [left] {$S$};
+            \fill [black] (10.8,-12.7) -- (10,-12.2) -- (10,-13.2);
+            \draw [black] (47.78,-11.377) arc (144:-144:2.25);
+            \draw (52.35,-12.7) node [right] {$0$};
+            \fill [black] (47.78,-14.02) -- (48.13,-14.9) -- (48.72,-14.09);
+            \end{tikzpicture}
+    \end{center}
+\end{example}
+\begin{example}
+    
+    构造$M$，使得$L(M) = \set*{0x0 | x \in \set*{0,1}^*}$。 
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.6,-24.4) circle (3);
+        \draw (26.6,-24.4) node {$\epsilon$};
+        \draw [black] (15.7,-17.2) circle (3);
+        \draw (15.7,-17.2) node {奇0};
+        \draw [black] (37.6,-31.8) circle (3);
+        \draw (37.6,-31.8) node {奇1};
+        \draw [black] (37.6,-31.8) circle (2.4);
+        \draw [black] (15.7,-31.8) circle (3);
+        \draw (15.7,-31.8) node {偶0};
+        \draw [black] (15.7,-31.8) circle (2.4);
+        \draw [black] (37.6,-17.2) circle (3);
+        \draw (37.6,-17.2) node {偶1};
+        \draw [black] (24.1,-22.75) -- (18.2,-18.85);
+        \fill [black] (18.2,-18.85) -- (18.6,-19.71) -- (19.15,-18.88);
+        \draw (22.12,-20.3) node [above] {$0$};
+        \draw [black] (29.09,-26.07) -- (35.11,-30.13);
+        \fill [black] (35.11,-30.13) -- (34.73,-29.26) -- (34.17,-30.09);
+        \draw (33.07,-27.6) node [above] {$1$};
+        \draw [black] (15.7,-20.2) -- (15.7,-28.8);
+        \fill [black] (15.7,-28.8) -- (16.2,-28) -- (15.2,-28);
+        \draw (15.2,-24.5) node [left] {$0$};
+        \draw [black] (18.7,-17.2) -- (34.6,-17.2);
+        \fill [black] (34.6,-17.2) -- (33.8,-16.7) -- (33.8,-17.7);
+        \draw (26.65,-16.7) node [above] {$1$};
+        \draw [black] (34.6,-31.8) -- (18.7,-31.8);
+        \fill [black] (18.7,-31.8) -- (19.5,-32.3) -- (19.5,-31.3);
+        \draw (26.65,-32.3) node [below] {$0$};
+        \draw [black] (37.6,-28.8) -- (37.6,-20.2);
+        \fill [black] (37.6,-20.2) -- (37.1,-21) -- (38.1,-21);
+        \draw (38.1,-24.5) node [right] {$1$};
+        \end{tikzpicture}
+        \end{center}
+\end{example}
+
+\begin{example}
+    构造$M$，使得$L(M) = \set*{0x0 | \text{x看作二进制时，}x \mod 3 = 1}$。 
+\begin{center}
+    \begin{tikzpicture}[scale=0.2]
+    \tikzstyle{every node}+=[inner sep=0pt]
+    \draw [black] (38.9,-19.1) circle (3);
+    \draw (38.9,-19.1) node {$0$};
+    \draw [black] (27.6,-28.8) circle (3);
+    \draw (27.6,-28.8) node {$1$};
+    \draw [black] (38.9,-37.2) circle (3);
+    \draw (38.9,-37.2) node {$2$};
+    \draw [black] (17.1,-28.9) circle (3);
+    \draw (17.1,-28.9) node {$\epsilon$};
+    \draw [black] (28.553,-25.963) arc (154.34808:106.93797:12.128);
+    \fill [black] (35.95,-19.61) -- (35.04,-19.37) -- (35.33,-20.32);
+    \draw (30.61,-21.52) node [above] {$1$};
+    \draw [black] (35.913,-37.06) arc (-100.87688:-152.3746:10.496);
+    \fill [black] (35.91,-37.06) -- (35.22,-36.42) -- (35.03,-37.4);
+    \draw (30.66,-35.67) node [below] {$0$};
+    \draw [black] (37.52,-21.759) arc (-32.71252:-66.00143:16.293);
+    \fill [black] (30.44,-27.84) -- (31.37,-27.97) -- (30.96,-27.06);
+    \draw (35.4,-25.81) node [below] {$1$};
+    \draw [black] (37.577,-16.42) arc (234:-54:2.25);
+    \draw (38.9,-11.85) node [above] {$0$};
+    \fill [black] (40.22,-16.42) -- (41.1,-16.07) -- (40.29,-15.48);
+    \draw [black] (40.223,-39.88) arc (54:-234:2.25);
+    \draw (38.9,-44.45) node [below] {$1$};
+    \fill [black] (37.58,-39.88) -- (36.7,-40.23) -- (37.51,-40.82);
+    \draw [black] (30.509,-29.512) arc (70.37322:36.37529:14.642);
+    \fill [black] (30.51,-29.51) -- (31.09,-30.25) -- (31.43,-29.31);
+    \draw (35.3,-31.06) node [above] {$0$};
+    \draw [black] (8.6,-28.9) -- (14.1,-28.9);
+    \draw (8.1,-28.9) node [left] {$S$};
+    \fill [black] (14.1,-28.9) -- (13.3,-28.4) -- (13.3,-29.4);
+    \draw [black] (20.1,-28.87) -- (24.6,-28.83);
+    \fill [black] (24.6,-28.83) -- (23.8,-28.34) -- (23.8,-29.34);
+    \draw (22.35,-29.36) node [below] {$1$};
+    \draw [black] (18.093,-26.074) arc (154.9625:73.44927:15.144);
+    \fill [black] (36.13,-17.97) -- (35.5,-17.26) -- (35.22,-18.22);
+    \draw (24.66,-18.16) node [above] {$0$};
+    \end{tikzpicture}
+\end{center}
+\end{example}
 
 \end{document}
