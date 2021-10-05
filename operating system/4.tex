@@ -1,0 +1,82 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{os-common}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+
+\title{第四次操作系统作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+
+\begin{outline}[enumerate]
+    \1 考虑下面一个系统在某一个时刻的状态。
+    \begin{center}
+        \begin{tabular}{c c c c}
+            & Allocation & Max & Available \\
+            & ABCD & ABCD & ABCD \\
+            P0 & 0012 & 0012 & 1520 \\
+            P1 & 1000 & 1750 \\
+            P2 & 1354 & 2356 \\
+            P3 & 0632 & 0652 \\
+            P4 & 0014 & 0656 \\
+        \end{tabular}
+    \end{center}
+        使用银行家算法回答下面的问题：
+        \2 Need矩阵的内容
+            \begin{center}
+                \begin{tabular}{c c}
+                    & Need \\
+                    P0 & 0000 \\
+                    P1 & 0750 \\
+                    P2 & 1002 \\
+                    P3 & 0020 \\
+                    P4 & 0642 \\
+                \end{tabular}
+            \end{center}
+        \2 系统是否处于安全状态
+            
+            是
+        
+        \2 若从进程P1发来一个请求(0，4，2，0)，是否可以立即满足?
+
+            不可以
+
+
+\end{outline}
+
+\section*{补充作业}
+判断对错：
+\begin{outline}
+    \1 如果资源分配图中有环，那么就一定有死锁。 
+        错误
+    \1 死锁的时候系统一定处于非安全状态。
+        正确
+\end{outline}
+\end{document}
