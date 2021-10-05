@@ -242,39 +242,219 @@ void supplier(){
 
 \begin{outline}[enumerate]
     \1 假设有三个进程R、W1、W2共享缓冲区B。B中只能存放一个数。R每次从输入设备中读一个整数放入B中。如果这个整数是奇数，由W1取出打印。如果这个整数是偶数，则由W2取出打印。规定仅当B中没有数据或数据已经被打印才会启动R去读数。W1、W2对B中的数据不能重复打印，当B中没有数据时也不能打印。要求用信号量操作写出R、W1、W2三个进程的程序。（请详细描述所使用变量的含义）
-    
+\begin{minted}[linenos]{cpp}
+
+buffer B; // Shared buffer.
+semaphore buffer_read = 1; // initially, there is no data in buffer
+
+semaphore read_lock_w1 = 0;
+semaphore read_lock_w2 = 0;
+void R(){
+    while(true){
+        // wait until two worker finished processing one data.
+        // if we only signal(buffer_read) in the worker printing
+        // that data, the other worker may not be scheduled
+        // then run twice, causing read from empty buffer.
+        wait(buffer_read);
+        wait(buffer_read);
+        data = read();
+        write_to_buffer(B, data);
+        signal(read_lock_w1);
+        signal(read_lock_w2);
+    }
+}
+void W1(){
+    while(true){
+        wait(read_lock_w1);
+        if(read_from(B) % 2 == 1){ // is odd number
+            print(read_from(B));
+            clear(B);
+        }
+        signal(buffer_read); // we finished process this data.
+    }
+}
+void W2(){
+    while(true){
+        wait(read_lock_w2);
+        if(read_from(B) % 2 == 0){ // is even number
+            print(read_from(B));
+            clear(B);
+        }
+        signal(buffer_read); // we finished process this data.
+    }
+}
+\end{minted}
     \1 有一个铁笼子，猎手放入老虎，农民放入猪，动物园等待取走老虎，饭店等待取走猪。笼子中只能放入一个动物。请使用信号量方法为猎手、农民、动物园、饭店进程编写程序。
+\begin{minted}[linenos]{cpp}
+semaphore cage_available = 1;
+semaphore tiger_in_cage = 0;
+semaphore pig_in_cage = 0;
+void hunter(){
+    while(true){
+        tiger = hunt();
+        wait(cage_available);
+        put_tiger_in_cage();
+        signal(tiger_in_cage);
+    }
+}
+void farmer(){
+    while(true){
+        pig = farm();
+        wait(cage_available);
+        put_pig_in_cage();
+        signal(pig_in_cage);
+    }
+}
+void zoo(){
+    while(true){
+        wait(tiger_in_cage);
+        remove_tiger_from_cage();
+        signal(cage_available);
+    }
+}
+void restaurant(){
+    while(true){
+        wait(pig_in_cage);
+        remove_pig_from_cage();
+        signal(cage_available);
+    }
+}
+\end{minted}
     \1 某寺庙，有小、老和尚若干。有一个水缸，由小和尚提水入缸供老和尚饮用。水缸可容10桶水。水取自一个井中，水井窄，每次只能容一个水桶。水桶总数为3。水缸每次进出也仅1桶水，不可以同时进行。请设置合适的信号量描述小和尚、老和尚取水、入水的算法。
+\begin{minted}[linenos]{cpp}
+semaphore water = 0;
+semaphore water_remain = 10; // remaining space of gang
+semaphore well = 1;
+semaphore gang = 1;
+semaphore bucket = 3;
+void small_monk(){
+    while(true){
+        wait(gang_remain);
+        wait(bucket);
 
+        wait(well);
+        get_water();
+        signal(well);
+
+        wait(gang);
+        put_water_in_gang();
+        signal(gang);
+
+        signal(water);
+        signal(bucket);
+    }
+}
+void big_monk(){
+    while(true){
+        wait(water); // wait for water
+        wait(gang);
+        drink_water();
+        signal(gang);
+        signal(water_remain); // ask small monk to get waker.
+    }
+}
+\end{minted}
     \1 判断对错
-    \2 在RR调度中，上下文切换的时间应该小于时间片的长度。
-    \2 SJF调度算法是最适合分时系统的调度算法。
-    \2 FCFS调度算法只能是非抢占式的
-    \2 一个系统中进程之间可能是独立的也可能是合作的。
-    \2 如果用锁来保护临界区可以防止竞争条件。
-    \2 一个计数信号量的值只能取0或者1.
-    \2 在管程中本地变量只能由本地过程来访问。
+        \2 在RR调度中，上下文切换的时间应该小于时间片的长度。
+
+            正确。
+        \2 SJF调度算法是最适合分时系统的调度算法。
+
+            不正确。
+        \2 FCFS调度算法只能是非抢占式的
+
+            正确。
+        \2 一个系统中进程之间可能是独立的也可能是合作的。
+
+            正确。
+        \2 如果用锁来保护临界区可以防止竞争条件。
+
+            正确。
+        \2 一个计数信号量的值只能取0或者1.
+
+            错误。
+        \2 在管程中本地变量只能由本地过程来访问。
+
+            正确。
     \1 选择题
-    关于竞争条件那句话是对的？ \\
-    A. 几个线程要并发读同样的数据 \\
-    B. 几个线程要并发读写同样的数据 \\
-    C. 只有在执行结果与执行顺序无关的时候发生
+        \2 关于竞争条件哪句话是对的？ \\
+            A. 几个线程要并发读同样的数据 \\
+            B. 几个线程要并发读写同样的数据 \\
+            C. 只有在执行结果与执行顺序无关的时候发生
 
+        B
+        \2 关于原子指令哪句话是对的？ \\
+            A. 原子指令只能由一条机器指令组成 \\
+            B. 作为一个单独的，不可以中断的单元执行 \\
+            C. 不能用于解决临界区问题
 
-    \1 关于原子指令那句话是对的？ \\
-    A. 原子指令只能由一条机器指令组成 \\
-    B. 作为一个单独的，不可以中断的单元执行 \\
-    C. 不能用于解决临界区问题 \\
-    \1 一个临界区的解决方案不需要实现下面的哪一条？ \\
-    A. 互斥		B. 有空让进 \\
-    C. 原子性		D. 有限等待 \\
+            B
+        \2 一个临界区的解决方案不需要实现下面的哪一条？ \\
+            A. 互斥 \\
+            B. 有空让进 \\
+            C. 原子性 \\
+            D. 有限等待
 
+            C
 \end{outline}
 
 \section{附加题}
 \begin{outline}[enumerate]
     \1 独木桥问题：某条河上只有一座独木桥，两边都有人要过河，为保证安全，一个方向有人过河另一个方向的人就要等待，并且允许一个方向上的人连续过河。请使用信号量实现正确的管理。
+\begin{minted}[linenos]{cpp}
+int flag = 0;
+semaphore lock = 1;
+semaphore x = 1;
+void direction1(){
+    while(true){
+        wait(x);
+        if(flag > 0){
+            // do nothing, we have lock
+        } else {
+            // people currently using bridge is another direction.
+            // wait for lock.
+            wait(lock);
+            // after got lock, flag should be zero.
+            flag = 1;
+        }
+        signal(x);
 
+        go_across_bridge();
+
+        wait(x);
+        flag--;
+        if(flag == 0){
+            signal(lock);
+        }
+        signal(x);
+    }
+}
+
+void direction2(){
+    while(true){
+        wait(x);
+        if(flag < 0){
+            // do nothing, we have lock
+        } else {
+            // people currently using bridge is another direction.
+            // wait for lock.
+            wait(lock);
+            // after got lock, flag should be zero.
+            flag = -1;
+        }
+        signal(x);
+
+        go_across_bridge();
+
+        wait(x);
+        flag++;
+        if(flag == 0){
+            signal(lock);
+        }
+        signal(x);
+    }
+}
+\end{minted}
     
 \end{outline}
 
