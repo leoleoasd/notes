@@ -410,6 +410,7 @@ void direction1(){
         wait(x);
         if(flag > 0){
             // do nothing, we have lock
+            flag++;
         } else {
             // people currently using bridge is another direction.
             // wait for lock.
@@ -435,6 +436,7 @@ void direction2(){
         wait(x);
         if(flag < 0){
             // do nothing, we have lock
+            flag--;
         } else {
             // people currently using bridge is another direction.
             // wait for lock.
