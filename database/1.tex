@@ -1,0 +1,52 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{数据库第二章作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}[enumerate]
+    \1[2.4.14]
+        \2 $\Pi_{model}(\sigma_{speed \ge 3.0}(PC))$
+        \2 $ \Pi_{maker}(Product) - \Pi_{maker}(product \Join \sigma_{hd < 100}(Laptop)) $
+        \2 $\sigma_{maker = B}(\Pi_{model, price}(PC) \cup \Pi_{model, price}(Laptop) \cup \Pi_{model, price}(Printer))$
+        \2 $\Pi_{model}(\sigma_{\text{color = true}\wedge \text{type = laser}}(Printer))$\
+        \2 $\Pi_{maker}(Laptop - PC)$
+        \2 $\rho_{P_1}(\Pi_{model, hd}(PC))$ \\
+        $\rho_{P_2}(\Pi_{model, hd}P_1 \Join_{P_1.model < P.model \wedge P_1.hd = P.hd}  \rho_{P}(P_1)))$ \\
+        $\rho_{P_3}(\Pi_{model, hd}P_2 \Join_{P_2.model < P.model \wedge P_2.hd = P.hd}  \rho_{P}(P_2)))$ \\
+        $\Pi_{hd}(P_1 - P_3)$
+        \2 $\Pi_{P.model, PC.model}( \rho_P(PC) \Join_{P.model < PC.model \wedge P.speed = PC.speed \wedge  P.ram = PC.ram} PC )$
+\end{outline}
+
+\end{document}
