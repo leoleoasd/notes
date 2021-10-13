@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{amssymb}
 \usetikzlibrary{automata,positioning}
 \newcommand{\hl}[1]{\colorbox{yellow}{#1}}
 \newcommand{\tto}{\Rightarrow}
@@ -37,6 +38,7 @@
 
 \newtheorem{definition}{定义}[section]
 \newtheorem{example}{例}[section]
+\newtheorem{theorem}{定理}[section]
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 
@@ -539,6 +541,8 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \section{有穷状态自动机 Finite Automata}
 
+习题：p103 2.4, 2.11; p104 7, 10.6
+
 \subsection{FA的基本定义}
 \begin{figure}[H]
     \centering
@@ -578,7 +582,8 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{enumerate}
     注意到 $Q \time \Sigma \subset Q \times \Sigma^*$，
     且对$\forall (q, a) \in Q \times \Sigma^*$，$\hat{\delta}(q, a) = \delta(q, a)$
-    所以，不用区分$\delta$与$\hat{\delta}$
+    所以，不用区分$\delta$与$\hat{\delta}$。 \\
+    $\delta$是$Q \times \Sigma^* \to Q$上的映射。
 \end{definition}
 
 \begin{definition}
@@ -588,6 +593,24 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \begin{definition}
     对于有穷状态自动机$M_1, M_2$：若有$L(M_1) = L(M_2)$，则称二者等价。
+\end{definition}
+
+\begin{definition}
+    对于有穷自动状态机$M = (Q, \Sigma, \delta, q_0, F)$，$set(q) = 
+    \set*{x | \delta(q_0, x) = q}$
+
+    所以有：$\Sigma^* = \bigcup_{q \in Q}set(q)$；
+    $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \phi $
+
+    同时，如果$Q$中不存在不可达状态，则$set(q_0), set(q_1) \dots$
+    是$\Sigma^*$的一个划分。
+\end{definition}
+
+\begin{definition}
+    \begin{align*}
+        x R_M y & \iff \delta(q_0, x) = \delta(q_0, y) \\
+            & \iff \exists q \in Q, x, y \in set(q)
+    \end{align*}
 \end{definition}
 
 \begin{example}
@@ -669,7 +692,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{example}
 
 \begin{example}
-    构造$M$，使得$L(M) = \set*{0x0 | \text{x看作二进制时，}x \mod 3 = 1}$。 
+    构造$M$，使得$L(M) = \set*{x | \text{x看作二进制时，}x \mod 3 = 1}$。 
 \begin{center}
     \begin{tikzpicture}[scale=0.2]
     \tikzstyle{every node}+=[inner sep=0pt]
@@ -711,5 +734,283 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{tikzpicture}
 \end{center}
 \end{example}
+
+\begin{example}
+    对于FSA $M = (Q, \Sigma, \delta, q_0, F)$，构造FA 
+    $M'$使得$L(M') = \Sigma^* - L(M)$
+
+    $M' = (Q, \Sigma, \delta, q_0, \complement_QF )$
+\end{example}
+
+\begin{example}
+    给定 $\begin{cases}
+        M_1 = (Q_1, \Sigma, \delta_1, q_{01}, F_1) \\
+        M_2 = (Q_2, \Sigma, \delta_2, q_{02}, F_2)
+    \end{cases}$
+    构造：
+    \begin{outline}
+        \1 $M_3$使得$L(M_3) = L(M_1) \cap L(M_2)$
+        \1 $M_3$使得$L(M_3) = L(M_1) \cup L(M_2)$
+    \end{outline}
+\end{example}
+
+\begin{example}
+    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的第三个字符是1}}$。 
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (14.1,-24.5) circle (3);
+        \draw [black] (25.4,-24.5) circle (3);
+        \draw [black] (35.8,-24.5) circle (3);
+        \draw [black] (35.8,-24.5) circle (2.4);
+        \draw [black] (35.8,-38.7) circle (3);
+        \draw [black] (17.1,-24.5) -- (22.4,-24.5);
+        \fill [black] (22.4,-24.5) -- (21.6,-24) -- (21.6,-25);
+        \draw (19.75,-25) node [below] {$0,1$};
+        \draw [black] (28.4,-24.5) -- (32.8,-24.5);
+        \fill [black] (32.8,-24.5) -- (32,-24) -- (32,-25);
+        \draw (30.6,-25) node [below] {$1$};
+        \draw [black] (27.17,-26.92) -- (34.03,-36.28);
+        \fill [black] (34.03,-36.28) -- (33.96,-35.34) -- (33.15,-35.93);
+        \draw (30.02,-32.99) node [left] {$0$};
+        \draw [black] (34.477,-21.82) arc (234:-54:2.25);
+        \draw (35.8,-17.25) node [above] {$0,1$};
+        \fill [black] (37.12,-21.82) -- (38,-21.47) -- (37.19,-20.88);
+        \draw [black] (5.8,-24.5) -- (11.1,-24.5);
+        \draw (5.3,-24.5) node [left] {$S$};
+        \fill [black] (11.1,-24.5) -- (10.3,-24) -- (10.3,-25);
+        \draw [black] (34.477,-36.02) arc (234:-54:2.25);
+        \draw (35.8,-31.45) node [above] {$0,1$};
+        \fill [black] (37.12,-36.02) -- (38,-35.67) -- (37.19,-35.08);
+        \end{tikzpicture}
+    \end{center}        
+\end{example}
+\begin{example}
+    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的倒数第三个字符是1}}$。 
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (30.6,-16.2) circle (3);
+        \draw (30.6,-16.2) node {$000$};
+        \draw [black] (43.4,-16.2) circle (3);
+        \draw (43.4,-16.2) node {$001$};
+        \draw [black] (56.1,-16.2) circle (3);
+        \draw (56.1,-16.2) node {$010$};
+        \draw [black] (69.1,-16.2) circle (3);
+        \draw (69.1,-16.2) node {$011$};
+        \draw [black] (30.6,-33.6) circle (3);
+        \draw (30.6,-33.6) node {$100$};
+        \draw [black] (30.6,-33.6) circle (2.4);
+        \draw [black] (43.4,-33.6) circle (3);
+        \draw (43.4,-33.6) node {$101$};
+        \draw [black] (43.4,-33.6) circle (2.4);
+        \draw [black] (56.1,-33.6) circle (3);
+        \draw (56.1,-33.6) node {$110$};
+        \draw [black] (56.1,-33.6) circle (2.4);
+        \draw [black] (69.1,-33.6) circle (3);
+        \draw (69.1,-33.6) node {$111$};
+        \draw [black] (69.1,-33.6) circle (2.4);
+        \draw [black] (33.6,-16.2) -- (40.4,-16.2);
+        \fill [black] (40.4,-16.2) -- (39.6,-15.7) -- (39.6,-16.7);
+        \draw (37,-16.7) node [below] {$1$};
+        \draw [black] (27.92,-17.523) arc (-36:-324:2.25);
+        \draw (23.35,-16.2) node [left] {$0$};
+        \fill [black] (27.92,-14.88) -- (27.57,-14) -- (26.98,-14.81);
+        \draw [black] (45.771,-14.367) arc (123.20907:56.79093:19.133);
+        \fill [black] (66.73,-14.37) -- (66.33,-13.51) -- (65.79,-14.35);
+        \draw (56.25,-10.74) node [above] {$1$};
+        \draw [black] (46.4,-16.2) -- (53.1,-16.2);
+        \fill [black] (53.1,-16.2) -- (52.3,-15.7) -- (52.3,-16.7);
+        \draw (49.75,-16.7) node [below] {$0$};
+        \draw [black] (54.33,-18.62) -- (45.17,-31.18);
+        \fill [black] (45.17,-31.18) -- (46.04,-30.83) -- (45.24,-30.24);
+        \draw (49.17,-23.52) node [left] {$1$};
+        \draw [black] (53.62,-17.89) -- (33.08,-31.91);
+        \fill [black] (33.08,-31.91) -- (34.02,-31.87) -- (33.46,-31.05);
+        \draw (42.38,-24.4) node [above] {$0$};
+        \draw [black] (69.1,-19.2) -- (69.1,-30.6);
+        \fill [black] (69.1,-30.6) -- (69.6,-29.8) -- (68.6,-29.8);
+        \draw (68.6,-24.9) node [left] {$1$};
+        \draw [black] (67.3,-18.6) -- (57.9,-31.2);
+        \fill [black] (57.9,-31.2) -- (58.77,-30.86) -- (57.97,-30.26);
+        \draw (62.02,-23.5) node [left] {$0$};
+        \draw [black] (30.6,-30.6) -- (30.6,-19.2);
+        \fill [black] (30.6,-19.2) -- (30.1,-20) -- (31.1,-20);
+        \draw (31.1,-24.9) node [right] {$0$};
+        \draw [black] (32.38,-31.18) -- (41.62,-18.62);
+        \fill [black] (41.62,-18.62) -- (40.75,-18.96) -- (41.55,-19.56);
+        \draw (37.58,-26.29) node [right] {$1$};
+        \draw [black] (45.88,-31.92) -- (66.62,-17.88);
+        \fill [black] (66.62,-17.88) -- (65.67,-17.92) -- (66.23,-18.74);
+        \draw (57.22,-25.4) node [below] {$1$};
+        \draw [black] (45.17,-31.18) -- (54.33,-18.62);
+        \fill [black] (54.33,-18.62) -- (53.46,-18.97) -- (54.26,-19.56);
+        \draw (50.33,-26.28) node [right] {$0$};
+        \draw [black] (53.1,-33.6) -- (46.4,-33.6);
+        \fill [black] (46.4,-33.6) -- (47.2,-34.1) -- (47.2,-33.1);
+        \draw (49.75,-33.1) node [above] {$1$};
+        \draw [black] (53.588,-35.236) arc (-60.99857:-119.00143:21.117);
+        \fill [black] (33.11,-35.24) -- (33.57,-36.06) -- (34.05,-35.19);
+        \draw (43.35,-38.38) node [below] {$0$};
+        \draw [black] (70.423,-36.28) arc (54:-234:2.25);
+        \draw (69.1,-40.85) node [below] {$1$};
+        \fill [black] (67.78,-36.28) -- (66.9,-36.63) -- (67.71,-37.22);
+        \draw [black] (66.1,-33.6) -- (59.1,-33.6);
+        \fill [black] (59.1,-33.6) -- (59.9,-34.1) -- (59.9,-33.1);
+        \draw (62.6,-33.1) node [above] {$0$};
+        \draw [black] (30.6,-8.8) -- (30.6,-13.2);
+        \draw (30.6,-8.3) node [above] {$S$};
+        \fill [black] (30.6,-13.2) -- (31.1,-12.4) -- (30.1,-12.4);
+        \end{tikzpicture}
+        \end{center} 
+\end{example}
+\subsection{NFA 不确定的有穷状态自动机}
+\begin{definition}
+    NFA $M = (Q, \Sigma, \delta, q_0, F)$，其中：
+
+    $Q, \Sigma, q_0, F$ 同 FA。
+
+    $\delta$: $Q \times \Sigma \to 2^Q$ (幂集)，\\
+    $\delta(q, a) = \set*{p_1, p_2, \dots, p_n}$表示M
+    在状态$q$读入$a$可以选择进入$p_i$
+
+    扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to 2^Q$
+   
+    \begin{align*}
+            \hat{\delta}(q,\epsilon)  & = \set*{q} \\
+            \hat{\delta}(q, wa) & = \bigcup_{q_0 \in \hat{\delta}(q,w)}\delta(q_0, a)
+    \end{align*}
+
+    进一步拓展： $\hat{\delta}: 2^Q \times \Sigma^* \to 2^Q$
+
+    \begin{align*}
+        \hat{\delta}(P, x) = \bigcup_{p \in P}\hat{\delta}(p, x)
+    \end{align*}
+
+    注意到 $Q \times \Sigma \subset 2^Q \times \Sigma^*$，
+    且对$\forall (q, a) \in Q \times \Sigma^*$，$\hat{\delta}(q, a) = \delta(q, a)$
+    所以不用区分$\delta$与$\hat{\delta}$。 
+
+    $\delta$是$Q \times \Sigma^* \to Q$上的映射。
+\end{definition}
+
+\begin{example}
+    构造NFA $M$， 使得$L(M) = \set*{x | \text{x是含110的01串}}$
+
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (15.3,-32.1) circle (3);
+        \draw [black] (25.5,-32.1) circle (3);
+        \draw [black] (36.8,-32.1) circle (3);
+        \draw [black] (48.1,-32.1) circle (3);
+        \draw [black] (48.1,-32.1) circle (2.4);
+        \draw [black] (18.3,-32.1) -- (22.5,-32.1);
+        \fill [black] (22.5,-32.1) -- (21.7,-31.6) -- (21.7,-32.6);
+        \draw (20.4,-32.6) node [below] {$1$};
+        \draw [black] (28.5,-32.1) -- (33.8,-32.1);
+        \fill [black] (33.8,-32.1) -- (33,-31.6) -- (33,-32.6);
+        \draw (31.15,-32.6) node [below] {$1$};
+        \draw [black] (13.977,-29.42) arc (234:-54:2.25);
+        \draw (15.3,-24.85) node [above] {$1,0$};
+        \fill [black] (16.62,-29.42) -- (17.5,-29.07) -- (16.69,-28.48);
+        \draw [black] (6.5,-32.1) -- (12.3,-32.1);
+        \draw (6,-32.1) node [left] {$S$};
+        \fill [black] (12.3,-32.1) -- (11.5,-31.6) -- (11.5,-32.6);
+        \draw [black] (39.8,-32.1) -- (45.1,-32.1);
+        \fill [black] (45.1,-32.1) -- (44.3,-31.6) -- (44.3,-32.6);
+        \draw (42.45,-32.6) node [below] {$1$};
+        \draw [black] (46.777,-29.42) arc (234:-54:2.25);
+        \draw (48.1,-24.85) node [above] {$1,0$};
+        \fill [black] (49.42,-29.42) -- (50.3,-29.07) -- (49.49,-28.48);
+        \end{tikzpicture}
+        \end{center}
+\end{example}
+
+\begin{example}
+    构造NFA $M$， 使得$L(M) = \set*{x | \text{x是00结尾的01串}}$
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (15.3,-32.1) circle (3);
+        \draw [black] (25.5,-32.1) circle (3);
+        \draw [black] (36.7,-32.1) circle (3);
+        \draw [black] (36.7,-32.1) circle (2.4);
+        \draw [black] (18.3,-32.1) -- (22.5,-32.1);
+        \fill [black] (22.5,-32.1) -- (21.7,-31.6) -- (21.7,-32.6);
+        \draw (20.4,-32.6) node [below] {$0$};
+        \draw [black] (28.5,-32.1) -- (33.7,-32.1);
+        \fill [black] (33.7,-32.1) -- (32.9,-31.6) -- (32.9,-32.6);
+        \draw (31.1,-32.6) node [below] {$0$};
+        \draw [black] (13.977,-29.42) arc (234:-54:2.25);
+        \draw (15.3,-24.85) node [above] {$1,0$};
+        \fill [black] (16.62,-29.42) -- (17.5,-29.07) -- (16.69,-28.48);
+        \draw [black] (6.5,-32.1) -- (12.3,-32.1);
+        \draw (6,-32.1) node [left] {$S$};
+        \fill [black] (12.3,-32.1) -- (11.5,-31.6) -- (11.5,-32.6);
+        \end{tikzpicture}
+    \end{center}
+\end{example}
+
+\begin{example}
+    构造NFA $M$， 使得$L(M) = \set*{x | \text{x是00开头或结尾的01串}}$
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (15.3,-32.1) circle (3);
+        \draw [black] (25.6,-32.1) circle (3);
+        \draw [black] (36.7,-32.1) circle (3);
+        \draw [black] (36.7,-32.1) circle (2.4);
+        \draw [black] (15.3,-40.7) circle (3);
+        \draw [black] (25.6,-40.7) circle (3);
+        \draw [black] (36.7,-40.7) circle (3);
+        \draw [black] (36.7,-40.7) circle (2.4);
+        \draw [black] (18.3,-32.1) -- (22.6,-32.1);
+        \fill [black] (22.6,-32.1) -- (21.8,-31.6) -- (21.8,-32.6);
+        \draw (20.45,-32.6) node [below] {$0$};
+        \draw [black] (28.6,-32.1) -- (33.7,-32.1);
+        \fill [black] (33.7,-32.1) -- (32.9,-31.6) -- (32.9,-32.6);
+        \draw (31.15,-32.6) node [below] {$0$};
+        \draw [black] (13.977,-29.42) arc (234:-54:2.25);
+        \draw (15.3,-24.85) node [above] {$1,0$};
+        \fill [black] (16.62,-29.42) -- (17.5,-29.07) -- (16.69,-28.48);
+        \draw [black] (18.3,-40.7) -- (22.6,-40.7);
+        \fill [black] (22.6,-40.7) -- (21.8,-40.2) -- (21.8,-41.2);
+        \draw (20.45,-41.2) node [below] {$0$};
+        \draw [black] (28.6,-40.7) -- (33.7,-40.7);
+        \fill [black] (33.7,-40.7) -- (32.9,-40.2) -- (32.9,-41.2);
+        \draw (31.15,-41.2) node [below] {$0$};
+        \draw [black] (38.023,-43.38) arc (54:-234:2.25);
+        \draw (36.7,-47.95) node [below] {$1,0$};
+        \fill [black] (35.38,-43.38) -- (34.5,-43.73) -- (35.31,-44.32);
+        \draw [black] (15.3,-37.7) -- (15.3,-35.1);
+        \fill [black] (15.3,-35.1) -- (14.8,-35.9) -- (15.8,-35.9);
+        \draw (15.8,-36.4) node [right] {$1,0$};
+        \draw [black] (7,-40.7) -- (12.3,-40.7);
+        \draw (6.5,-40.7) node [left] {$S$};
+        \fill [black] (12.3,-40.7) -- (11.5,-40.2) -- (11.5,-41.2);
+        \end{tikzpicture}
+        \end{center}
+\end{example}
+
+\begin{theorem}
+    NFA与DFA等价。
+
+    证：对于NFA $ M= (Q, \Sigma, \delta, q_0, F)$，构造
+    DFA $M' = (2^Q, \Sigma, \delta', [q_0], F')$
+
+    $F'= \set*{[q_1, q_2, \dots, q_n] |
+     \set*{q_1, q_2, \dots, q_n} \cap F \ne \phi}$
+
+    $\delta'([q_1, q_2, \dots, q_n], a) = 
+    [\beta_1, \beta_2, \dots, \beta_n] \iff 
+    \delta(\set*{q_1, q_2, \dots, q_n}, a) = \set*{\beta_1, \beta_2, \dots, \beta_n}
+    $
+
+    所以，对于$\forall M$ 是NFA，可以构造DFA$M'$
+\end{theorem}
 
 \end{document}

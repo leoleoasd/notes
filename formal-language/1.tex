@@ -1,7 +1,7 @@
 \documentclass[a4paper, twocolumn]{ctexart}
 \usepackage[T1]{fontenc}
-\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
-\usepackage{mathtools}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=1.5cm,right=1.5cm,marginparwidth=1.75cm]{geometry}
+\usepackage[fleqn]{mathtools}
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{outlines}
@@ -36,32 +36,39 @@
 
 \begin{document}
 
+\abovedisplayskip=-15pt
+\abovedisplayshortskip=0pt
+\belowdisplayskip=20pt
+% \belowdisplayshortskip=0pt
+
 \maketitle
 
 习题： p67 3，4，8.2，8.6，10.3，11.3
 
 \begin{outline}[enumerate]
-    \1[3.] $\begin{aligned}[t]
+
+    \1[3.]
+    \begin{align*}
         E & \tto E + E \\
         & \tto E + E * E \\
         & \overset{3} \tto id + id * id
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         E & \tto E * E \\
         & \tto E + E * E \\
         & \overset{3} \tto id + id * id
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         id + id * id  & \overset{3}\Leftarrow E + E * E \\
         & \Leftarrow E * E \\
         & \Leftarrow E
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         id + id * id  & \overset{3}\Leftarrow E + E * E \\
         & \Leftarrow E + E \\
         & \Leftarrow E
-    \end{aligned}$
-    \1 [4.] $\begin{aligned}[t]
+    \end{align*}
+    \1 [4.] \begin{align*}
         S & \tto a\underline{S}BC \\
           & \tto aa\underline{S}BCBC \\
           & \tto aa\underline{aB}CBCBC \\
@@ -74,8 +81,8 @@
           & \tto aaabbb\underline{cC}C \\
           & \tto aaabbbc\underline{cC} \\
           & \tto aaabbbccc
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         S & \tto a\underline{S}BC \\
           & \tto aa\underline{S}BCBC \\
           & \tto aa\underline{aB}CBCBC \\
@@ -88,8 +95,8 @@
           & \tto aaabbb\underline{cC}C \\
           & \tto aaabbbc\underline{cC} \\
           & \tto aaabbbccc
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         aaabbbccc  & \ffrom aaabbb\underline{cc}C \\
         & \ffrom aaabb\underline{bc}CC \\
         & \ffrom aaab\underline{bb}CCC \\
@@ -102,8 +109,8 @@
         & \ffrom a\underline{aSBC}BC \\
         & \ffrom \underline{aSBC} \\
         & \ffrom S
-    \end{aligned}$ \\
-    $\begin{aligned}[t]
+    \end{align*}
+    \begin{align*}
         aaabbbccc  & \ffrom aaabbb\underline{cc}C \\
         & \ffrom aaabb\underline{bc}CC \\
         & \ffrom aaab\underline{bb}CCC \\
@@ -116,7 +123,7 @@
         & \ffrom a\underline{aSBC}BC \\
         & \ffrom \underline{aSBC} \\
         & \ffrom S
-    \end{aligned}$
+    \end{align*}
     \1[8]
         \2[(2)]
             $ S \to 0B1 $ \\

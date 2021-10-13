@@ -1,0 +1,185 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{os-common}
+\usepackage{multicol}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2cm,right=2cm]{geometry}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{操作系统第五次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+
+% \renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\headwidth}{\textwidth}
+% \renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+
+\begin{outline}[enumerate]
+    \1 内部碎片与外部碎片之间的区别？
+        
+        外部碎片指操作系统无法分配给用户进程的内存碎片。
+
+        内部碎片指操作系统分配给用户进程但用户进程没有利用的碎片
+    \1 内存按顺序有100k，500k，200k，300k，600k，用首次适应、最佳适应和最差适应如何放置212k，417k，112k，426k的进程？
+
+        \begin{multicols}{3}
+            \begin{center}
+                \captionof{table}{首次适应}
+                \begin{tabular}{c c}
+                    \toprule
+                    内存需求 & 放置的内存块 \\
+                    \midrule
+                    212k & 500k \\
+                    417k & 600k \\
+                    112k & 200k \\
+                    426k & --- \\
+                    \bottomrule
+                \end{tabular}
+            \end{center}
+
+            \begin{center}
+                \captionof{table}{最佳适应}
+                \begin{tabular}{c c}
+                    \toprule
+                    内存需求 & 放置的内存块 \\
+                    \midrule
+                    212k & 300k \\
+                    417k & 500k \\
+                    112k & 200k \\
+                    426k & 600k \\
+                    \bottomrule
+                \end{tabular}
+            \end{center}
+
+            \begin{center}
+                \captionof{table}{最差适应}
+                \begin{tabular}{c c}
+                    \toprule
+                    内存需求 & 放置的内存块 \\
+                    \midrule
+                    212k & 600k \\
+                    417k & 500k \\
+                    112k & 300k \\
+                    426k & --- \\
+                    \bottomrule
+                \end{tabular}
+            \end{center}
+        \end{multicols}
+    \1 假设一个有8个1k页面的逻辑地址空间，映射到一个32个页框的物理内存，问：逻辑地址多少位？物理地址多少位？
+        
+        逻辑地址：13位 \\
+        物理地址：15位
+    \1 有段表：
+        \begin{center}
+            \begin{tabular}{ccc} 
+                \toprule
+                段 & 基地址  & 长度   \\
+                \midrule
+                0 & 219  & 600  \\
+                1 & 2300 & 14   \\
+                2 & 90   & 100  \\
+                3 & 1327 & 580  \\
+                4 & 1952 & 96   \\
+                \bottomrule
+                \end{tabular}
+        \end{center}
+        下面逻辑地址的物理地址是多少？
+        \2 0,430; \\
+            649
+        \2 1,10; \\
+            2310
+        \2 2,500; \\
+            N/A
+        \2 3,400; \\
+            1727
+        \2 4,122 \\
+            N/A
+    \1 在页面大小为4k的系统中，根据图中所示页表，下面的逻辑地址经过重定位之后的物理地址是什么？
+    
+    \begin{minipage}{.8\textwidth}
+    \begin{enumerate}
+        \item 20\\ 
+            $addr = 12 \times 4096 + 20 = 49172$
+        \item 4100\\
+            $addr = 14 \times 4096 + 4 = 57348$
+        \item 8300 \\
+            $addr = 15 \times 4096 + 108 = 61548$
+    \end{enumerate}
+    \end{minipage}
+    \begin{minipage}{.2\textwidth}
+            \begin{tabular}{c|c|} 
+                \cline{2-2}
+                0 & 12  \\ 
+                \cline{2-2}
+                1 & 14  \\ 
+                \cline{2-2}
+                2 & 15  \\ 
+                \cline{2-2}
+                3 & 10  \\ 
+                \cline{2-2}
+                4 & 11  \\ 
+                \cline{2-2}
+                5 & 6   \\ 
+                \cline{2-2}
+                6 & 13  \\ 
+                \cline{2-2}
+                7 & 4   \\
+                \cline{2-2}
+            \end{tabular}
+    \end{minipage}
+    
+    \1 一台计算机为每个进程提供65536字节的地址空间，页面的大小为4k。一个程序有32768字节的正文段，16386字节的数据段，15870字节的堆栈段。问此程序是否能装入此地址空间？若页面大小为512字节呢？
+        \2 共有16页。正文段占8页，数据段占5页，堆栈段占4页，无法装入。
+        \2 共有128页。正文段占64页，数据段占33页，堆栈段占30页，可以装入。
+\end{outline}
+
+\section*{补充作业}
+判断对错。
+\begin{outline}
+    \1 编译时绑定是大多数通用操作系统使用的地址绑定方法。
+
+        正确。
+    \1 最佳适配法可以在内存分配过程中留下最小的洞。
+
+        正确。
+    \1 为解决内存分配时导致的外部碎片可以采用紧凑的方法来解决，因此需要在地址绑定的时候采用静态重定位方法。
+
+        错误。
+    \1 如果现在基地址寄存器的值是1200，界限寄存器的值是350，那么当前进程产生对绝对地址1551的访问是合法的。
+
+        错误。
+    \1 可重入代码不可以被共享。
+
+        错误。
+
+\end{outline}
+\end{document}
