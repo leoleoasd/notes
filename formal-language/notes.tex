@@ -101,7 +101,7 @@ $\forall X \in \Sigma^*$, the count of characters appeared in x is called the le
 
 For example: $\left|ababab\right| = 6; \left|\epsilon\right| = 0$ 
 
-\emph{Note that $\set*{\epsilon} \neq \Phi$}.
+\emph{Note that $\set*{\epsilon} \neq \emptyset$}.
 
 \subsubsection{Concatenation of sentences}
 $\forall x, y \in \Sigma^*$, the concatenation of sentences $x, y$, denoted by $|xy|$, is the direct join of two strings.
@@ -333,7 +333,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $A$叫做语法变量（syntactic variable），也叫非终极符号（nonterminal）。
     
     T--- \emph{终极符（Terminal）}的非空有穷集。$\forall a \in T$，
-    $a$叫做终极符。 $V \cup T = \Phi$。
+    $a$叫做终极符。 $V \cup T = \emptyset$。
 
     P--- \emph{产生式（Production）}的非空有穷集。对于$a \to b$，
     $a$是\emph{左部}，$b$是\emph{右部}。
@@ -459,7 +459,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 给定上下文无关文法$G_1,G_2$，构造$G$使得：
 \begin{outline}[enumerate]
     \1 $L(G) = L(G_1)L(G_2)$ \\
-        其中$V_1 \cup V_2 = \phi$， $S \notin V_1 \cup V_2$
+        其中$V_1 \cup V_2 = \emptyset$， $S \notin V_1 \cup V_2$
 
         $G = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup {S \to S_1S_2}, S)$
 
@@ -478,7 +478,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 给定RG $G_1,G_2$，构造RG $G$使得：
 \begin{outline}[enumerate]
     \1 $L(G) = L(G_1)L(G_2)$ \\
-        其中$V_1 \cup V_2 = \phi$， $S \notin V_1 \cup V_2$
+        其中$V_1 \cup V_2 = \emptyset$， $S \notin V_1 \cup V_2$
 
         $\begin{aligned}
             S_1  & \tto a_1A_1 \\
@@ -581,7 +581,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
         \item $\hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)$
     \end{enumerate}
     注意到 $Q \time \Sigma \subset Q \times \Sigma^*$，
-    且对$\forall (q, a) \in Q \times \Sigma^*$，$\hat{\delta}(q, a) = \delta(q, a)$
+    且对$\forall (q, a) \in Q \times \Sigma$，$\hat{\delta}(q, a) = \delta(q, a)$
     所以，不用区分$\delta$与$\hat{\delta}$。 \\
     $\delta$是$Q \times \Sigma^* \to Q$上的映射。
 \end{definition}
@@ -600,7 +600,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \set*{x | \delta(q_0, x) = q}$
 
     所以有：$\Sigma^* = \bigcup_{q \in Q}set(q)$；
-    $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \phi $
+    $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \emptyset $
 
     同时，如果$Q$中不存在不可达状态，则$set(q_0), set(q_1) \dots$
     是$\Sigma^*$的一个划分。
@@ -654,41 +654,58 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     
     构造$M$，使得$L(M) = \set*{0x0 | x \in \set*{0,1}^*}$。 
 
+
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
         \tikzstyle{every node}+=[inner sep=0pt]
-        \draw [black] (26.6,-24.4) circle (3);
-        \draw (26.6,-24.4) node {$\epsilon$};
-        \draw [black] (15.7,-17.2) circle (3);
-        \draw (15.7,-17.2) node {奇0};
-        \draw [black] (37.6,-31.8) circle (3);
-        \draw (37.6,-31.8) node {奇1};
-        \draw [black] (37.6,-31.8) circle (2.4);
-        \draw [black] (15.7,-31.8) circle (3);
-        \draw (15.7,-31.8) node {偶0};
-        \draw [black] (15.7,-31.8) circle (2.4);
-        \draw [black] (37.6,-17.2) circle (3);
-        \draw (37.6,-17.2) node {偶1};
-        \draw [black] (24.1,-22.75) -- (18.2,-18.85);
-        \fill [black] (18.2,-18.85) -- (18.6,-19.71) -- (19.15,-18.88);
-        \draw (22.12,-20.3) node [above] {$0$};
-        \draw [black] (29.09,-26.07) -- (35.11,-30.13);
-        \fill [black] (35.11,-30.13) -- (34.73,-29.26) -- (34.17,-30.09);
-        \draw (33.07,-27.6) node [above] {$1$};
-        \draw [black] (15.7,-20.2) -- (15.7,-28.8);
-        \fill [black] (15.7,-28.8) -- (16.2,-28) -- (15.2,-28);
-        \draw (15.2,-24.5) node [left] {$0$};
-        \draw [black] (18.7,-17.2) -- (34.6,-17.2);
-        \fill [black] (34.6,-17.2) -- (33.8,-16.7) -- (33.8,-17.7);
-        \draw (26.65,-16.7) node [above] {$1$};
-        \draw [black] (34.6,-31.8) -- (18.7,-31.8);
-        \fill [black] (18.7,-31.8) -- (19.5,-32.3) -- (19.5,-31.3);
-        \draw (26.65,-32.3) node [below] {$0$};
-        \draw [black] (37.6,-28.8) -- (37.6,-20.2);
-        \fill [black] (37.6,-20.2) -- (37.1,-21) -- (38.1,-21);
-        \draw (38.1,-24.5) node [right] {$1$};
+        \draw [black] (24,-10.8) circle (3);
+        \draw (24,-10.8) node {偶0};
+        \draw [black] (50.8,-10.8) circle (3);
+        \draw (50.8,-10.8) node {奇0};
+        \draw [black] (50.8,-10.8) circle (2.4);
+        \draw [black] (50.8,-31.5) circle (3);
+        \draw (50.8,-31.5) node {偶1};
+        \draw [black] (50.8,-31.5) circle (2.4);
+        \draw [black] (24,-31.5) circle (3);
+        \draw (24,-31.5) node {奇1};
+        \draw [black] (37.4,-21.3) circle (3);
+        \draw (37.4,-21.3) node {$\epsilon$};
+        \draw [black] (31,-16.7) -- (34.96,-19.55);
+        \draw (30.41,-15.32) node [left] {$S$};
+        \fill [black] (34.96,-19.55) -- (34.61,-18.68) -- (34.02,-19.49);
+        \draw [black] (26.895,-10.014) arc (103.30426:76.69574:45.651);
+        \fill [black] (47.91,-10.01) -- (47.24,-9.34) -- (47.01,-10.32);
+        \draw (37.4,-8.29) node [above] {$0$};
+        \draw [black] (25.056,-13.606) arc (17.24582:-17.24582:25.446);
+        \fill [black] (25.06,-28.69) -- (25.77,-28.08) -- (24.82,-27.78);
+        \draw (26.7,-21.15) node [right] {$1$};
+        \draw [black] (47.926,-11.657) arc (-75.44172:-104.55828:41.875);
+        \fill [black] (26.87,-11.66) -- (27.52,-12.34) -- (27.77,-11.37);
+        \draw (37.4,-13.5) node [below] {$0$};
+        \draw [black] (51.962,-13.563) arc (19.10726:-19.10726:23.177);
+        \fill [black] (51.96,-28.74) -- (52.7,-28.14) -- (51.75,-27.82);
+        \draw (53.74,-21.15) node [right] {$1$};
+        \draw [black] (49.689,-28.715) arc (-161.799:-198.201:24.221);
+        \fill [black] (49.69,-13.58) -- (48.96,-14.19) -- (49.91,-14.5);
+        \draw (47.98,-21.15) node [left] {$0$};
+        \draw [black] (47.859,-32.092) arc (-80.03528:-99.96472:60.444);
+        \fill [black] (26.94,-32.09) -- (27.64,-32.72) -- (27.82,-31.74);
+        \draw (37.4,-33.5) node [below] {$1$};
+        \draw [black] (26.906,-30.755) arc (102.59162:77.40838:48.139);
+        \fill [black] (47.89,-30.76) -- (47.22,-30.09) -- (47,-31.07);
+        \draw (37.4,-29.1) node [above] {$1$};
+        \draw [black] (22.854,-28.73) arc (-161.18818:-198.81182:23.505);
+        \fill [black] (22.85,-13.57) -- (22.12,-14.17) -- (23.07,-14.49);
+        \draw (21.1,-21.15) node [left] {$0$};
+        \draw [black] (35.01,-23.12) -- (26.39,-29.68);
+        \fill [black] (26.39,-29.68) -- (27.33,-29.6) -- (26.72,-28.8);
+        \draw (29.73,-25.9) node [above] {$1$};
+        \draw [black] (39.76,-19.45) -- (48.44,-12.65);
+        \fill [black] (48.44,-12.65) -- (47.5,-12.75) -- (48.12,-13.54);
+        \draw (45.07,-16.55) node [below] {$0$};
         \end{tikzpicture}
-        \end{center}
+    \end{center}
+        
 \end{example}
 
 \begin{example}
@@ -1003,14 +1020,148 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     DFA $M' = (2^Q, \Sigma, \delta', [q_0], F')$
 
     $F'= \set*{[q_1, q_2, \dots, q_n] |
-     \set*{q_1, q_2, \dots, q_n} \cap F \ne \phi}$
+     \set*{q_1, q_2, \dots, q_n} \cap F \ne \emptyset}$
 
     $\delta'([q_1, q_2, \dots, q_n], a) = 
     [\beta_1, \beta_2, \dots, \beta_n] \iff 
     \delta(\set*{q_1, q_2, \dots, q_n}, a) = \set*{\beta_1, \beta_2, \dots, \beta_n}
     $
 
-    所以，对于$\forall M$ 是NFA，可以构造DFA$M'$
+    所以，对于$\forall M$ 是NFA，可以构造DFA $M'$
+\end{theorem}
+
+\begin{example}
+    构造DFA $M$， $L(M) = \set{0^n1^m2^k | n,m,k \ge 1}$
+
+\begin{center}
+    \begin{tikzpicture}[scale=0.2]
+    \tikzstyle{every node}+=[inner sep=0pt]
+    \draw [black] (19.3,-22.5) circle (3);
+    \draw [black] (27.6,-22.5) circle (3);
+    \draw [black] (35.8,-22.5) circle (3);
+    \draw [black] (27.6,-34) circle (3);
+    \draw (27.6,-34) node {$trap$};
+    \draw [black] (10.4,-22.5) circle (3);
+    \draw [black] (26.277,-19.82) arc (234:-54:2.25);
+    \draw (27.6,-15.25) node [above] {$1$};
+    \fill [black] (28.92,-19.82) -- (29.8,-19.47) -- (28.99,-18.88);
+    \draw [black] (30.6,-22.5) -- (32.8,-22.5);
+    \fill [black] (32.8,-22.5) -- (32,-22) -- (32,-23);
+    \draw (31.7,-23) node [below] {$2$};
+    \draw [black] (22.3,-22.5) -- (24.6,-22.5);
+    \fill [black] (24.6,-22.5) -- (23.8,-22) -- (23.8,-23);
+    \draw (23.45,-23) node [below] {$1$};
+    \draw [black] (17.977,-19.82) arc (234:-54:2.25);
+    \draw (19.3,-15.25) node [above] {$0$};
+    \fill [black] (20.62,-19.82) -- (21.5,-19.47) -- (20.69,-18.88);
+    \draw [black] (34.477,-19.82) arc (234:-54:2.25);
+    \draw (35.8,-15.25) node [above] {$2$};
+    \fill [black] (37.12,-19.82) -- (38,-19.47) -- (37.19,-18.88);
+    \draw [black] (21.06,-24.93) -- (25.84,-31.57);
+    \fill [black] (25.84,-31.57) -- (25.78,-30.63) -- (24.97,-31.21);
+    \draw (22.86,-29.63) node [left] {$2$};
+    \draw [black] (27.6,-25.5) -- (27.6,-31);
+    \fill [black] (27.6,-31) -- (28.1,-30.2) -- (27.1,-30.2);
+    \draw (27.1,-28.25) node [left] {$0$};
+    \draw [black] (34.06,-24.94) -- (29.34,-31.56);
+    \fill [black] (29.34,-31.56) -- (30.21,-31.2) -- (29.4,-30.62);
+    \draw (32.29,-29.62) node [right] {$0,1$};
+    \draw [black] (28.923,-36.68) arc (54:-234:2.25);
+    \draw (27.6,-41.25) node [below] {$0,1,2$};
+    \fill [black] (26.28,-36.68) -- (25.4,-37.03) -- (26.21,-37.62);
+    \draw [black] (13.4,-22.5) -- (16.3,-22.5);
+    \fill [black] (16.3,-22.5) -- (15.5,-22) -- (15.5,-23);
+    \draw (14.85,-23) node [below] {$1$};
+    \draw [black] (24.606,-34.081) arc (-93.86716:-153.66658:15.85);
+    \fill [black] (24.61,-34.08) -- (23.84,-33.53) -- (23.77,-34.53);
+    \draw (15.21,-31.94) node [below] {$1,2$};
+    \draw [black] (10.4,-15.3) -- (10.4,-19.5);
+    \draw (10.4,-14.8) node [above] {$S$};
+    \fill [black] (10.4,-19.5) -- (10.9,-18.7) -- (9.9,-18.7);
+    \end{tikzpicture}
+    \end{center}    
+\end{example}
+
+\subsection{带空移动的有穷状态自动机}
+
+\begin{definition}
+    $\epsilon-\mathrm{NFA}$ $M=(Q,\Sigma,\delta,q_0,F)$：
+
+    $\delta$：状态转义函数。
+    $\delta: Q \times (\Sigma \cup \set{\epsilon}) \to 2^Q$
+
+    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\set{p_1, p_2, \dots, p_n}$：
+    表示在$q$状态不读入任何字符，可以将状态变为$p_1, p_2, \dots, p_n$，称为
+    $M$在$q$状态做了一次空移动（$\epsilon$移动）
+
+
+    \begin{outline}[enumerate]
+        \1 $\epsilon-CLOSURE(q) = \set{p | \text{从q到p有一条标记为}
+        \epsilon\text{的路}}$
+        \1 $\epsilon-CLOSURE(P) = \displaystyle\bigcup_{p \in P}\epsilon-CLOSURE(p)$
+        \1 $\hat{\delta}(q, \epsilon) = \epsilon-CLOSURE(q)$
+        \1 $\hat{\delta}(q, wa) = \epsilon-CLOSURE(P)$
+
+            $P = \displaystyle\bigcup_{\mathclap{r \in \hat{\delta}(q,w)}}\delta(r, a)$
+
+            
+        \1 进一步拓展$\delta: 2^Q \times \Sigma \to w^Q$:
+        
+            $\delta(P, a) = \displaystyle\bigcup_{q \in P}\delta(q, a)$
+
+        \1 进一步拓展$\hat{\delta}: 2^Q \times \Sigma^* \to 2^Q$：
+
+            $\delta(P, w) = \displaystyle\bigcup_{q \in P}\hat{\delta}(q, w)$
+
+            \hl{注意：$\hat{\delta} \ne \delta$}
+    \end{outline}
+\end{definition}
+
+\begin{definition}
+    $\epsilon-NFA$ $M$识别的语言：
+    $L(M) = \set{x|\hat{\delta}(q_0, x) \cap F \ne \emptyset}$
+\end{definition}
+
+\begin{theorem}
+    $\epsilon-NFA$ 等价与 $NFA$。
+
+    证明：设$\epsilon-NFA$ $M = (Q, \Sigma, \delta, q_0, F)$：
+
+    取$M' = \left(Q, \Sigma, \hat{\delta}, q_0, \begin{cases}
+        F \cup \set{q_0} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
+        F & F \cap \epsilon-CLOSURE(q_0) = \emptyset
+    \end{cases}\right)$
+\end{theorem}
+
+由此可见，$DFA$，$NFA$，$\epsilon-NFA$等价。以后统称为FA。
+
+\subsection{FA与RG等价}
+
+\begin{theorem}
+    对$\forall\;DFA\;M,\;\exists\;RG\;G$使得$L(G) = L(M)$。
+
+    构造：对于$DFA\; M=(Q,\Sigma,\delta,q_0, F)$，取RG
+    $G=(Q, \Sigma, P, q_0)$
+
+    $\begin{aligned}
+        P &= \set{q \to ap | \delta(q, a) = p} \cup 
+    \set{q \to a | \forall \delta(q, a) \in F} \cup
+    \set{q_0 \to \epsilon | q_0 \in F} \\
+        & = \set{q \to ap | \delta(q, a) = p} \cup 
+        \set{q \to \epsilon | q \in F} \\
+    \end{aligned}$
+\end{theorem}
+
+\begin{theorem}
+    对$\forall\;\text{RG}\;G,\;\exists\; \text{FA} \;M$使得$L(G) = L(M)$。
+
+    构造：对于RG $G={V, T, P, S}$，RG为右线性文法。
+
+    取FA $M=(V \cup \set{f},T,\delta,S, \set{f})$，其中
+
+    $\delta(A, a) = \set{B | \forall A \to aB \in P} \cup 
+    \set{f | \forall A \to a \in P} \cup
+    $
 \end{theorem}
 
 \end{document}

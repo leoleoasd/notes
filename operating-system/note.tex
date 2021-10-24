@@ -767,7 +767,85 @@ void writer()
     \1 虚拟内存
         \2 指仅把作业的一部分装入内存就可以运行作业的存储系统。
         \2 它具有请求调入功能和置换功能，是从逻辑上对内存容量进行扩充的一种存储系统。
-
 \end{outline}
 
+\subsubsection{按需调页}
+\begin{outline}
+    \1 一个进程调入内存时只调入部分页
+        \2 当需要的页面不在内存时，请求调入所需的页面
+        \2 如果内存不足，可以把内存中的某个页面换出到外部辅存中
+        \2 也称\hl{请求页式存储管理}
+    \1 页表
+        \2 Frame ID
+        \2 Present bit
+        \2 Secondary Storage Address
+        \2 Dirty(Changed) bit
+        \2 Accessed bit
+    \1 缺页中断
+        \2 把所需页面放入内存
+        \2 \hl{指令重新执行}
+\end{outline}
+
+\subsubsection{换页算法}
+\begin{outline}
+    \1 最优页面置换算法
+        \2 每个页面都会有该页面下次要被访问之前所要执行的指令数目进行标记。
+        \2 置换算法是淘汰标记最大的页面。
+    \1 FIFO
+        \2 缺点：替代的也可能会很快使用
+    \1 LRU
+\end{outline}
+
+\section{设备管理}
+\subsection{概述}
+\begin{outline}
+    \1 OS为外设提供统一的读写接口
+    \1 用翻译程序将读/写指令翻译成设备指令
+    \1 翻译程序由谁提供？OS？设备生产厂商？
+\end{outline}
+\subsection{I/O硬件}
+\subsubsection{设备分类}
+\begin{outline}
+    \1 块设备
+        \2 每次读取一个块
+        \2 有地址，任意读写
+    \1 字符设备
+        \2 以字符为单位发送或接收字符流
+        \2 不编址，无法寻址
+\end{outline}
+\subsubsection{I/O设备的组成}
+\begin{outline}
+    \1 设备控制器
+        \2 操作系统只和设备控制器打交道
+        \2 功能：
+            \3 设备控制器用几个寄存器与CPU通讯
+            \3 CPU通过读控制寄存器中的一个或多个字节的信息，得到操作结果和设备状态。
+            \3 CPU给设备控制器发送请求来进行I/O。
+            \3 请求后，控制器进行I/O之后，给cpu发中断
+    \1 机械部分
+\end{outline}
+\subsection{I/O软件}
+\subsubsection{I/O软件的目标}
+\begin{outline}
+    \1 实现设备独立性
+        \2 应用设备使用抽象的逻辑设备
+        \2 由操作系统对抽象的逻辑设备映射到具体的物理设备
+        \3 设备名称应该是简单字符串/整数
+\end{outline}
+\subsubsection{I/O控制方式的演变}
+\begin{outline}
+    \1 轮询（polling）
+        \2 busy-waiting
+    \1 中断驱动
+        \2 异步
+    \1 DMA
+        \2 直接放入内存
+\end{outline}
+\subsubsection{I/O软件的层次}
+\begin{outline}
+    \1 中断处理程序
+    \1 设备驱动程序
+    \1 设备独立性软件
+    \1 用户空间的I/O软件
+\end{outline}
 \end{document}

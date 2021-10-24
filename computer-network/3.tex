@@ -1,0 +1,91 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{计算机网络第三次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}[enumerate]
+    \1[2.] N个站共享一个56kbps的纯ALOHA信道。每个站平均每100秒发出一个1000位
+    长的帧，即使前面的帧还没有被发送出去。试问N最大值是多少？
+
+    可利用的信道$56kbps \times 0.184 = 10.3kbps$。每个站的平均传输速率
+    为$1000bps / 100 = 10bps$。因此$N = 10.3kbps / 10bps = 1030$
+    \1[17.] 一个通过以太网发送的IP数据包长16字节，其中包括所有的头。如果没有使用LLC，试问需要填补字节吗？
+    如果需要，需要填补多少个字节？
+
+    长度大于46字节，不需要
+    \1[18.] 以太网帧必须至少64字节长，才能确保当电缆另一端发生冲突时，发送方
+    仍处于发送过程中。快速以太网也有同样的64字节最小帧长度限制，但是他可以以
+    快10被的速度发送数据。试问它如何有可能维持同样地最小帧长度限制？
+
+    最长电缆长度缩小10倍
+
+    \1[38.] 用图4-41(b)用网桥B1和B2链接的拓展局域网。假设两个网桥的哈希表
+    是空的，对于下面的传输序列，请列出转发数据包所用端口。
+        \2 A发送一个数据包给C。
+
+        B1 转发给 2,3,4。B2转发给1,2,3。
+
+        \2 E发送一个数据包给F。
+
+        B2 转发给 1,3,4。B1转发给1,2,3。
+
+        \2 F发送一个数据包给E。
+
+        B2 不转发。
+
+        \2 G发送一个数据包给E。
+
+        B2转发给2。
+
+        \2 D发送一个数据包给A。
+
+        B2转发到4，B1转发到1。
+
+        \2 B发送一个数据包给F。
+
+        B1转发到1，3，4，B2转发到2。
+    \1[41.] 为了使得VLAN正常工作，在网桥内部需要有相应的配置表。如果图4-47
+    中的VLAN使用集线器而不是交换机，情况会怎么样呢？集线器也需要配置表吗？
+
+    不能正常工作，不需要配置。
+
+    \1[42.] 在图4-48中，右侧传统终端域中的交换机是一个VLAN干支交换机。请问有
+    可能在那里使用普通的交换机吗？如果可能，试问他如何工作？
+
+    能。所有和他相连的设备都处于一个VLAN中，所有到达的和离开的帧都没有VLAN 标记。
+\end{outline}
+
+\end{document}

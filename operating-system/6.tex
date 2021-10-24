@@ -1,0 +1,128 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{diagbox}
+\usepackage{float}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{操作系统第六次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+\begin{outline}[enumerate]
+\1 假设页表在内存保存的分页系统：
+\2 如果一次访问内存用200ns，那么在程序里要取出某个地址中的数据需要多少时间？
+
+    400 ns
+
+\2 如果加入有75\%命中率的TLB ，那么内存有效访问时间是多少？
+
+    $400 ns \times 0.25 + 200ns \times 0.75 = 250ns$
+
+\1 有页面访问次序1，2，3，4，2，1，5，6，2，1，2，3，7，6，3，2，1，2，3，6。当页框数是4时，分别使用LRU，FIFO，最优置换算法，分别产生多少次缺页？假设初始时页框都为空。
+
+    \2 LRU：
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \multicolumn{1}{c}{\diagbox{页框号}{访问次序}} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{l}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}  \\ 
+        \cline{2-20}
+        1                                       & 1                     & 1                     & 1                     & 1                     &                       &                       & 1                     & 1                     &                       &                       &                       & 1                     & 1                     & 6                     &                       & 6                     & 6                     &                       &                        \\ 
+        \cline{2-20}
+        2                                       &                       & 2                     & 2                     & 2                     &                       &                       & 2                     & 2                     &                       &                       &                       & 2                     & 2                     & 2                     &                       & 2                     & 2                     &                       &                        \\ 
+        \cline{2-20}
+        3                                       &                       &                       & 3                     & 3                     &                       &                       & 5                     & 5                     &                       &                       &                       & 3                     & 3                     & 3                     &                       & 3                     & 3                     &                       &                        \\ 
+        \cline{2-20}
+        4                                       &                       &                       &                       & 4                     &                       &                       & 4                     & 6                     &                       &                       &                       & 6                     & 7                     & 7                     &                       & 7                     & 1                     &                       &                        \\
+        \cline{2-20}
+        \end{tabular}
+\end{table}
+        共11次缺页。
+    
+    \2 FIFO：
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \multicolumn{1}{c}{\diagbox{页框号}{访问次序}} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{l}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}  \\ 
+        \cline{2-20}
+        1                                       & 1                     & 1                     & 1                     & 1                     &                       &                       & 5                     & 5                     & 5                     & 5                     &                       & 3                     & 3                     & 3                     &                       & 3                     & 1                     &                       & 1                      \\ 
+        \cline{2-20}
+        2                                       &                       & 2                     & 2                     & 2                     &                       &                       & 2                     & 6                     & 6                     & 6                     &                       & 6                     & 7                     & 7                     &                       & 7                     & 7                     &                       & 3                      \\ 
+        \cline{2-20}
+        3                                       &                       &                       & 3                     & 3                     &                       &                       & 3                     & 3                     & 2                     & 2                     &                       & 2                     & 2                     & 6                     &                       & 6                     & 6                     &                       & 6                      \\ 
+        \cline{2-20}
+        4                                       &                       &                       &                       & 4                     &                       &                       & 4                     & 4                     & 4                     & 1                     &                       & 1                     & 1                     & 1                     &                       & 2                     & 2                     &                       & 2                      \\
+        \cline{2-20}
+        \end{tabular}
+        \end{table}
+        共14次缺页。
+    \2 最优置换算法：
+    \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c|c|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \multicolumn{1}{c}{\diagbox{页框号}{访问次序}} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{l}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3}  \\ 
+    \cline{2-20}
+    1                                       & 1                     & 1                     & 1                     & 1                     &                       &                       & 1                     & 1                     &                       &                       &                       & 1                     & 7                     &                       &                       &                       & 1                     &                       & 1                      \\ 
+    \cline{2-20}
+    2                                       &                       & 2                     & 2                     & 2                     &                       &                       & 2                     & 2                     &                       &                       &                       & 2                     & 2                     &                       &                       &                       & 2                     &                       & 2                      \\ 
+    \cline{2-20}
+    3                                       &                       &                       & 3                     & 3                     &                       &                       & 3                     & 6                     &                       &                       &                       & 6                     & 6                     &                       &                       &                       & 6                     &                       & 6                      \\ 
+    \cline{2-20}
+    4                                       &                       &                       &                       & 4                     &                       &                       & 5                     & 5                     &                       &                       &                       & 3                     & 3                     &                       &                       &                       & 3                     &                       & 3                      \\
+    \cline{2-20}
+    \end{tabular}
+    \end{table}
+    共10次缺页。
+\end{outline}
+\section*{补充作业}
+\begin{outline}[enumerate]
+    \1 在一个虚拟存储管理系统中采用页式方法对内存空间进行管理，它有24位的虚拟地址空间，
+    而实际的物理地址空间是16位，页框大小为2k。假设有两个进程A和B。其中A进程的0、2页已
+    经调入到内存的2、3号页框；B进程的1、3页已经调入到内存的7、8号页框。请问：A进程的虚
+    拟地址12FF可以转换成什么物理地址？B进程的虚拟地址17BA可以转换成什么物理地址？如果不
+    能转换，操作系统会执行什么操作？
+
+    \texttt{
+        0x12ff = 0b0001,0010,1111,1111。页号为0b10，即2号页。映射到了3号页框，因此物理地址为
+        0b1,1010,1111,1111 = 0x1aff
+    }
+
+    \texttt{
+        0x17ba = 0b0001,0111,1011,1010。页号为0b10，即2号页。没有映射到页框，
+        会触发缺页中断，由操作系统把一个空闲的页框映射过去。
+    }
+
+\end{outline}
+
+\end{document}
