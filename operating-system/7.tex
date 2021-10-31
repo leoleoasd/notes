@@ -1,0 +1,88 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{操作系统第七次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{基础作业}
+\begin{outline}[enumerate]
+    \1 什么是设备无关性？
+
+    应用设备使用抽象的逻辑设备，由操作系统对抽象的逻辑设备映射到具体的物理设备。
+    \1 为什么在要打印的文件通常都假脱机输出到磁盘上？
+
+    为了将独占设备变为共享设备。磁盘一般比外设快，可以用磁盘作为打印机的缓冲，
+    使得占用打印机的设备不需要等待上一个任务真正的打印完成后再发出打印任务。
+    
+    \1 假设一个磁盘驱动器有5000个柱面，从0到4999。驱动器正在为143的一个请求服务，且前面的一个请求在125。按照FIFO的顺序，即将到来的请求是86，1470，913，1774，948，1509，1022，1750，130。请按照FCFS、SSTF、SCAN、LOOK、C-SCAN、C-LOOK， 要满足队列中的服务要求磁头总的移动距离是多少。
+
+        \2 FCFS
+
+        访问顺序：86, 1470, 913, 1774, 948, 1509, 1022, 1750, 130
+        
+        $(143 - 86) + (1470 - 86) + (1470 - 913) + (1774 - 913) + (1774 - 948) + (1509 - 948) + (1509 - 1022) + (1750 - 1022) + (1750 - 130) = 7081$
+
+        \2 SSTF
+
+        访问顺序：130, 86, 913, 948, 1022, 1470, 1509, 1750, 1774
+
+        $(143 - 130) + (130 - 86) + (913 - 86) + (948 - 913) + (1022 - 948) + (1470 - 1022) + (1509 - 1470) + (1750 - 1509) + (1774 - 1750) = 1745$
+
+        \2 SCAN
+        
+        访问顺序： 913, 948, 1022, 1470, 1509, 1750, 1774, 130, 86
+
+        $(4999 - 143) + (4999 - 86) = 9769$
+
+        \2 LOOK
+
+        访问顺序： 913, 948, 1022, 1470, 1509, 1750, 1774, 130, 86
+
+        $(1774 - 143) + (1774 - 86) = 3319$
+
+        \2 C-SCAN
+
+        访问顺序： 913, 948, 1022, 1470, 1509, 1750, 1774, 86, 130
+
+        $(4999 - 143) + 4999 + 130 = 9985$
+
+        \2 C-LOOK
+
+        访问顺序： 913, 948, 1022, 1470, 1509, 1750, 1774, 86, 130
+
+        $(1774 - 143) + 1774 - 86 + 130 - 86 = 3363$
+\end{outline}
+
+\end{document}

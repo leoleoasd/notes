@@ -74,7 +74,7 @@ An alphabet is a collection of characters.
 
 Product of two alphabets:	
 $$
-\set*{0,1} \times \set*{a,b} = \set*{0a, 0b, 1a, 1b}
+\left\{0,1\right\} \times \left\{a,b\right\} = \left\{0a, 0b, 1a, 1b\right\}
 $$
 Power of an alphabet:
 $$
@@ -86,7 +86,7 @@ $$
 $$
 Kleene closure of an alphabet:
 $$
-\Sigma^* = \bigcup_{i=0}^{\infty}\Sigma^i = \set*{\epsilon} \cup \Sigma^+
+\Sigma^* = \bigcup_{i=0}^{\infty}\Sigma^i = \left\{\epsilon\right\} \cup \Sigma^+
 $$
 
 \subsubsection{Senctence}
@@ -101,7 +101,7 @@ $\forall X \in \Sigma^*$, the count of characters appeared in x is called the le
 
 For example: $\left|ababab\right| = 6; \left|\epsilon\right| = 0$ 
 
-\emph{Note that $\set*{\epsilon} \neq \emptyset$}.
+\emph{Note that $\left\{\epsilon\right\} \neq \emptyset$}.
 
 \subsubsection{Concatenation of sentences}
 $\forall x, y \in \Sigma^*$, the concatenation of sentences $x, y$, denoted by $|xy|$, is the direct join of two strings.
@@ -145,18 +145,18 @@ For example, if $x = 0110$:
 	$\forall L \subseteq \Sigma^*$, $L$ is called {a Language on alphabet $\Sigma$} \par
 	$\forall x \in L$, $x$ is called \emph{a sentence of $L$}
 
-	For example: let $\Sigma = \set*{0, 1}$, we have
+	For example: let $\Sigma = \left\{0, 1\right\}$, we have
 	\begin{enumerate}
-		\item $L_1 = \set*{0, 1}$
-		\item $L_2 = \set*{00, 01, 10, 11}$
-		\item $L_3 = \set*{0, 1, 00, 01, 10, 11, \dots } = \Sigma^+$
-		\item $L_4 = \set*{\epsilon, 0, 1, 00, 01, 10, 11, \dots} = \Sigma^*$
-		\item $L_5 = \set*{0^n | n \ge 1}$
-		\item $L_6 = \set*{0^n1^n | n \ge 1 }$
-		\item $L_7 = \set*{1^n | n \ge 1 }$
-		\item $L_8 = \set*{0^n1^m | n, m \ge 1 }$
-		\item $L_9 = \set*{0^n1^n0^n | n \ge 1 }$
-		\item $L_{10} = \set*{0^n1^m0^k | n,m,l \ge 1}$
+		\item $L_1 = \left\{0, 1\right\}$
+		\item $L_2 = \left\{00, 01, 10, 11\right\}$
+		\item $L_3 = \left\{0, 1, 00, 01, 10, 11, \dots \right\} = \Sigma^+$
+		\item $L_4 = \left\{\epsilon, 0, 1, 00, 01, 10, 11, \dots\right\} = \Sigma^*$
+		\item $L_5 = \left\{0^n | n \ge 1\right\}$
+		\item $L_6 = \left\{0^n1^n | n \ge 1 \right\}$
+		\item $L_7 = \left\{1^n | n \ge 1 \right\}$
+		\item $L_8 = \left\{0^n1^m | n, m \ge 1 \right\}$
+		\item $L_9 = \left\{0^n1^n0^n | n \ge 1 \right\}$
+		\item $L_{10} = \left\{0^n1^m0^k | n,m,l \ge 1\right\}$
 		\item $L_{11} = \set*{x | x \in \Sigma^+ \text{and the number of 0 and 1 of x are same}}$
 	\end{enumerate}
 
@@ -171,7 +171,7 @@ All operatio on Sets also works on Language.
 Given $L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^*$, the product of $L_1$ and $L_2$ is a Language on alphabet $\Sigma_1 \cup \Sigma_2$.
 
 $$
-L_1L_2 = \set*{xy | x \in L_1, y \in L_2 }
+L_1L_2 = \left\{xy | x \in L_1, y \in L_2 \right\}
 $$
 
 
@@ -192,7 +192,7 @@ $$
 
 \textbf{Kleene closure of a language:}
 $$
-L^* = \bigcup_{i=0}^{\infty}L^i = \set*{\epsilon} \cup L^+
+L^* = \bigcup_{i=0}^{\infty}L^i = \left\{\epsilon\right\} \cup L^+
 $$
 
 Note that: $L^+ = L^* \iff \epsilon \in L$
@@ -214,7 +214,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \textbf{Examples}
 \begin{outline}
     \1 给定 $\Sigma$， 讨论$\Sigma$上典型语言的结构特征
-        \2 $\set*{0^n1^m | n, m \geq 1}$:
+        \2 $\left\{0^n1^m | n, m \geq 1\right\}$:
         \begin{center}
             \begin{tikzpicture}[scale=0.2]
             \tikzstyle{every node}+=[inner sep=0pt]
@@ -236,15 +236,15 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
             \fill [black] (35.22,-13.62) -- (36.1,-13.27) -- (35.29,-12.68);
             \end{tikzpicture}
             \end{center}
-        \2 $\set*{0^n1^n0^n | n \geq 1}$
+        \2 $\left\{0^n1^n0^n | n \geq 1\right\}$
     \1 给定$\Sigma$， 讨论语言的结构与表示
-        \2 $\set*{xx|x \in \Sigma^+\} = \{a_1a_2\dots a_na_1a_2 \dots a_n|a_1,a_2,\dots,a_n \in \Sigma, n \geq 1}$
-        \2 $\set*{xx^T | x \in \Sigma^+}$
-        \2 $\set*{xx^Tw | x,w \in \Sigma^+} \\ 
-            = \set*{a_1a_2\dots a_n \dots a_1 b_1 \dots b_m | a_1,\dots, a_n, b_1, \dots, b_m \in \Sigma, n,m \geq 1}$
-        \2 $\set*{xwx^T|x, w \in \Sigma^+}  \\ 
-            = \set*{a_1 \dots a_n b_1 b_2 \dots b_n a_n \dots a_1 | a_1,\dots,a_n,b_1,\dots,b_m \in \Sigma, n,m \geq 1} \\
-            = \set*{a a_1 \dots a_n a | a, a_1, a_2, \dots, a_n \in \Sigma, n \geq 1}
+        \2 $\left\{xx|x \in \Sigma^+\\right\} = \{a_1a_2\dots a_na_1a_2 \dots a_n|a_1,a_2,\dots,a_n \in \Sigma, n \geq 1}$
+        \2 $\left\{xx^T | x \in \Sigma^+\right\}$
+        \2 $\left\{xx^Tw | x,w \in \Sigma^+\right\} \\ 
+            = \left\{a_1a_2\dots a_n \dots a_1 b_1 \dots b_m | a_1,\dots, a_n, b_1, \dots, b_m \in \Sigma, n,m \geq 1\right\}$
+        \2 $\left\{xwx^T|x, w \in \Sigma^+\right\}  \\ 
+            = \left\{a_1 \dots a_n b_1 b_2 \dots b_n a_n \dots a_1 | a_1,\dots,a_n,b_1,\dots,b_m \in \Sigma, n,m \geq 1\right\} \\
+            = \left\{a a_1 \dots a_n a | a, a_1, a_2, \dots, a_n \in \Sigma, n \geq 1\right\}
             $
 \end{outline}
 
@@ -252,12 +252,12 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \subsection{启示}
 \begin{outline}
     \1 对无穷对象的描述
-        \2 $\set*{0^n | n \geq 1}$
+        \2 $\left\{0^n | n \geq 1\right\}$
             \3 $0$ 是 $S$的元素
             \3 $\forall x \in S, x0 \in S$
             \3 $S \to 0$
             \3 $S \to S0$
-        \2 $\set*{0^n1^m | n, m \geq 1}$
+        \2 $\left\{0^n1^m | n, m \geq 1\right\}$
             \3 $0 \in S$ \\
                $\forall x \in S, 0x, x1 \in S$
             \3 $S \to 01$ \\
@@ -267,13 +267,13 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
                $S_1 \to S_10$ \\
                $S_2 \to 0$ \\
                $S_2 \to S_20$
-        \2 $\set*{0,1}^*$
+        \2 $\left\{0,1\right\}^*$
             \3 $\epsilon \in S$ \\
                $\forall x \in S, 0x, 1x \in S$
             \3 $S \to \epsilon$ \\
                $S \to 0S $\\
                $S \to 1S $
-        \2 $\set*{0,1\}^*\set*{11}\{0,1}^*$
+        \2 $\left\{0,1\\right\}^*\left\{11\right\}\{0,1}^*$
             \3 $11 \in S$ \\
                $\forall x \in S, 0x, 1x, x0, x1 \in S$
             \3 $S \to 11$ \\
@@ -400,7 +400,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \subsection{文法的构造}
 \begin{outline}
-    \1 $L(G) = \set*{0,1,00,11}$
+    \1 $L(G) = \left\{0,1,00,11\right\}$
         \2 $G_1: S \to 0 | 1 | 00 | 11$
         \2 $G_2: S \to A | B | AA | BB, A \to 0, B \to 1$
         \2 $G_3: S \to 0 | 1 | 0A | 1B, A \to 0, B \to 1$
@@ -466,12 +466,12 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \1 $L(G) = L(G_1) \cup L(G_2)$
 
         $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P_3, S)$ \\
-        $P_3 = \set*{S \to S_1 | S_2}$
+        $P_3 = \left\{S \to S_1 | S_2\right\}$
 
     \1 $L(G) = L(G_1)^*$
 
-        $G_* = \paren*{V_1 \cup \set*{S}, T, P_1 \cup P_2, S}$ \\
-        $P_2 = \set*{S \to \epsilon | SS_1}$
+        $G_* = \paren*{V_1 \cup \left\{S\right\}, T, P_1 \cup P_2, S}$ \\
+        $P_2 = \left\{S \to \epsilon | SS_1\right\}$
 
 \end{outline}
 
@@ -489,16 +489,16 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
         $G = (V_1 \cup V_2 \cup {S}, T, P_1' \cup P_2 \cup P_3, S_1)$
 
-        $P_1' = \set*{A \to a B | A \to a B \in P_1}$
+        $P_1' = \left\{A \to a B | A \to a B \in P_1\right\}$
         
-        $P_3 = \set*{A \to a S_2 | A \to a \in P_1}$
+        $P_3 = \left\{A \to a S_2 | A \to a \in P_1\right\}$
 
     \1 $L(G) = L(G_1) \cup L(G_2)$
 
         $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P, S)$ \\
         $\begin{aligned}
-            P & = \set*{S \to \alpha | S_1 \to \alpha \in P_1} \\
-            & \cup \set*{S \to \alpha | S_2 \to \alpha \in P_2} \\
+            P & = \left\{S \to \alpha | S_1 \to \alpha \in P_1\right\} \\
+            & \cup \left\{S \to \alpha | S_2 \to \alpha \in P_2\right\} \\
         \end{aligned}$
 
     \1 $L(G) = L(G_1)^*$
@@ -588,7 +588,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \begin{definition}
     有穷状态自动机$M = (Q, \Sigma, \delta, q_0, F)$识别的语言：
-    $L(M) = \set*{x | \delta(q_0, x) \in F}$
+    $L(M) = \left\{x | \delta(q_0, x) \in F\right\}$
 \end{definition}
 
 \begin{definition}
@@ -597,7 +597,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \begin{definition}
     对于有穷自动状态机$M = (Q, \Sigma, \delta, q_0, F)$，$set(q) = 
-    \set*{x | \delta(q_0, x) = q}$
+    \left\{x | \delta(q_0, x) = q\right\}$
 
     所以有：$\Sigma^* = \bigcup_{q \in Q}set(q)$；
     $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \emptyset $
@@ -614,7 +614,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{definition}
 
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x000 | x \in \set*{0,1}^*}$。 
+    构造$M$，使得$L(M) = \set*{x000 | x \in \left\{0,1\right\}^*}$。 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
             \tikzstyle{every node}+=[inner sep=0pt]
@@ -652,7 +652,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{example}
 \begin{example}
     
-    构造$M$，使得$L(M) = \set*{0x0 | x \in \set*{0,1}^*}$。 
+    构造$M$，使得$L(M) = \set*{0x0 | x \in \left\{0,1\right\}^*}$。 
 
 
     \begin{center}
@@ -772,7 +772,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{example}
 
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的第三个字符是1}}$。 
+    构造$M$，使得$L(M) = \set*{x | x \in \left\{0,1\right\}^+ \mathrm{and} \text{ x的第三个字符是1}}$。 
 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
@@ -804,7 +804,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{center}        
 \end{example}
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的倒数第三个字符是1}}$。 
+    构造$M$，使得$L(M) = \set*{x | x \in \left\{0,1\right\}^+ \mathrm{and} \text{ x的倒数第三个字符是1}}$。 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
         \tikzstyle{every node}+=[inner sep=0pt]
@@ -889,13 +889,13 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $Q, \Sigma, q_0, F$ 同 FA。
 
     $\delta$: $Q \times \Sigma \to 2^Q$ (幂集)，\\
-    $\delta(q, a) = \set*{p_1, p_2, \dots, p_n}$表示M
+    $\delta(q, a) = \left\{p_1, p_2, \dots, p_n\right\}$表示M
     在状态$q$读入$a$可以选择进入$p_i$
 
     扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to 2^Q$
    
     \begin{align*}
-            \hat{\delta}(q,\epsilon)  & = \set*{q} \\
+            \hat{\delta}(q,\epsilon)  & = \left\{q\right\} \\
             \hat{\delta}(q, wa) & = \bigcup_{q_0 \in \hat{\delta}(q,w)}\delta(q_0, a)
     \end{align*}
 
@@ -1020,18 +1020,18 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     DFA $M' = (2^Q, \Sigma, \delta', [q_0], F')$
 
     $F'= \set*{[q_1, q_2, \dots, q_n] |
-     \set*{q_1, q_2, \dots, q_n} \cap F \ne \emptyset}$
+     \left\{q_1, q_2, \dots, q_n\right\} \cap F \ne \emptyset}$
 
     $\delta'([q_1, q_2, \dots, q_n], a) = 
     [\beta_1, \beta_2, \dots, \beta_n] \iff 
-    \delta(\set*{q_1, q_2, \dots, q_n}, a) = \set*{\beta_1, \beta_2, \dots, \beta_n}
+    \delta(\left\{q_1, q_2, \dots, q_n\right\}, a) = \left\{\beta_1, \beta_2, \dots, \beta_n\right\}
     $
 
     所以，对于$\forall M$ 是NFA，可以构造DFA $M'$
 \end{theorem}
 
 \begin{example}
-    构造DFA $M$， $L(M) = \set{0^n1^m2^k | n,m,k \ge 1}$
+    构造DFA $M$， $L(M) = \left\{0^n1^m2^k | n,m,k \ge 1\right\}$
 
 \begin{center}
     \begin{tikzpicture}[scale=0.2]
@@ -1088,9 +1088,9 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $\epsilon-\mathrm{NFA}$ $M=(Q,\Sigma,\delta,q_0,F)$：
 
     $\delta$：状态转义函数。
-    $\delta: Q \times (\Sigma \cup \set{\epsilon}) \to 2^Q$
+    $\delta: Q \times (\Sigma \cup \left\{\epsilon\right\}) \to 2^Q$
 
-    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\set{p_1, p_2, \dots, p_n}$：
+    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\left\{p_1, p_2, \dots, p_n\right\}$：
     表示在$q$状态不读入任何字符，可以将状态变为$p_1, p_2, \dots, p_n$，称为
     $M$在$q$状态做了一次空移动（$\epsilon$移动）
 
@@ -1128,7 +1128,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     证明：设$\epsilon-NFA$ $M = (Q, \Sigma, \delta, q_0, F)$：
 
     取$M' = \left(Q, \Sigma, \hat{\delta}, q_0, \begin{cases}
-        F \cup \set{q_0} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
+        F \cup \left\{q_0\right\} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
         F & F \cap \epsilon-CLOSURE(q_0) = \emptyset
     \end{cases}\right)$
 \end{theorem}
@@ -1144,11 +1144,11 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $G=(Q, \Sigma, P, q_0)$
 
     $\begin{aligned}
-        P &= \set{q \to ap | \delta(q, a) = p} \cup 
-    \set{q \to a | \forall \delta(q, a) \in F} \cup
-    \set{q_0 \to \epsilon | q_0 \in F} \\
-        & = \set{q \to ap | \delta(q, a) = p} \cup 
-        \set{q \to \epsilon | q \in F} \\
+        P &= \left\{q \to ap | \delta(q, a) = p\right\} \cup 
+    \left\{q \to a | \forall \delta(q, a) \in F\right\} \cup
+    \left\{q_0 \to \epsilon | q_0 \in F\right\} \\
+        & = \left\{q \to ap | \delta(q, a) = p\right\} \cup 
+        \left\{q \to \epsilon | q \in F\right\} \\
     \end{aligned}$
 \end{theorem}
 
@@ -1157,10 +1157,10 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
     构造：对于RG $G={V, T, P, S}$，RG为右线性文法。
 
-    取FA $M=(V \cup \set{f},T,\delta,S, \set{f})$，其中
+    取FA $M=(V \cup \left\{f\right\},T,\delta,S, \left\{f\right\})$，其中
 
-    $\delta(A, a) = \set{B | \forall A \to aB \in P} \cup 
-    \set{f | \forall A \to a \in P} \cup
+    $\delta(A, a) = \left\{B | \forall A \to aB \in P\right\} \cup 
+    \left\{f | \forall A \to a \in P\right\} \cup
     $
 \end{theorem}
 
