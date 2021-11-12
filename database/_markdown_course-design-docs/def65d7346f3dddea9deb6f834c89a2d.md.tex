@@ -1,0 +1,377 @@
+\markdownRendererHeadingOne{数据需求描述}\markdownRendererInterblockSeparator
+{}disclaimer: 本文档基于\markdownRendererLink{EduOJ}{https://github.com/EduOJ/backend}{https://github.com/EduOJ/backend}{}的数据库设计中的用户、班级、作业、权限管理部分。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{管理员:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 用户增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 班级增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 作业增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 成绩查询、修改\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{用户相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 姓名，学号，密码，邮箱\markdownRendererUlItemEnd 
+\markdownRendererUlItem 权限相关：\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 『全局权限』（如：某个用户有权限创建用户、修改用户、创建班级、创建题目）\markdownRendererUlItemEnd 
+\markdownRendererUlItem 『针对权限』（如：某个用户有针对id为5的班级的添加学生权限）\markdownRendererUlItemEnd 
+\markdownRendererUlItem 希望能够『批量管理』：把权限授予给『角色』，让『用户』拥有『角色』。\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 统计信息，加快查询速度\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{班级相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 课程名称，课堂名称，管理老师，课程描述\markdownRendererUlItemEnd 
+\markdownRendererUlItem 用户、作业\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 和用户是多对多关系\markdownRendererUlItemEnd 
+\markdownRendererUlItem 和作业是多对多关系\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{作业相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 标题，起止日期\markdownRendererUlItemEnd 
+\markdownRendererUlItem 多道题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 统计成绩\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{成绩查询、修改}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 用户、班级、作业、成绩\markdownRendererUlItemEnd 
+\markdownRendererUlItem 根据用户做题记录生成，用于加快计算，\markdownRendererStrongEmphasis{有数据冗余}。\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingOne{数据库设计}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{ER图}\markdownRendererInterblockSeparator
+{}\markdownRendererImage{EduOJ用户、班级、作业、权限管理部分ER图}{./course-design-er.pdf}{./course-design-er.pdf}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{关系模式}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem user(\underline{id}, nickname, username, email, password, email\_verified, created\_at, updated\_at)\markdownRendererUlItemEnd 
+\markdownRendererUlItem roles(\underline{id}, name, target)\markdownRendererUlItemEnd 
+\markdownRendererUlItem user\_has\_roles(\underline{id}, user\_id, )\markdownRendererUlItemEnd 
+\markdownRendererUlItem permissions(\underline{id},role\_id, name)\markdownRendererUlItemEnd 
+\markdownRendererUlItem tokens(\underline{id},user\_id,token, created\_at,remember\_me)\markdownRendererUlItemEnd 
+\markdownRendererUlItem webauthn\_credentials(\underline{id}, user\_id, content, created\_at)\markdownRendererUlItemEnd 
+\markdownRendererUlItem classes(\underline{id}, name, course\_name, description, invite\_code)\markdownRendererUlItemEnd 
+\markdownRendererUlItem user\_in\_classes(\underline{id}, user\_id, class\_id)\markdownRendererUlItemEnd 
+\markdownRendererUlItem user\_managing\_classes(\underline{id}, user\_id, class\_id)\markdownRendererUlItemEnd 
+\markdownRendererUlItem grades(\underline{id}, total, detail, user\_id, class\_id, problem\_set\_id)\markdownRendererUlItemEnd 
+\markdownRendererUlItem problem\_sets(\underline{id}, name, description, start\_time,end\_time)\markdownRendererUlItemEnd 
+\markdownRendererUlItem problem\_in\_problem\_sets(\underline{id}, problem\_id, problem\_set\_id)\markdownRendererUlItemEnd 
+\markdownRendererUlItem problems(\underline{id}, name, description, attach\_file\_name, public, memory\_limit, time\_limit, compare\_script\_name, build\_arg)\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{范式判断}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{1NF}\markdownRendererInterblockSeparator
+{}所有关系模式中，属性均是原子的，符合范式。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{2NF}\markdownRendererInterblockSeparator
+{}除了grades的所有关系模式中均依赖主键\underline{id}，符合范式。\markdownRendererInterblockSeparator
+{}grades中，class\markdownRendererEmphasis{id依赖problem}set_id，但是为了加速查询，保留数据冗余。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{3NF}\markdownRendererInterblockSeparator
+{}表中除了主键之外所有属性均不互相依赖，符合范式。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{BCNF}\markdownRendererInterblockSeparator
+{}所有关系模式均只有一个主属性，不存在其他键码，同时非主属性也依赖与键码，所以符合范式。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{4NF}\markdownRendererInterblockSeparator
+{}所有关系模式均不存在平凡多值依赖，故符合4NF。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingOne{数据表设计}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{users}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{9}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{username}%
+{varchar(30)}%
+{index}%
+{}%
+}%
+{{nickname}%
+{varchar(30)}%
+{index}%
+{}%
+}%
+{{email}%
+{varchar(320)}%
+{index}%
+{}%
+}%
+{{password}%
+{text}%
+{}%
+{}%
+}%
+{{created\_at}%
+{timestamp}%
+{}%
+{}%
+}%
+{{updated\_at}%
+{timestamp}%
+{}%
+{}%
+}%
+{{email\_verified}%
+{timestamp}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{roles}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{name}%
+{varchar(255)}%
+{}%
+{}%
+}%
+{{target}%
+{varchar(255)}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_has\_roles}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{5}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{role\_id}%
+{bigint}%
+{}%
+{roles(id)}%
+}%
+{{target\_id}%
+{bigint}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{permissions}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{role\_id}%
+{bigint}%
+{}%
+{roles(id)}%
+}%
+{{name}%
+{varchar(255)}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{tokens}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{6}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{token}%
+{varchar(32)}%
+{}%
+{}%
+}%
+{{created\_at}%
+{timestamp}%
+{}%
+{}%
+}%
+{{remember\_me}%
+{boolean}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{webauthn\_credentials}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{5}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{content}%
+{varchar(32)}%
+{}%
+{}%
+}%
+{{created\_at}%
+{timestamp}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{6}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{name}%
+{varchar(255)}%
+{}%
+{}%
+}%
+{{course\_name}%
+{varchar(255)}%
+{}%
+{}%
+}%
+{{description}%
+{text}%
+{}%
+{}%
+}%
+{{invite\_code}%
+{varchar(255)}%
+{}%
+{}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_in\_classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{class\_id}%
+{bigint}%
+{}%
+{classes(id)}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_managing\_classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{class\_id}%
+{bigint}%
+{}%
+{classes(id)}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{grades}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}%
+{{字段名称}%
+{类型}%
+{索引}%
+{外键}%
+}%
+{{id}%
+{bigint}%
+{primary}%
+{}%
+}%
+{{user\_id}%
+{bigint}%
+{}%
+{users(id)}%
+}%
+{{class\_id}%
+{bigint}%
+{}%
+{classes(id)}%
+}%
+\markdownRendererInterblockSeparator
+{}\end{center}\relax

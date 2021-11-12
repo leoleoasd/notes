@@ -1,0 +1,119 @@
+\markdownRendererHeadingOne{数据需求描述}\markdownRendererInterblockSeparator
+{}disclaimer: 本文档基于\markdownRendererLink{EduOJ}{https://github.com/EduOJ/backend}{https://github.com/EduOJ/backend}{}的数据库设计中的用户、班级、作业、权限管理部分。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{管理员:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 用户增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 班级增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 作业增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 成绩查询、修改\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{用户相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 姓名，学号，密码，邮箱\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{题目相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 名称\markdownRendererUlItemEnd 
+\markdownRendererUlItem 描述\markdownRendererUlItemEnd 
+\markdownRendererUlItem sample\markdownRendererUlItemEnd 
+\markdownRendererUlItem Hint (内容, 触发条件, 错误示例). 减少部分常见答疑工作\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 触发条件指: 比如某道题mle 就提示 这道题卡了某种会导致mle的算法\markdownRendererUlItemEnd 
+\markdownRendererUlItem 这个条件比较简陋\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 语言选项\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 其它选项 - 比如补充代码\markdownRendererUlItemEnd 
+\markdownRendererUlItem 静态分析\markdownRendererUlItemEnd 
+\markdownRendererUlItem 语言 (C, C++, Python, Java, etc.)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 编译方式 (O2?)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 比较方式\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 是否开放评论区(同学们可能在评论区讨论/发正确答案等)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 公开与否(public, private). 用户能看到public的题以及作业/比赛中涉及到的private题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 添加测试点 (in, out, 公开与否)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理题目(更新, 删除等功能)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 标签, 类型\markdownRendererUlItemEnd 
+\markdownRendererUlItem 算法\markdownRendererUlItemEnd 
+\markdownRendererUlItem 分支结构, 循环结构\markdownRendererUlItemEnd 
+\markdownRendererUlItem 按照标签筛选\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{提交相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 查看提交\markdownRendererUlItemEnd 
+\markdownRendererUlItem 标记提交的错因\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{比赛 + 考试 相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 名称\markdownRendererUlItemEnd 
+\markdownRendererUlItem 时间\markdownRendererUlItemEnd 
+\markdownRendererUlItem 封榜?\markdownRendererUlItemEnd 
+\markdownRendererUlItem 赛制(acm, oi)\markdownRendererUlItemEnd 
+\markdownRendererUlItem \markdownRendererStrongEmphasis{静态分析 + 语义匹配的分数}\markdownRendererUlItemEnd 
+\markdownRendererUlItem 公开?\markdownRendererUlItemEnd 
+\markdownRendererUlItem 比赛添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 参与比赛的人自动获取 比赛中的即使是private的题的权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 设置通用的语言选项, 优先级比题目高 \markdownRendererStrongEmphasis{查重} 可选\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{班级相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建班级\markdownRendererUlItemEnd 
+\markdownRendererUlItem 邀请学生(邀请码, 批量创建用户, 批量邀请)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 作业管理\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理(踢人啥的)\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{作业相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建作业 (一个作业属于一个班级)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 导出作业模板\markdownRendererUlItemEnd 
+\markdownRendererUlItem 导入作业模板\markdownRendererUlItemEnd 
+\markdownRendererUlItem 从作业id克隆\markdownRendererUlItemEnd 
+\markdownRendererUlItem 是否可评论\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理作业\markdownRendererUlItemEnd 
+\markdownRendererUlItem 开始时间, 结束时间\markdownRendererUlItemEnd 
+\markdownRendererUlItem 添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 查看作业完成情况\markdownRendererUlItemEnd 
+\markdownRendererUlItem 积分策略\markdownRendererUlItemEnd 
+\markdownRendererUlItem 每道题的分数\markdownRendererUlItemEnd 
+\markdownRendererUlItem 超时策略\markdownRendererUlItemEnd 
+\markdownRendererUlItem 附件?\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{权限相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 管理员: 所有权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 教师: 有创建班级, 发布作业, 创建用户权限, 由管理员赋予权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 助教: 对于自己被指定的班级, 有除了删除等危险操作的所有权限.\markdownRendererUlItemEnd 
+\markdownRendererUlItem non-edit?\markdownRendererUlItemEnd 
+\markdownRendererUlItem student\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{学生端}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{练习系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 看题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 做题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 花费一定点数来看错因\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评论某一道题(discuss)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评价某一道题(vote)\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{作业系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 加入班级\markdownRendererUlItemEnd 
+\markdownRendererUlItem 看题, 做题, 看错因\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评价, 评论作业\markdownRendererUlItemEnd 
+\markdownRendererUlItem \markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{比赛系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 报名公共比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 被邀请参与公共比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 参赛, 看榜单, ...\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{TODO:}\markdownRendererInterblockSeparator
+{}debug 防作弊 ? 课堂派 课件方式 自动放出 参考 \markdownRendererStrongEmphasis{bitnami} http://maple.bjut.edu.cn/ 3-204\markdownRendererInterblockSeparator
+{}实用性需求 1. 语义匹配 2. 防作弊（人工）\markdownRendererInterblockSeparator
+{}debug\markdownRendererInterblockSeparator
+{}现有的实战研究 是否有提升?\markdownRendererInterblockSeparator
+{}问卷, 成绩对比\markdownRendererInterblockSeparator
+{}一个创新点, 深入研究 (主要点) 其他简单说 (未来拓展)\relax

@@ -1,0 +1,10 @@
+id
+username
+name
+email
+password
+timestamps
+problem_passed
+rankings
+points
+hidden # 比赛的用户是hidden的

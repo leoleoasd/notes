@@ -39,6 +39,7 @@
 \newtheorem{definition}{定义}[section]
 \newtheorem{example}{例}[section]
 \newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}{引理}[section]
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 
@@ -74,7 +75,7 @@ An alphabet is a collection of characters.
 
 Product of two alphabets:	
 $$
-\left\{0,1\right\} \times \left\{a,b\right\} = \left\{0a, 0b, 1a, 1b\right\}
+\set*{0,1} \times \set*{a,b} = \set*{0a, 0b, 1a, 1b}
 $$
 Power of an alphabet:
 $$
@@ -86,7 +87,7 @@ $$
 $$
 Kleene closure of an alphabet:
 $$
-\Sigma^* = \bigcup_{i=0}^{\infty}\Sigma^i = \left\{\epsilon\right\} \cup \Sigma^+
+\Sigma^* = \bigcup_{i=0}^{\infty}\Sigma^i = \set*{\epsilon} \cup \Sigma^+
 $$
 
 \subsubsection{Senctence}
@@ -101,7 +102,7 @@ $\forall X \in \Sigma^*$, the count of characters appeared in x is called the le
 
 For example: $\left|ababab\right| = 6; \left|\epsilon\right| = 0$ 
 
-\emph{Note that $\left\{\epsilon\right\} \neq \emptyset$}.
+\emph{Note that $\set*{\epsilon} \neq \emptyset$}.
 
 \subsubsection{Concatenation of sentences}
 $\forall x, y \in \Sigma^*$, the concatenation of sentences $x, y$, denoted by $|xy|$, is the direct join of two strings.
@@ -145,18 +146,18 @@ For example, if $x = 0110$:
 	$\forall L \subseteq \Sigma^*$, $L$ is called {a Language on alphabet $\Sigma$} \par
 	$\forall x \in L$, $x$ is called \emph{a sentence of $L$}
 
-	For example: let $\Sigma = \left\{0, 1\right\}$, we have
+	For example: let $\Sigma = \set*{0, 1}$, we have
 	\begin{enumerate}
-		\item $L_1 = \left\{0, 1\right\}$
-		\item $L_2 = \left\{00, 01, 10, 11\right\}$
-		\item $L_3 = \left\{0, 1, 00, 01, 10, 11, \dots \right\} = \Sigma^+$
-		\item $L_4 = \left\{\epsilon, 0, 1, 00, 01, 10, 11, \dots\right\} = \Sigma^*$
-		\item $L_5 = \left\{0^n | n \ge 1\right\}$
-		\item $L_6 = \left\{0^n1^n | n \ge 1 \right\}$
-		\item $L_7 = \left\{1^n | n \ge 1 \right\}$
-		\item $L_8 = \left\{0^n1^m | n, m \ge 1 \right\}$
-		\item $L_9 = \left\{0^n1^n0^n | n \ge 1 \right\}$
-		\item $L_{10} = \left\{0^n1^m0^k | n,m,l \ge 1\right\}$
+		\item $L_1 = \set*{0, 1}$
+		\item $L_2 = \set*{00, 01, 10, 11}$
+		\item $L_3 = \set*{0, 1, 00, 01, 10, 11, \dots } = \Sigma^+$
+		\item $L_4 = \set*{\epsilon, 0, 1, 00, 01, 10, 11, \dots} = \Sigma^*$
+		\item $L_5 = \set*{0^n | n \ge 1}$
+		\item $L_6 = \set*{0^n1^n | n \ge 1 }$
+		\item $L_7 = \set*{1^n | n \ge 1 }$
+		\item $L_8 = \set*{0^n1^m | n, m \ge 1 }$
+		\item $L_9 = \set*{0^n1^n0^n | n \ge 1 }$
+		\item $L_{10} = \set*{0^n1^m0^k | n,m,l \ge 1}$
 		\item $L_{11} = \set*{x | x \in \Sigma^+ \text{and the number of 0 and 1 of x are same}}$
 	\end{enumerate}
 
@@ -171,7 +172,7 @@ All operatio on Sets also works on Language.
 Given $L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^*$, the product of $L_1$ and $L_2$ is a Language on alphabet $\Sigma_1 \cup \Sigma_2$.
 
 $$
-L_1L_2 = \left\{xy | x \in L_1, y \in L_2 \right\}
+L_1L_2 = \set*{xy | x \in L_1, y \in L_2 }
 $$
 
 
@@ -192,7 +193,7 @@ $$
 
 \textbf{Kleene closure of a language:}
 $$
-L^* = \bigcup_{i=0}^{\infty}L^i = \left\{\epsilon\right\} \cup L^+
+L^* = \bigcup_{i=0}^{\infty}L^i = \set*{\epsilon} \cup L^+
 $$
 
 Note that: $L^+ = L^* \iff \epsilon \in L$
@@ -214,7 +215,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \textbf{Examples}
 \begin{outline}
     \1 给定 $\Sigma$， 讨论$\Sigma$上典型语言的结构特征
-        \2 $\left\{0^n1^m | n, m \geq 1\right\}$:
+        \2 $\set*{0^n1^m | n, m \geq 1}$:
         \begin{center}
             \begin{tikzpicture}[scale=0.2]
             \tikzstyle{every node}+=[inner sep=0pt]
@@ -236,15 +237,15 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
             \fill [black] (35.22,-13.62) -- (36.1,-13.27) -- (35.29,-12.68);
             \end{tikzpicture}
             \end{center}
-        \2 $\left\{0^n1^n0^n | n \geq 1\right\}$
+        \2 $\set*{0^n1^n0^n | n \geq 1}$
     \1 给定$\Sigma$， 讨论语言的结构与表示
-        \2 $\left\{xx|x \in \Sigma^+\\right\} = \{a_1a_2\dots a_na_1a_2 \dots a_n|a_1,a_2,\dots,a_n \in \Sigma, n \geq 1}$
-        \2 $\left\{xx^T | x \in \Sigma^+\right\}$
-        \2 $\left\{xx^Tw | x,w \in \Sigma^+\right\} \\ 
-            = \left\{a_1a_2\dots a_n \dots a_1 b_1 \dots b_m | a_1,\dots, a_n, b_1, \dots, b_m \in \Sigma, n,m \geq 1\right\}$
-        \2 $\left\{xwx^T|x, w \in \Sigma^+\right\}  \\ 
-            = \left\{a_1 \dots a_n b_1 b_2 \dots b_n a_n \dots a_1 | a_1,\dots,a_n,b_1,\dots,b_m \in \Sigma, n,m \geq 1\right\} \\
-            = \left\{a a_1 \dots a_n a | a, a_1, a_2, \dots, a_n \in \Sigma, n \geq 1\right\}
+        \2 $\set*{xx|x \in \Sigma^+} = \set*{a_1a_2\dots a_na_1a_2 \dots a_n|a_1,a_2,\dots,a_n \in \Sigma, n \geq 1}$
+        \2 $\set*{xx^T | x \in \Sigma^+}$
+        \2 $\set*{xx^Tw | x,w \in \Sigma^+} \\ 
+            = \set*{a_1a_2\dots a_n \dots a_1 b_1 \dots b_m | a_1,\dots, a_n, b_1, \dots, b_m \in \Sigma, n,m \geq 1}$
+        \2 $\set*{xwx^T|x, w \in \Sigma^+}  \\ 
+            = \set*{a_1 \dots a_n b_1 b_2 \dots b_n a_n \dots a_1 | a_1,\dots,a_n,b_1,\dots,b_m \in \Sigma, n,m \geq 1} \\
+            = \set*{a a_1 \dots a_n a | a, a_1, a_2, \dots, a_n \in \Sigma, n \geq 1}
             $
 \end{outline}
 
@@ -252,12 +253,12 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \subsection{启示}
 \begin{outline}
     \1 对无穷对象的描述
-        \2 $\left\{0^n | n \geq 1\right\}$
+        \2 $\set*{0^n | n \geq 1}$
             \3 $0$ 是 $S$的元素
             \3 $\forall x \in S, x0 \in S$
             \3 $S \to 0$
             \3 $S \to S0$
-        \2 $\left\{0^n1^m | n, m \geq 1\right\}$
+        \2 $\set*{0^n1^m | n, m \geq 1}$
             \3 $0 \in S$ \\
                $\forall x \in S, 0x, x1 \in S$
             \3 $S \to 01$ \\
@@ -267,13 +268,13 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
                $S_1 \to S_10$ \\
                $S_2 \to 0$ \\
                $S_2 \to S_20$
-        \2 $\left\{0,1\right\}^*$
+        \2 $\set*{0,1}^*$
             \3 $\epsilon \in S$ \\
                $\forall x \in S, 0x, 1x \in S$
             \3 $S \to \epsilon$ \\
                $S \to 0S $\\
                $S \to 1S $
-        \2 $\left\{0,1\\right\}^*\left\{11\right\}\{0,1}^*$
+        \2 $\set*{0,1}^*\set*{11}\set*{0,1}^*$
             \3 $11 \in S$ \\
                $\forall x \in S, 0x, 1x, x0, x1 \in S$
             \3 $S \to 11$ \\
@@ -400,7 +401,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \subsection{文法的构造}
 \begin{outline}
-    \1 $L(G) = \left\{0,1,00,11\right\}$
+    \1 $L(G) = \set*{0,1,00,11}$
         \2 $G_1: S \to 0 | 1 | 00 | 11$
         \2 $G_2: S \to A | B | AA | BB, A \to 0, B \to 1$
         \2 $G_3: S \to 0 | 1 | 0A | 1B, A \to 0, B \to 1$
@@ -466,12 +467,12 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \1 $L(G) = L(G_1) \cup L(G_2)$
 
         $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P_3, S)$ \\
-        $P_3 = \left\{S \to S_1 | S_2\right\}$
+        $P_3 = \set*{S \to S_1 | S_2}$
 
     \1 $L(G) = L(G_1)^*$
 
-        $G_* = \paren*{V_1 \cup \left\{S\right\}, T, P_1 \cup P_2, S}$ \\
-        $P_2 = \left\{S \to \epsilon | SS_1\right\}$
+        $G_* = \paren*{V_1 \cup \set*{S}, T, P_1 \cup P_2, S}$ \\
+        $P_2 = \set*{S \to \epsilon | SS_1}$
 
 \end{outline}
 
@@ -489,16 +490,16 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
         $G = (V_1 \cup V_2 \cup {S}, T, P_1' \cup P_2 \cup P_3, S_1)$
 
-        $P_1' = \left\{A \to a B | A \to a B \in P_1\right\}$
+        $P_1' = \set*{A \to a B | A \to a B \in P_1}$
         
-        $P_3 = \left\{A \to a S_2 | A \to a \in P_1\right\}$
+        $P_3 = \set*{A \to a S_2 | A \to a \in P_1}$
 
     \1 $L(G) = L(G_1) \cup L(G_2)$
 
         $G_\cup = (V_1 \cup V_2 \cup {S}, T, P_1 \cup P_2 \cup P, S)$ \\
         $\begin{aligned}
-            P & = \left\{S \to \alpha | S_1 \to \alpha \in P_1\right\} \\
-            & \cup \left\{S \to \alpha | S_2 \to \alpha \in P_2\right\} \\
+            P & = \set*{S \to \alpha | S_1 \to \alpha \in P_1} \\
+            & \cup \set*{S \to \alpha | S_2 \to \alpha \in P_2} \\
         \end{aligned}$
 
     \1 $L(G) = L(G_1)^*$
@@ -588,7 +589,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \begin{definition}
     有穷状态自动机$M = (Q, \Sigma, \delta, q_0, F)$识别的语言：
-    $L(M) = \left\{x | \delta(q_0, x) \in F\right\}$
+    $L(M) = \set*{x | \delta(q_0, x) \in F}$
 \end{definition}
 
 \begin{definition}
@@ -597,7 +598,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 
 \begin{definition}
     对于有穷自动状态机$M = (Q, \Sigma, \delta, q_0, F)$，$set(q) = 
-    \left\{x | \delta(q_0, x) = q\right\}$
+    \set*{x | \delta(q_0, x) = q}$
 
     所以有：$\Sigma^* = \bigcup_{q \in Q}set(q)$；
     $\forall q,p \in Q, q \ne p, set(q) \cap set(p) = \emptyset $
@@ -614,7 +615,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{definition}
 
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x000 | x \in \left\{0,1\right\}^*}$。 
+    构造$M$，使得$L(M) = \set*{x000 | x \in \set*{0,1}^*}$。 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
             \tikzstyle{every node}+=[inner sep=0pt]
@@ -652,7 +653,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{example}
 \begin{example}
     
-    构造$M$，使得$L(M) = \set*{0x0 | x \in \left\{0,1\right\}^*}$。 
+    构造$M$，使得$L(M) = \set*{0x0 | x \in \set*{0,1}^*}$。 
 
 
     \begin{center}
@@ -772,7 +773,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{example}
 
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x | x \in \left\{0,1\right\}^+ \mathrm{and} \text{ x的第三个字符是1}}$。 
+    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的第三个字符是1}}$。 
 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
@@ -804,7 +805,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{center}        
 \end{example}
 \begin{example}
-    构造$M$，使得$L(M) = \set*{x | x \in \left\{0,1\right\}^+ \mathrm{and} \text{ x的倒数第三个字符是1}}$。 
+    构造$M$，使得$L(M) = \set*{x | x \in \set*{0,1}^+ \mathrm{and} \text{ x的倒数第三个字符是1}}$。 
     \begin{center}
         \begin{tikzpicture}[scale=0.2]
         \tikzstyle{every node}+=[inner sep=0pt]
@@ -889,13 +890,13 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $Q, \Sigma, q_0, F$ 同 FA。
 
     $\delta$: $Q \times \Sigma \to 2^Q$ (幂集)，\\
-    $\delta(q, a) = \left\{p_1, p_2, \dots, p_n\right\}$表示M
+    $\delta(q, a) = \set*{p_1, p_2, \dots, p_n}$表示M
     在状态$q$读入$a$可以选择进入$p_i$
 
     扩展$\delta$为$\hat{\delta}: Q \times \Sigma^* \to 2^Q$
    
     \begin{align*}
-            \hat{\delta}(q,\epsilon)  & = \left\{q\right\} \\
+            \hat{\delta}(q,\epsilon)  & = \set*{q} \\
             \hat{\delta}(q, wa) & = \bigcup_{q_0 \in \hat{\delta}(q,w)}\delta(q_0, a)
     \end{align*}
 
@@ -1020,18 +1021,18 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     DFA $M' = (2^Q, \Sigma, \delta', [q_0], F')$
 
     $F'= \set*{[q_1, q_2, \dots, q_n] |
-     \left\{q_1, q_2, \dots, q_n\right\} \cap F \ne \emptyset}$
+     \set*{q_1, q_2, \dots, q_n} \cap F \ne \emptyset}$
 
     $\delta'([q_1, q_2, \dots, q_n], a) = 
     [\beta_1, \beta_2, \dots, \beta_n] \iff 
-    \delta(\left\{q_1, q_2, \dots, q_n\right\}, a) = \left\{\beta_1, \beta_2, \dots, \beta_n\right\}
+    \delta(\set*{q_1, q_2, \dots, q_n}, a) = \set*{\beta_1, \beta_2, \dots, \beta_n}
     $
 
     所以，对于$\forall M$ 是NFA，可以构造DFA $M'$
 \end{theorem}
 
 \begin{example}
-    构造DFA $M$， $L(M) = \left\{0^n1^m2^k | n,m,k \ge 1\right\}$
+    构造DFA $M$， $L(M) = \set*{0^n1^m2^k | n,m,k \ge 1}$
 
 \begin{center}
     \begin{tikzpicture}[scale=0.2]
@@ -1088,9 +1089,9 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $\epsilon-\mathrm{NFA}$ $M=(Q,\Sigma,\delta,q_0,F)$：
 
     $\delta$：状态转义函数。
-    $\delta: Q \times (\Sigma \cup \left\{\epsilon\right\}) \to 2^Q$
+    $\delta: Q \times (\Sigma \cup \set*{\epsilon}) \to 2^Q$
 
-    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\left\{p_1, p_2, \dots, p_n\right\}$：
+    其中，对于$\forall q \in Q, \delta(q, \epsilon)=\set*{p_1, p_2, \dots, p_n}$：
     表示在$q$状态不读入任何字符，可以将状态变为$p_1, p_2, \dots, p_n$，称为
     $M$在$q$状态做了一次空移动（$\epsilon$移动）
 
@@ -1128,7 +1129,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     证明：设$\epsilon-NFA$ $M = (Q, \Sigma, \delta, q_0, F)$：
 
     取$M' = \left(Q, \Sigma, \hat{\delta}, q_0, \begin{cases}
-        F \cup \left\{q_0\right\} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
+        F \cup \set*{q_0} & F \cap \epsilon-CLOSURE(q_0) \ne \emptyset \\
         F & F \cap \epsilon-CLOSURE(q_0) = \emptyset
     \end{cases}\right)$
 \end{theorem}
@@ -1144,24 +1145,291 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     $G=(Q, \Sigma, P, q_0)$
 
     $\begin{aligned}
-        P &= \left\{q \to ap | \delta(q, a) = p\right\} \cup 
-    \left\{q \to a | \forall \delta(q, a) \in F\right\} \cup
-    \left\{q_0 \to \epsilon | q_0 \in F\right\} \\
-        & = \left\{q \to ap | \delta(q, a) = p\right\} \cup 
-        \left\{q \to \epsilon | q \in F\right\} \\
+        P &= \set*{q \to ap | \delta(q, a) = p} \cup 
+    \set*{q \to a | \forall \delta(q, a) \in F} \cup
+    \set*{q_0 \to \epsilon | q_0 \in F} \\
+        & = \set*{q \to ap | \delta(q, a) = p} \cup 
+        \set*{q \to \epsilon | q \in F} \\
     \end{aligned}$
 \end{theorem}
 
 \begin{theorem}
     对$\forall\;\text{RG}\;G,\;\exists\; \text{FA} \;M$使得$L(G) = L(M)$。
 
-    构造：对于RG $G={V, T, P, S}$，RG为右线性文法。
+    构造：对于RG $G=\paren*{V, T, P, S}$，RG为右线性文法。
 
-    取FA $M=(V \cup \left\{f\right\},T,\delta,S, \left\{f\right\})$，其中
+    取FA $M=(V \cup \set*{f},T,\delta,S, \set*{f})$，其中
 
-    $\delta(A, a) = \left\{B | \forall A \to aB \in P\right\} \cup 
-    \left\{f | \forall A \to a \in P\right\} \cup
+    $\delta(A, a) = \set*{B | \forall A \to aB \in P} \cup 
+    \set*{f | \forall A \to a \in P} 
     $
 \end{theorem}
+
+\section{正则表达式}
+
+\subsection{正则表达式的基本概念}
+\begin{definition}
+    $\sigma$上的RE是满足如下条件的式子：
+    \begin{outline}
+        \1 $\epsilon$ 是RE，表示的语言$L(\epsilon) = \set*{\epsilon}$
+        \1 $\emptyset$ 是RE，表示的语言$L(\emptyset) = \emptyset$
+        \1 $\forall a \in \sigma,\; a$是RE，表示的语言$L(a) = \set{a}$
+        \1 $\forall r, s$是RE且分别表示$R,S$，则有：
+            \2 $(r+s)$是RE，表达的语言$L(r+s) = R \cup S$
+            \2 $(rs)$是RE，表达的语言$L(r+s) = RS$
+            \2 $(r^*)$是RE，表达的语言$L(r+s) = R^*$
+    \end{outline}
+    约定1：运算符优先级$* > \times > +$ \\
+    约定2：引入正闭包$r^+ = r^*r$
+\end{definition}
+
+\begin{definition}
+    如果$L(r) = L(s)$，则称$r = s$
+
+    不难看出：
+    \begin{outline}
+        \1 $(r+s) + t = r+(s+t)$
+        \1 $r+s = s+r$
+        \1 $(rs)t = r(st)$
+        \1 $r(s+t) = rs + rt$
+        \1 $(r+s)t = rt + st$
+        \1 $r+r = r$
+        \1 如果$L(s) \subseteq L(r)$，则$s+r = r$
+        \1 $r\epsilon = \epsilon r = r$
+        \1 $\emptyset r = r \emptyset = \emptyset$ \\
+            $\emptyset + r = r$
+    \end{outline}
+
+    约定：当意思明确时，用$r$ 表示 $L(r)$
+\end{definition}
+
+\begin{example}
+    $\Sigma = \set{0,1}$
+    \begin{outline}[enumerate]
+        \1 至少含3个1的01串构成的语言：\\ 
+            $0^*10^*10^*1(0+1)^*$
+        \1 最多含3个1的01串构成的语言：\\ 
+            $0^*(1+\epsilon)0^*(1+\epsilon)0^*(1+\epsilon)0^*$
+        \1 不含1的01串构成的语言：\\ 
+            $0^*$
+        \1 偶数个0的01串： \\
+            $(1^*01^*0)^*1^*$
+    \end{outline}
+\end{example}
+
+\begin{definition}
+    \begin{outline}
+        \1 $r^0 = \epsilon$
+        \1 $r^n = r^{n-1}r$
+    \end{outline}
+
+    显然：
+    \begin{outline}
+        \1 $r^nr^m = r^{n+m}$
+        \1 $r^n + s^n \ne (r+s)^n$
+        \1 $r^ns^n \ne (rs)^n$
+    \end{outline}
+\end{definition}
+
+\subsection{RE \textrightarrow FA}
+
+\begin{proof}
+    识别$\epsilon$的FA：\\
+    \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.3,-23.1) circle (3);
+        \draw [black] (26.3,-23.1) circle (2.4);
+        \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+        \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+    \end{tikzpicture}
+
+    识别$\epsilon$的FA： \\
+    \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.3,-23.1) circle (3);
+        \draw [black] (33.6,-23.1) circle (3);
+        \draw [black] (33.6,-23.1) circle (2.4);
+        \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+        \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+    \end{tikzpicture}
+
+    识别$a$的FA： \\
+    \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.3,-23.1) circle (3);
+        \draw [black] (38.5,-23.1) circle (3);
+        \draw [black] (38.5,-23.1) circle (2.4);
+        \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+        \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+        \draw [black] (29.3,-23.1) -- (35.5,-23.1);
+        \fill [black] (35.5,-23.1) -- (34.7,-22.6) -- (34.7,-23.6);
+        \draw (32.4,-23.6) node [below] {$a$};
+        \end{tikzpicture}
+
+    观察得到：上述3个FA具有如下性质：
+    \begin{outline}[enumerate]
+        \1 有且只有一个终止状态
+        \1 没有从终止状态出发的狐
+    \end{outline}
+
+    设$M_r, M_S$是$r, s$的具有上述2个性质的FA，则： 
+
+    识别$(r+s)$的FA： \\
+    \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.3,-23.1) circle (3);
+        \draw [black] (36.1,-17.2) circle (3);
+        \draw (36.1,-17.2) node {$M_r$};
+        \draw [black] (36.1,-29.6) circle (3);
+        \draw (36.1,-29.6) node {$M_s$};
+        \draw [black] (45.9,-23.1) circle (3);
+        \draw [black] (45.9,-23.1) circle (2.4);
+        \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+        \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+        \draw [black] (28.87,-21.55) -- (33.53,-18.75);
+        \fill [black] (33.53,-18.75) -- (32.59,-18.73) -- (33.1,-19.59);
+        \draw (32.07,-20.65) node [below] {$\epsilon$};
+        \draw [black] (28.8,-24.76) -- (33.6,-27.94);
+        \fill [black] (33.6,-27.94) -- (33.21,-27.08) -- (32.66,-27.92);
+        \draw (30.32,-26.85) node [below] {$\epsilon$};
+        \draw [black] (38.67,-18.75) -- (43.33,-21.55);
+        \fill [black] (43.33,-21.55) -- (42.9,-20.71) -- (42.39,-21.57);
+        \draw (40.13,-20.65) node [below] {$\epsilon$};
+        \draw [black] (38.6,-27.94) -- (43.4,-24.76);
+        \fill [black] (43.4,-24.76) -- (42.46,-24.78) -- (43.01,-25.62);
+        \draw (41.88,-26.85) node [below] {$\epsilon$};
+    \end{tikzpicture}
+
+    识别$rs$的FA： \\
+    \begin{tikzpicture}[scale=0.2]
+    \tikzstyle{every node}+=[inner sep=0pt]
+    \draw [black] (26.3,-23.1) circle (3);
+    \draw [black] (35.9,-23.1) circle (3);
+    \draw (35.9,-23.1) node {$M_r$};
+    \draw [black] (45.6,-23.1) circle (3);
+    \draw (45.6,-23.1) node {$M_s$};
+    \draw [black] (54.9,-23.1) circle (3);
+    \draw [black] (54.9,-23.1) circle (2.4);
+    \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+    \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+    \draw [black] (29.3,-23.1) -- (32.9,-23.1);
+    \fill [black] (32.9,-23.1) -- (32.1,-22.6) -- (32.1,-23.6);
+    \draw (31.1,-23.6) node [below] {$\epsilon$};
+    \draw [black] (38.9,-23.1) -- (42.6,-23.1);
+    \fill [black] (42.6,-23.1) -- (41.8,-22.6) -- (41.8,-23.6);
+    \draw (40.75,-23.6) node [below] {$\epsilon$};
+    \draw [black] (48.6,-23.1) -- (51.9,-23.1);
+    \fill [black] (51.9,-23.1) -- (51.1,-22.6) -- (51.1,-23.6);
+    \draw (50.25,-23.6) node [below] {$\epsilon$};
+    \end{tikzpicture}
+
+    识别$r^*$的FA： \\
+    \begin{tikzpicture}[scale=0.2]
+        \tikzstyle{every node}+=[inner sep=0pt]
+        \draw [black] (26.3,-23.1) circle (3);
+        \draw [black] (36.3,-23.1) circle (3);
+        \draw (36.3,-23.1) node {$M_r$};
+        \draw [black] (46.1,-23.1) circle (3);
+        \draw [black] (46.1,-23.1) circle (2.4);
+        \draw [black] (18.1,-23.1) -- (23.3,-23.1);
+        \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
+        \draw [black] (29.3,-23.1) -- (33.3,-23.1);
+        \fill [black] (33.3,-23.1) -- (32.5,-22.6) -- (32.5,-23.6);
+        \draw (31.3,-23.6) node [below] {$\epsilon$};
+        \draw [black] (39.3,-23.1) -- (43.1,-23.1);
+        \fill [black] (43.1,-23.1) -- (42.3,-22.6) -- (42.3,-23.6);
+        \draw (41.2,-23.6) node [below] {$\epsilon$};
+        \draw [black] (27.724,-20.471) arc (143.41431:36.58569:10.556);
+        \fill [black] (44.68,-20.47) -- (44.6,-19.53) -- (43.8,-20.13);
+        \draw (36.2,-15.71) node [above] {$\epsilon$};
+        \draw [black] (37.623,-25.78) arc (54:-234:2.25);
+        \draw (36.3,-30.35) node [below] {$\epsilon$};
+        \fill [black] (34.98,-25.78) -- (34.1,-26.13) -- (34.91,-26.72);
+    \end{tikzpicture}
+\end{proof}
+
+\begin{theorem}
+    对于$\forall$ RE $r, \exists$ FA $M$，使得$L(M) = L(r)$
+\end{theorem}
+
+\section{正则语言的性质}
+\subsection{正则语言的泵引理}
+\begin{example}
+    如何证明$L = \set{0^n1^n ｜n \ge 1}$ 不是RL？
+
+    假设$L$是RL。DFA $M = (Q, \Sigma, \delta, q_0, F)$ 使得$L(M) = L$。
+
+    记$|Q| = N,\; N \ge 1$，取$0^n1^n \in L, n \ge N$。
+
+    设$q_i$为$M$读取$0^n1^n$的前$i$位时的状态。注意到$n \ge N$，所以在
+    $q_0, q_1, \dots, q_n$中至少有两个重复状态。不妨设$q_i = q_j$是最早重复
+    的状态。则$0 \le i,j \le N$。
+
+    所以：
+    \begin{outline}
+        \1 $\delta(q_0, 0^i) = q_i$
+        \1 $\delta(q_i, 0^{j-i}) = q_j$
+        \1 $\delta(q_j, 0^{n-j}1^n) = q_2n \in F$
+    \end{outline}
+
+    所以：$\delta(q_i, {(0^{j-i})}^k) = q_i = q_j$。
+    也就是说，对于$\forall k \ge 0$，$\delta(q_0, 0^i{(0^{j-i})}^k0^{n-j}1^n) \in F$
+\end{example}
+
+\begin{lemma}
+    正则语言的的泵引理。对于$\forall\; RL\; L$，存在一个仅依赖与$L$的正整数$N$，对于$\forall z
+    \in L, |z| \ge N$,则存在$u, v, w$满足以下条件：
+    \begin{outline}
+        \1 $uvw = z$
+        \1 $|uv| \le N$
+        \1 $|v| \ge 1$
+        \1 对于$\forall k \ge 0$，$uv^kw \in L$
+    \end{outline}
+\end{lemma}
+
+\begin{example}
+    证明$L=\set{0^p|p\text{是质数}}$不是RL。
+
+    设$L$是RL。$N$是泵引理所说正整数。设$x$为大于$N$的最小质数。
+
+    取$z = 0^x$。取$v = 0^l,\; l \ge 1$。$uv^kw = 0^{x+(k-1)l}$。
+
+    当$k = x+1$时，有$x+(x+1-1)l = (l+1)x$是合数，所以$uv^kw \notin L$，与泵引理矛盾。
+
+    所以L不是RL。
+\end{example}
+
+\subsection{RL的封闭性}
+\begin{theorem}
+    RL对于并、乘、闭包封闭。
+
+    证明： 根据正则表达式的定义，定理显然成立。\qed
+\end{theorem}
+\begin{theorem}
+    RL对补运算封闭。
+
+    证明：把对应的DFA的F取反，可构造新的DFA，可构造新的RL。
+\end{theorem}
+\begin{theorem}
+    RL对交运算封闭。
+
+    证明：$L1 \cup L2 = \overline{\overline{L1} \cap \overline{L2}}$
+\end{theorem}
+
+\subsection{Myhill定理}
+\begin{definition}
+    $\begin{aligned}[t]
+        x R_M y & \iff \delta(q_0, x) = \delta(q_0, y) \\
+            & \iff \exists q \in Q, x, y \in set(q)
+    \end{aligned}$
+\end{definition}
+\begin{definition}
+    $\begin{aligned}[t]
+        x R_L y & \iff \forall z \in Ssigma^*, xz \in L \iff yz \in L
+    \end{aligned}$
+\end{definition}
+\begin{definition}
+    R是右不变的是指如果$xRy$则有$\forall z \in \Sigma^*, xzRyz$
+\end{definition}
 
 \end{document}

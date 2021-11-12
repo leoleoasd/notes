@@ -1,0 +1,7 @@
+id
+type: problem, homework, contest
+topic_id: problem_id or homework_id
+parent_id:
+user_id:
+content:
+vote_count: int

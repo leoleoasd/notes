@@ -1,0 +1,43 @@
+\markdownRendererHeadingOne{数据需求描述}\markdownRendererInterblockSeparator
+{}disclaimer: 本文档基于\markdownRendererLink{EduOJ}{https://github.com/EduOJ/backend}{https://github.com/EduOJ/backend}{}的数据库设计中的用户、班级、作业、权限管理部分。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{管理员:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 用户增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 班级增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 作业增删改查\markdownRendererUlItemEnd 
+\markdownRendererUlItem 成绩查询、修改\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{用户相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 姓名，学号，密码，邮箱\markdownRendererUlItemEnd 
+\markdownRendererUlItem 权限相关：\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 『全局权限』（如：某个用户有权限创建用户、修改用户、创建班级、创建题目）\markdownRendererUlItemEnd 
+\markdownRendererUlItem 『针对权限』（如：某个用户有针对id为5的班级的添加学生权限）\markdownRendererUlItemEnd 
+\markdownRendererUlItem 希望能够『批量管理』：把权限授予给『角色』，让『用户』拥有『角色』。\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 统计信息，加快查询速度\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{班级相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 课程名称，课堂名称，管理老师，课程描述\markdownRendererUlItemEnd 
+\markdownRendererUlItem 用户、作业\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 和用户是多对多关系\markdownRendererUlItemEnd 
+\markdownRendererUlItem 和作业是多对多关系\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{作业相关}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 标题，起止日期\markdownRendererUlItemEnd 
+\markdownRendererUlItem 多道题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 统计成绩\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{成绩查询、修改}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 用户、班级、作业、成绩\markdownRendererUlItemEnd 
+\markdownRendererUlItem 根据用户做题记录生成，用于加快计算，\markdownRendererStrongEmphasis{有数据冗余}。\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingOne{数据库设计}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{ER图}\markdownRendererInterblockSeparator
+{}\markdownRendererImage{EduOJ用户、班级、作业、权限管理部分ER图}{./course-design-er.pdf}{./course-design-er.pdf}{}\relax

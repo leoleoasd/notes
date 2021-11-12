@@ -1,0 +1,168 @@
+\markdownRendererHeadingOne{数据需求描述}\markdownRendererInterblockSeparator
+{}disclaimer: 本文档基于\markdownRendererLink{EduOJ}{https://github.com/EduOJ/backend}{https://github.com/EduOJ/backend}{}的数据库设计。\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{a}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{管理员:}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{用户相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建, 更新, 查找用户\markdownRendererUlItemEnd 
+\markdownRendererUlItem 批量创建\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{题目相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 名称\markdownRendererUlItemEnd 
+\markdownRendererUlItem 描述\markdownRendererUlItemEnd 
+\markdownRendererUlItem sample\markdownRendererUlItemEnd 
+\markdownRendererUlItem Hint (内容, 触发条件, 错误示例). 减少部分常见答疑工作\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 触发条件指: 比如某道题mle 就提示 这道题卡了某种会导致mle的算法\markdownRendererUlItemEnd 
+\markdownRendererUlItem 这个条件比较简陋\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 语言选项\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 其它选项 - 比如补充代码\markdownRendererUlItemEnd 
+\markdownRendererUlItem 静态分析\markdownRendererUlItemEnd 
+\markdownRendererUlItem 语言 (C, C++, Python, Java, etc.)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 编译方式 (O2?)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 比较方式\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererUlItemEnd 
+\markdownRendererUlItem 是否开放评论区(同学们可能在评论区讨论/发正确答案等)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 公开与否(public, private). 用户能看到public的题以及作业/比赛中涉及到的private题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 添加测试点 (in, out, 公开与否)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理题目(更新, 删除等功能)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 标签, 类型\markdownRendererUlItemEnd 
+\markdownRendererUlItem 算法\markdownRendererUlItemEnd 
+\markdownRendererUlItem 分支结构, 循环结构\markdownRendererUlItemEnd 
+\markdownRendererUlItem 按照标签筛选\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{提交相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 查看提交\markdownRendererUlItemEnd 
+\markdownRendererUlItem 标记提交的错因\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{比赛 + 考试 相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 名称\markdownRendererUlItemEnd 
+\markdownRendererUlItem 时间\markdownRendererUlItemEnd 
+\markdownRendererUlItem 封榜?\markdownRendererUlItemEnd 
+\markdownRendererUlItem 赛制(acm, oi)\markdownRendererUlItemEnd 
+\markdownRendererUlItem \markdownRendererStrongEmphasis{静态分析 + 语义匹配的分数}\markdownRendererUlItemEnd 
+\markdownRendererUlItem 公开?\markdownRendererUlItemEnd 
+\markdownRendererUlItem 比赛添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 参与比赛的人自动获取 比赛中的即使是private的题的权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 设置通用的语言选项, 优先级比题目高 \markdownRendererStrongEmphasis{查重} 可选\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{班级相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建班级\markdownRendererUlItemEnd 
+\markdownRendererUlItem 邀请学生(邀请码, 批量创建用户, 批量邀请)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 作业管理\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理(踢人啥的)\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{作业相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 创建作业 (一个作业属于一个班级)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 导出作业模板\markdownRendererUlItemEnd 
+\markdownRendererUlItem 导入作业模板\markdownRendererUlItemEnd 
+\markdownRendererUlItem 从作业id克隆\markdownRendererUlItemEnd 
+\markdownRendererUlItem 是否可评论\markdownRendererUlItemEnd 
+\markdownRendererUlItem 管理作业\markdownRendererUlItemEnd 
+\markdownRendererUlItem 开始时间, 结束时间\markdownRendererUlItemEnd 
+\markdownRendererUlItem 添加题目\markdownRendererUlItemEnd 
+\markdownRendererUlItem 查看作业完成情况\markdownRendererUlItemEnd 
+\markdownRendererUlItem 积分策略\markdownRendererUlItemEnd 
+\markdownRendererUlItem 每道题的分数\markdownRendererUlItemEnd 
+\markdownRendererUlItem 超时策略\markdownRendererUlItemEnd 
+\markdownRendererUlItem 附件?\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{权限相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 管理员: 所有权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 教师: 有创建班级, 发布作业, 创建用户权限, 由管理员赋予权限\markdownRendererUlItemEnd 
+\markdownRendererUlItem 助教: 对于自己被指定的班级, 有除了删除等危险操作的所有权限.\markdownRendererUlItemEnd 
+\markdownRendererUlItem non-edit?\markdownRendererUlItemEnd 
+\markdownRendererUlItem student\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{学生端}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{练习系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 看题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 做题\markdownRendererUlItemEnd 
+\markdownRendererUlItem 花费一定点数来看错因\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评论某一道题(discuss)\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评价某一道题(vote)\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{作业系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 加入班级\markdownRendererUlItemEnd 
+\markdownRendererUlItem 看题, 做题, 看错因\markdownRendererUlItemEnd 
+\markdownRendererUlItem 评价, 评论作业\markdownRendererUlItemEnd 
+\markdownRendererUlItem \markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{比赛系统相关:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem 报名公共比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 被邀请参与公共比赛\markdownRendererUlItemEnd 
+\markdownRendererUlItem 参赛, 看榜单, ...\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererHeadingFour{TODO:}\markdownRendererInterblockSeparator
+{}debug 防作弊 ? 课堂派 课件方式 自动放出 参考 \markdownRendererStrongEmphasis{bitnami} http://maple.bjut.edu.cn/ 3-204\markdownRendererInterblockSeparator
+{}实用性需求 1. 语义匹配 2. 防作弊（人工）\markdownRendererInterblockSeparator
+{}debug\markdownRendererInterblockSeparator
+{}现有的实战研究 是否有提升?\markdownRendererInterblockSeparator
+{}问卷, 成绩对比\markdownRendererInterblockSeparator
+{}一个创新点, 深入研究 (主要点) 其他简单说 (未来拓展)\markdownRendererInterblockSeparator
+{}面向C语言教学.了解都教什么内容\markdownRendererInterblockSeparator
+{}创新点 1. 自动的 题目评价 分类 标签 推荐系统 1. 输入输出 2. 分支结构 3. 循环结构 4. 定义函数? 5. 结构体? 2. 与抽象语法树结合的语义匹配给分 1. clang API 3. 自动的 测试用例生成 1. 根据规则 2. 自动生成边界条件 4. 基于调研现有系统产生的创新点 5. 相关的实证研 1. 使用系统以后，对老师：节省了多少工作量；对学生：成绩有多大的提升 6. 错因分析 1. 手动的典型错误答复设置 2. 审核新出现的错误答案 3. 人工打标签, 面向c语言教学. 4. 实验性自动化 ?\markdownRendererInterblockSeparator
+{}文字的格式 排版\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{前端: ant design pro}\markdownRendererInterblockSeparator
+{}web VScode\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{后端:}\markdownRendererInterblockSeparator
+{}hypref\markdownRendererInterblockSeparator
+{}redis mysql\markdownRendererInterblockSeparator
+{}HTML Rest API文档\markdownRendererInterblockSeparator
+{}权限:\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{中间服务: 存文件}\markdownRendererInterblockSeparator
+{}hash 文件权限 下载自己提交过的代码 下载测试数据\markdownRendererInterblockSeparator
+{}docker\markdownRendererInterblockSeparator
+{}RabbitMQ 任务队列\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{Judge server: Docker}\markdownRendererInterblockSeparator
+{}python\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingOne{模型}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{users}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/0d3210759a9c666792ae7d929a73e33f.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{groups}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/e324e92e358d60a27137e9eeb234d9ef.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{user\markdownRendererEmphasis{in}groups}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/a7c853c2a253aeae6f04d56e8417d565.verbatim}{id}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{problems}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/10ea160c9ca83cb0a7b6ecdec594ab17.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{problem\markdownRendererEmphasis{has}options}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/c99df32da4ba9a40e3138f65d40623b3.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{judge_options}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/91aa7d5af0fac2ecdd6081179c6a953c.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{testcases}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/a85ae62b7330653c462626e3ab86b94b.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{discusses}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/efcb02e8396e6457ed0bd0d476c4a641.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{votes}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/0d6ceca37cc54c06c5764abf7a7b1593.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{homeworks}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/4fdb24915cb6ed38046cd454c7a9350a.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{homework\markdownRendererEmphasis{has}problems}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/f235f909ce103fa3e01bb447d2ff1407.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{submit}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/af5008eef2bcc1d1b1be35f8fb975bd8.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{judge_run}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/f44a40de3f26d37cdfa4c12607bf372a.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{sample\markdownRendererEmphasis{judge}run}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/ca23869a524db954b08164752e9a4bf2.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{hint}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/9aadd7a0152b961731237bd36bedbc9a.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{contest}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/2e1c274b0a61d3061606a02cc92b5834.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{user\markdownRendererEmphasis{in}contest}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/621f7ed240edeb07783c86db7eac56f5.verbatim}{}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingThree{contest\markdownRendererEmphasis{has}problem}\markdownRendererInterblockSeparator
+{}\markdownRendererInputFencedCode{./_markdown_course-design-docs/620be106e9e4ca334b951e0197bd1488.verbatim}{}\relax

@@ -1,0 +1,16 @@
+id
+user_id
+problem_id
+submit_id
+testcase_id
+type: normal contest
+judged: bool
+status: WA,AC,TLE,MLE
+mem_used: int // x Kb
+time_used: int // ms
+code_file
+input_file
+output_file
+output_hash
+compiler_output_file
+answer_file

@@ -1,0 +1,9 @@
+id
+name
+type: oi or acm
+public: bool
+starts_at
+freeze_at
+unfreeze_at
+ends_at
+vote_count

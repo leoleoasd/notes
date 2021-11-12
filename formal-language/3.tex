@@ -1,0 +1,51 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{形式语言第三次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}[enumerate]
+    \1[4.] 下列各式成立吗？请证明你的结论。
+        \2[(3)] $rs = sr$
+        
+        不成立。如：令$r = a,\;s = b$。则$rs$识别的语言为$\set{ab}$，$sr$
+        识别的语言为$\set{ba}$。
+        \2[(6)] $(r+s)^* = r^* + s^*$
+
+        不成立。如：令$r = a,\;s = b$。则$rs$识别的语言为$a,b$组成的串，$sr$
+        识别的语言为$a$组成的串或$b$组成的串。
+\end{outline}
+
+\end{document}

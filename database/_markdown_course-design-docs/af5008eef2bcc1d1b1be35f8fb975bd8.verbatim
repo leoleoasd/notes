@@ -1,0 +1,11 @@
+id
+user_id
+problem_id
+type: normal contest
+contest_id: int nullabl
+code_file
+judged: bool
+result: string:
+    if normal: 0-100
+    if contest: WA,AC,TLE,MLE
+option: json
