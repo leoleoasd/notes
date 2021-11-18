@@ -1387,6 +1387,17 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{outline}
 \end{lemma}
 
+\begin{lemma}
+    拓展的泵引理。对于$\forall\; RL\; L$，存在一个仅依赖与$L$的正整数$N$，对于$\forall z = z_1z_2z_3
+    \in L, |z_2| \ge N$,则存在$u, v, w$满足以下条件：
+    \begin{outline}
+        \1 $uvw = z_2$
+        \1 $|uv| \le N$
+        \1 $|v| \ge 1$
+        \1 对于$\forall k \ge 0$，$uv^kw \in L$
+    \end{outline}
+\end{lemma}
+
 \begin{example}
     证明$L=\set{0^p|p\text{是质数}}$不是RL。
 
@@ -1399,6 +1410,17 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     所以L不是RL。
 \end{example}
 
+\begin{example}
+    设$L = \set{0^{2n} | n \ge 1}$，证明L不是RL。
+
+    假设N是仅依赖于L的正整数。取$z = 0^{2N}$，取$u = 0^l$, $v = 0$, $w = 0^{2N - l - 1}$。
+
+    $uv^kw = 0^{2N + (k-1)}$ 当$k = 0$时，$uv^kw = 0^{2N - 1} \ne L$。
+
+    与泵引理矛盾，所以L不是RL。
+
+    \hl{证明错误！不能取$v = 0$，要让$\forall v $矛盾！}
+\end{example}
 \subsection{RL的封闭性}
 \begin{theorem}
     RL对于并、乘、闭包封闭。
@@ -1408,12 +1430,12 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \begin{theorem}
     RL对补运算封闭。
 
-    证明：把对应的DFA的F取反，可构造新的DFA，可构造新的RL。
+    证明：把对应的DFA的F取反，可构造新的DFA，可构造新的RL。\qed
 \end{theorem}
 \begin{theorem}
     RL对交运算封闭。
 
-    证明：$L1 \cup L2 = \overline{\overline{L1} \cap \overline{L2}}$
+    证明：$L1 \cup L2 = \overline{\overline{L1} \cap \overline{L2}}$\qed
 \end{theorem}
 
 \subsection{Myhill定理}
@@ -1425,11 +1447,74 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \end{definition}
 \begin{definition}
     $\begin{aligned}[t]
-        x R_L y & \iff \forall z \in Ssigma^*, xz \in L \iff yz \in L
+        x R_L y & \iff \forall z \in \Sigma^*, xz \in L \iff yz \in L
     \end{aligned}$
 \end{definition}
 \begin{definition}
     R是右不变的是指如果$xRy$则有$\forall z \in \Sigma^*, xzRyz$
 \end{definition}
+\begin{theorem}
+    对于DFA M，如果$x R_M y$，则$x R_{L(M)} y$。
+    
+    证明：由$x R_M y$知$\delta(q_0, x) = \delta(q_0, y)$。不妨设其为
+    $q_1$。
+
+    对于$\forall z \in \Sigma^*$，$\delta(q_0, xz) =  \delta(\delta(q_0, x), z) = \delta(q_1, z) 
+    = \delta(q_0, yz)$。不妨设其为$q_2$。
+
+    如果$xz \in L$，则有$q_2 \in F$，所以$yz \in L$。反之亦然。
+
+    所以 $xz \in L \iff yz \in L$。
+    所以 $x R_M y \iff x R_{L(M)} y$
+    \qed
+\end{theorem}
+
+\begin{theorem}
+    Myhill定理。以下3个命题等价：
+    \begin{outline}[enumerate]
+        \1 L 是 RL
+        \1 L 是 $\Sigma^*$上的某个具有有穷指数的右不变等价关系的某些等价类的并。
+        \1 $R_L$ 具有有穷指数。
+    \end{outline}
+
+    \begin{proof}
+        $1 \Rightarrow 2$。
+
+        设L是RL，DFA M使得$L(M) = L$。
+
+        $R_M$是$\Sigma^*$上的右不变等价关系，且$|\Sigma^* / R_M| \le |Q|$。
+
+        $\displaystyle L = \bigcup_{q \in F}set(q)$
+    \end{proof}
+
+    \begin{proof}
+        $2 \Rightarrow 3$。
+
+        设$L$是$\Sigma^*$上的具有有穷指数的右不变等价关系$R$的某些等价类的并。
+
+        下面证明如果$x R y$，那么$x R_L y$。
+
+        设$x, y \in \Sigma^*, xRy$。由$R$的右不变性，对于$\forall z \in \Sigma^*$，$xzRyz$。
+
+        再注意到$L$是$R$的某些等价类的并，且$xz,yz$在同一个等价类中，所以$xz \in L \iff yz \in L$。
+        
+        所以$x R_L y$。
+    \end{proof}
+
+    \begin{proof}
+        $3 \Rightarrow 1$。
+        
+        设$R_L$具有有穷指数。取$M' = (\Sigma^*/R_L, \Sigma, \delta', [\epsilon], \set{[x] | x \in L})$
+
+        $\delta'([a], x) = [ax]$。显然，$L(M') = L$。
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    在同构意义下，$M'$是状态最少的唯一识别L的DFA。
+\end{theorem}
+
+\subsection{DFA的最小化}
+用极小化算法得到的DFA去掉不可达状态后得到的DFA为状态最少的DFA。
 
 \end{document}

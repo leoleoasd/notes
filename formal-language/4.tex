@@ -1,0 +1,67 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{形式语言第四次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}[enumerate]
+    \1[2.] 下列语言都是字母表$\Sigma = \set{0, 1}$上的语言。他们哪些是RL，哪些不是RL？
+        \2[(1)] $\set{0^2n | n \ge 1}$
+
+            是RL。可构造RE=$00(00)^*$
+        \2[(3)] $\set{0^n1^m0^n | n, m \ge 1}$
+
+            不是RL。
+
+            设$L$是RL。$N$是泵引理所说正整数。
+
+            取$z = uvw = 0^N10^N$。令$v = 0^x$。所以$u = 0^{N-x}$，$w = 10^N$。
+
+            当k = 0时，有$uv^kw = 0^{N-x}10^N \ne L$，与泵引理矛盾。
+
+            所以L不是RL。
+
+    \1[11.] 
+        \2[(3)] $L(M) = L(M_1) - L(M_2)$
+            $M = (Q_1 \times Q_2, \Sigma, \delta, [q_{01}, q_{02}], F_1 \times (Q_2 - F_2))$
+
+            $\delta([q, p], a) = [\delta_1(q, a), \delta_2(p, a)]$
+        \2[(4)] $L(M) = L(M_1) \cup L(M_2)$
+        $M = (Q_1 \times Q_2, \Sigma, \delta, [q_{01}, q_{02}], Q_1 \times F_2 \cup Q_2 \times F_1)$
+
+        $\delta([q, p], a) = [\delta_1(q, a), \delta_2(p, a)]$
+\end{outline}
+
+\end{document}
