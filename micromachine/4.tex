@@ -1,0 +1,111 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{第四次微机接口作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}[enumerate]
+    \1 若某一终端以2400波特的速率发送异步串行数据，发送1位需要多少时间？假如一个字符包含7个数据位、1个奇偶校验位、1个停止位，发送1个字符需要多少时间？
+
+        \2 需要 $1 / 2400 = 0.42 ms$。
+        \2 需要 $1 / 2400 \times (7 + 1 + 1 + 1) = 4.2ms$
+    \1 若8251A以9600波特的速率发送数据，波特率因子为16，发送时钟TxC频率为多少？
+        \2 153600
+    \1 若8251A的端口地址为FF0H，FF2H，要求8251A工作于异步工作方式，波特率因子为16，有7个数据位，1个奇校验位，1个停止位，试对8251A进行初始化编程。
+\begin{minted}{gas}
+MOV DX,FF2H
+MOV AL,5AH
+OUT DX,AL
+MOV AL,00010101B
+out DX, AL
+\end{minted}
+
+\1 某微机系统用串行方式接收外设送来的数据，再把数据送到CRT去显示，若波特率为1200，波特率因子为16，用8253产生收发时钟，系统时钟频率为5MHz，收发数据个数为COUNT，数据存放到数据段中以BUFFER为始址的内存单元中。8253和8251A的基地址分别为300H和304H。
+\2 画出系统硬件连线图。
+\2 编写8253和8251A的初始化程序。
+\2 编写接收数据和发送数据的程序
+\begin{minted}{gas}
+mov dx, 303h
+mov al, 110100b
+out dx, al
+mov dxm 300h
+mov al, 260
+out dx, al
+mov al, 0
+out dx, al
+mov dx, 305h
+mov al, 7ah
+out dx, al
+mov al, 15h 
+out dx, al
+
+L0: mov dx, 305h
+L1: in al, dx
+test al, 02h
+jz l1
+test al, 38h
+jnz err
+mov dx, 304h
+in al, dx
+mov bl, al
+jmp L0
+err: jmp err
+\end{minted}
+\1 设8255A的A口，B口，C口和控制字寄存器的端口地址分别80H,82H,84H和86H。要求A口工作在方式0输出，B口工作在方式0输入，C口高4位输入，低4位输出，试编写8255A的初始化程序。
+\begin{minted}{gas}
+mov al, 10001010b
+out 086h, al
+\end{minted}
+\1 8255A的端口地址同第1题，要求PC4输出高电平，PC5输出低电平，PC6输出一个正脉冲，试写出完成这些功能的指令序列。
+\begin{minted}{gas}
+; PC4高电平
+mov al, 1001b
+out 86h, al
+; PC5低电平
+mov al, 1010b
+out 86h, al
+
+; PC6正脉冲
+mov al, 1101b
+out 86h, al
+mov al, 1100b
+out 86h, al
+mov al, 1101b
+out 86h, al
+\end{minted}
+
+\end{outline}
+\end{document}

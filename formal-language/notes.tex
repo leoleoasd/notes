@@ -1,4 +1,3 @@
-% !TEX program = xelatex
 \documentclass{ctexart}
 
 %\usepackage{CJKutf8}
@@ -13,6 +12,8 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{minted}
 \usetikzlibrary{automata,positioning}
 \newcommand{\hl}[1]{\colorbox{yellow}{#1}}
 \newcommand{\tto}{\Rightarrow}
@@ -1510,6 +1511,8 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     \end{proof}
 \end{theorem}
 
+\hl{意义：L是RL的充要条件}
+
 \begin{theorem}
     在同构意义下，$M'$是状态最少的唯一识别L的DFA。
 \end{theorem}
@@ -1517,4 +1520,139 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
 \subsection{DFA的最小化}
 用极小化算法得到的DFA去掉不可达状态后得到的DFA为状态最少的DFA。
 
+\begin{outline}
+    \1 寻找可以（应该）合并的类/状态
+    \1 算法实现： \\
+        找出所有不可合并的类
+\end{outline}
+\subsubsection{证明L 是/不是 RL}
+\begin{outline}[enumerate]
+    \1 证明L是RL。
+
+        证明$R_L$的指数有穷。
+    \1 证明L不是RL：
+        
+        证明$R_L$的指数无穷。
+\end{outline}
+\begin{example}
+    证明 $\set{0^n1^m|n,m \ge 1}$ 是RL。
+
+    $R_L$的指数应该有穷。首先分析L的特征：
+    \begin{outline}[enumerate]
+        \1 0和1的个数非0。
+        \1 0不能出现在1后面。
+    \end{outline}
+
+    故，分成如下几类：
+
+    \begin{outline}[enumerate]
+        \1 0在1后面（$\set{x | x\text{中有子串}10}$）
+        \1 $\set{0^n1^m | n,m \ge 1}$
+        \1 $\set{\epsilon}$
+        \1 $1^n$
+        \1 $0^n$
+    \end{outline}
+
+    观察发现，1和5可以合并，因此得到：
+
+    $\Sigma^* / R_L = \set*{[\epsilon], [0], [01], [10]}$。$R_L$的
+    指数为4，所以L是RL。
+\end{example}
+\begin{example}
+    证明 $\set{0^n1^n | n \ge 0}$ 不是RL。
+
+    易得，对于$\forall i \ne j \in N$，$0^i \cancel{R_L} 0^j$
+    因此$R_L$的指数无穷。
+\end{example}
+\section{CFL 上下文无关语言}
+\subsection{CFG}
+\begin{definition}
+    CFG $G=(V, T, P, S)$的语法树为满足如下条件的树：
+
+    \begin{outline}[enumerate]
+        \1 每个节点的标记$x \in V \cup T \cup \set{\epsilon}$
+        \1 如果节点V的标记为$A$，V从左到右的子节点$V_1,V_2,\dots,V_k$
+        的标记依次为$y_1,y_2,\dots,y_k$，则$A \to y_1y_2\dots y_k \in P$
+        \1 根节点标记为S
+        \1 中间节点的标记为变量$x \in V$
+        \1 从左到右的叶子节点$v_1,\dots,v_n$的标记$x_1,\dots,x_n$
+        组成的串$x_1x_2\dots x_n$为该树的结果。
+        \1 如果v的标记为$\epsilon$，则它没有兄弟。
+        % \1 如果节点V的标记为终结符号，则它是叶子节点。
+    \end{outline}
+\end{definition}
+\begin{example}
+    $X \to (S) | S | \epsilon$，请画出句型$((S))$的语法树。
+\end{example}
+\begin{definition}
+    满足语法树定义中除第三条外条件的树，称作A-子树。
+\end{definition}
+\begin{theorem}
+    有一颗结果为$\alpha$的语法树$\iff S \overset{*} \Rightarrow \alpha $
+\end{theorem}
+\begin{definition}
+    每一步派生均实施在当前句型最右变量上的派生叫最右派生。
+
+    每一步派生均实施在当前句型最左变量上的派生叫最左派生。
+\end{definition}
+\begin{theorem}
+    最左派生与最右派生的语法树是一一对应的。
+\end{theorem}
+\begin{definition}
+    如果CFG G有句子有棵颗不同的语法书，则G是二义性的。
+\end{definition}
+\begin{definition}
+    如果CFL L没有非二义性文法，则称之为固有二义性的。
+\end{definition}
+\subsection{去无用符号}
+\begin{definition}
+    X是有用符号，即$\exists X \in L(G)$，$S \overset{*} \Rightarrow
+    \alpha X \beta \overset{*} \Rightarrow x$。
+
+    X是有用的，必须同时满足如下两条：
+    \begin{outline}[enumerate]
+        \1 $S \overset{*} \Rightarrow \alpha X \beta$
+            
+            如何判断？
+
+            \2 $V' = \set{S} \cup \set{A | S \to \alpha A \beta \in P}$
+
+                $T' = \set{a | S \to \alpha a \beta \in P}$
+            \2 重复 \\
+            $V' = V' \cup \set{B | A \to \alpha B \beta \in P \& A in V'}$ \\
+            $T' = T' \cup \set{a | A \to \alpha a \beta \in P \& A in V'}$
+        \1 $X \overset{*} \Rightarrow w, w \in T^*$
+        
+            $G = (V, T, P, S)$，对于：
+
+            $\forall a \in T$，$a$满足2。
+        
+            $\forall A \in V$，如何判断$A$是否满足2？
+            % \begin{outline}[enumerate]
+                \2 $V' = \set{A | A \to w \in P}$
+                \2 重复 $V' = \set{A | A \to \alpha, \alpha \in (V' \cup T)^*} \cup V'$
+        % \end{outline}
+    \end{outline}
+\end{definition}
+\begin{theorem}
+    对于$\forall$ CFG G，$\exists$ CFG $G'$，
+    \begin{outline}[enumerate]
+        \1 $L(G') = L(G)$
+        \1 $G'$中无无用符号。
+    \end{outline}
+\end{theorem}
+\begin{definition}
+    如果$A \overset{*} \Rightarrow \epsilon$，则称A为可空变量。
+\end{definition}
+\begin{theorem}
+    对于$\forall$ CFG $G, G'$：
+    \begin{outline}[enumerate]
+        \1 $G'$中无空产生式
+        \1 $L(G') = L(G) - \set{\epsilon}$
+    \end{outline}
+    对于$A \to x_1x_2\dots x_n$，增加$A \to y_1y_2\dots y_n$，其中
+    当$x_i$不是可空变量时，$y_i = x_i$，否则$y_i = x_i$或$\epsilon$。
+
+    注意$y_1y_2\dots y_n$不能都为$\epsilon$。
+\end{theorem}
 \end{document}
