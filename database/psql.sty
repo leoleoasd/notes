@@ -1,0 +1,35 @@
+\ProvidesPackage{psql}
+\RequirePackage{minted}
+\RequirePackage{fancyvrb}
+\makeatletter
+\def\run{\FV@Environment{}{run}}
+\def\FVB@run{%
+  \@bsphack
+  \begingroup
+    \FV@UseKeyValues
+    \FV@DefineWhiteSpace
+    \def\FV@Space{\space}%
+    \FV@DefineTabOut
+    \def\FV@ProcessLine{\immediate\write\FV@OutFile}%
+    \immediate\openout\FV@OutFile temp.sql\relax
+    \let\FV@FontScanPrep\relax
+%% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
+    \let\@noligs\relax
+%% DG/SR modification end
+    \FV@Scan}
+\def\FVE@run{\immediate\closeout\FV@OutFile\endgroup\@esphack
+    \noindent\fbox{%
+        \parbox{\textwidth}{%
+            \noindent 代码：%
+            \inputminted[bgcolor=bg]{sql}{temp.sql}%
+            \noindent 执行结果：%
+            \immediate\write18{rm temp.result}%
+            \immediate\write18{bash -c "$(cat test.env | xargs) psql -f temp.sql > temp.result 2>&1 $()"}% 
+            % empty $() here fixes latex workshop's code highlight.
+            % else there will be a single $, which will cause wrong highlight on whole tex file.
+            \inputminted[bgcolor=bg,breaklines=true]{text}{temp.result}%
+        }%
+    }
+}
+\DefineVerbatimEnvironment{run}{run}{}
+\makeatother
