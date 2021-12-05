@@ -1,0 +1,86 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{minted}
+\usepackage{tabularx}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\title{系统软件课设上机考核说明文档}
+\author{卢雨轩}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Stride调度介绍}
+
+在pintos中，我们阅读了默认实现的FCFS算法，并亲手实现了优先级调度、MLFQ调度。但是，以上两种算法均不能控制进程之间运行的时间的比例。下面，请你在pintos的最基本状态下，实现stride调度算法。
+
+\subsection{算法步骤}
+\begin{outline}[enumerate]
+    \1 为每一个进程设置一个当前stride，表示该进程已经运行的『长度』。另外，设置其对应的pass值（只与进程的优先级有关系），表示进程在调度后，stride需要进行的累加值。
+    \1 \emph{每次需要调度时}，从当前 ready 态的进程中选择 stride 最小的进程调度。对于获得调度的进程 P，将对应的 stride 加上其对应的步长 pass。
+    \1 一个时间片后，回到上一步骤，重新调度当前 stride 最小的进程。
+\end{outline}
+
+可以证明，如果令 $\mathrm{P.{pass} = \frac{BigStride}{P.{priority}}}$，其中 P.priority 表示进程的优先权（大于 1），而 BigStride 表示一个预先定义的大常数，则该调度方案为每个进程分配的时间将与其优先级成正比。证明过程我们在这里略去，有兴趣的同学可以在网上查找相关资料。
+
+\subsection{算法细节}
+\begin{outline}
+    \1 stride 调度要求\emph{进程优先级 $p \ge 2$}，所以设定进程优先级 $p \le 1$ 会导致错误。
+    \1 进程初始 stride 设置为 0 即可。
+\end{outline}
+
+\subsection{注意事项}
+在工程实践中，我们会使用固定大小的数据类型（如\texttt{int32\_t}）来存储stride，自然，我们会遇到溢出问题。你的算法应该能够在\emph{上列细节的条件}下正确处理溢出后stride的比较，保证每次能够选出不溢出时stride最大的进程。
+
+\section{考核要求}
+\subsection{任务说明}
+你需要在\emph{我们提供的修改pintos}上实现stride调度。需要的常数和变量已经定义（\texttt{BIG\_STRIDE}和\texttt{stride}）。你需要复用pintos本身的、用于实现优先级调度的优先级变量（\texttt{struct thread}中的\texttt{priority}域）并保证\texttt{thread\_set\allowbreak\_priority}和\texttt{thread\_get\_priority}工作正常。
+
+你不应该修改\texttt{threads.h}中\texttt{BIG\_STRIDE}的定义。
+\subsection{测试点说明}
+考核共有4个测试，在\texttt{threads}文件夹中运行\texttt{make check}即可运行测试。\emph{pintos自带的测试已经被删除。}其中2个测试点是\emph{隐藏的}。我们会在评测时补充隐藏测试点的内容，现在运行测试会得到固定的『测试不通过』。
+
+\begin{table}[h]
+    \caption{测试点内容说明}
+    \centering
+    \begin{tabularx}{\textwidth}{cXc} 
+    \toprule
+    测试名称            & 测试内容   & 是否隐藏  \\
+    \midrule
+    stride-one      & 一个进程的情况是否能正确运行                              & 否     \\
+    stride-two      & 两个进程的情况下，能否正常运行，且运行时间是否与优先级成正比              & 否     \\
+    stride-multiple & 多个进程的情况下，能否正常运行，且运行时间是否与优先级成正比              & 是     \\
+    stride-overflow & 多个进程的情况下，且stride可能溢出时，能否正常运行，且运行时间是否与优先级成正比 & 是     \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\end{document}

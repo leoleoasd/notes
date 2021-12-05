@@ -1,0 +1,108 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }\title{数据库第四章作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+\begin{document}
+\maketitle
+\begin{outline}[enumerate]
+    \1 设有关系模式R(U,F)。其中，$U=\set{A, B, C, D},F=\set{AB→C,  C→D,  D→A}$, 求R的所有键码。
+
+        B只出现在左边。
+        \begin{equation*}
+            \begin{cases}
+            AB: AB \to C, C \to D \\
+            BC: C \to D, D \to A \\
+            BD: D \to A, AB \to C \\
+            \end{cases}
+        \end{equation*}
+        所以$AB,BC,BD$均为键码。
+    \1 已知两个关系模式$R1(\set{A,B,C,E}, \set{A→B,C→E})$和$R2(\set{A,C,D}, \set{(A,C)→D})$。问：在函数依赖范围内，R1和R2分别是第几范式的？
+        \2 R1
+
+            R1的键码：$AC$
+            \3 1NF：符合。属性原子。
+            \3 2NF：符合。无部分依赖。
+            \3 3NF：复合。无传递依赖。
+            \3 BCNF：$A \to B$，B不是超码。不符合。
+
+            所以是3NF。
+        \2 R2
+
+            R2的键码：$AC$。
+
+
+            \3 1NF：符合。属性原子。
+            \3 2NF：符合。无部分依赖。
+            \3 3NF：复合。无传递依赖。
+            \3 BCNF：$AC \to D$，AC是超码，复合。
+
+            所以是BCNF。
+    \1 设有关系模式$R(U,F)$。其中，$U=\set{ A, B, C,D，E },F=\set{ D→E,  E→A, BD→C }$,且已知R的键码是$(B,D)$。请设计R的一个子模式，它把R无损连接性地分解到BCNF。（写出计算过程）。
+        \2 $\rho = \set{R(U,F)}$
+        \2 $D \to E$不符合BCNF。
+            \3 $D_F^+ = \set{D,E,A}$
+            \3 $U \to \begin{cases}
+                U_1 = \set{A,D,E} \\
+                U_2 = \set{B,C,D}
+            \end{cases}$
+            \3 $\rho = \begin{cases}
+                R_1(\set{A,D,E}, \set{D \to E, E \to A}) \\
+                R_2(\set{B,C,D}, \set{BD \to C})
+            \end{cases}$
+            \3 $R_1$不符合BCNF。
+        \2 $E \to A$ 不符合BCNF。
+            \3 $E_{F_1}^+ = \set{E, A}$
+            \3 $U \to \begin{cases}
+                U_1 = \set{E,A} \\
+                U_2 = \set{D,E} \\
+            \end{cases}$
+            \3 $\rho = \begin{cases}
+                R_{11}(\set{A,E}, \set{E \to A}) \\
+                R_{12}(\set{D,E}, \set{D \to E}) \\
+                R_2(\set{B,C,D}, \set{BD \to C})
+            \end{cases}$
+    \1 设有关系模式$R(U,F)$。其中，$U=\set{ A, B, C,D，E },    F=\set{ A→B,  B→A, B→C,A→C, C→A , D→E }$, 请设计R的一个子模式ρ ，它把R保持函数依赖地分解到3NF（写出计算过程）。
+        \2 $F = \set{ A→B,  B→A, B→C,A→C, C→A , D→E }$
+        \2 $F_m = \set{ A→B,  B→C, C→A , D→E }$
+        \2 $U_0' = \emptyset$
+        \2 $\begin{cases}
+            F_1 = \set{A \to B} \\
+            F_2 = \set{B \to C} \\
+            F_3 = \set{C \to A} \\
+            F_4 = \set{D \to E} \\
+        \end{cases}$
+        \2 $\begin{cases}
+            R_1(\set{A,B}, \set{A \to B}) \\
+            R_2(\set{B,C}, \set{B \to C}) \\
+            R_3(\set{A,C}, \set{C \to A}) \\
+            R_4(\set{D,E}, \set{D \to E}) \\
+        \end{cases}$
+\end{outline}
+\end{document}

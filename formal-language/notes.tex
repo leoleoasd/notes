@@ -1605,6 +1605,8 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
     如果CFL L没有非二义性文法，则称之为固有二义性的。
 \end{definition}
 \subsection{去无用符号}
+
+\subsubsection{去除无用符号}
 \begin{definition}
     X是有用符号，即$\exists X \in L(G)$，$S \overset{*} \Rightarrow
     \alpha X \beta \overset{*} \Rightarrow x$。
@@ -1641,6 +1643,9 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
         \1 $G'$中无无用符号。
     \end{outline}
 \end{theorem}
+
+
+\subsubsection{去除$\epsilon-$产生式}
 \begin{definition}
     如果$A \overset{*} \Rightarrow \epsilon$，则称A为可空变量。
 \end{definition}
@@ -1650,9 +1655,158 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
         \1 $G'$中无空产生式
         \1 $L(G') = L(G) - \set{\epsilon}$
     \end{outline}
-    对于$A \to x_1x_2\dots x_n$，增加$A \to y_1y_2\dots y_n$，其中
+    对于$A \to x_1x_2\dots x_n$，替换为$A \to y_1y_2\dots y_n$，其中
     当$x_i$不是可空变量时，$y_i = x_i$，否则$y_i = x_i$或$\epsilon$。
 
     注意$y_1y_2\dots y_n$不能都为$\epsilon$。
 \end{theorem}
+
+\subsubsection{去单一产生式}
+\begin{definition}
+    形如$A \to B$的产生式是单一产生式。
+\end{definition}
+\begin{definition}
+    对$\forall$ CFG G，$\exists$ CFG $G', L(G') = L(G)$，$G'$中无单一产生式。
+
+    推论：对于$\forall$ CFG $G$, 存在$CFG$ G' 使得$L(G') = L(G)$，且$G'$没有无用符，$\epsilon -$产生式和单一产生式。
+\end{definition}
+
+\subsection{CNF 乔姆斯基范式}
+\begin{definition}
+    如果G的产生式均具有以下形式：
+    
+    $$
+    \begin{cases}
+        A \to BC \\
+        A \to a
+    \end{cases}
+    $$
+
+    则称之为CNF。
+\end{definition}
+\subsection{GNF 格雷巴赫范式}
+\begin{definition}
+    如果G的产生式均具有以下形式：
+    
+    $$
+        A \to a\alpha, \alpha \in V^*
+    $$
+
+    则称之为GNF。
+\end{definition}
+
+\begin{example}
+    $A \to Aa | b = \begin{cases}
+        A \to b | bB \\
+        B \to a | aB
+    \end{cases}$
+\end{example}
+
+\begin{example}
+    $A \to Aa | Ab | c | d = \begin{cases}
+        A \to c | d | cB | dB \\
+        B \to a | b | aB | bB
+    \end{cases}$
+\end{example}
+\begin{example}
+    $
+        A \to  A\alpha_1 | A\alpha_2 | A\alpha_3 | \beta_1 | \beta_2 
+        = \begin{cases}
+            A \to \beta_1 | \beta_2 | \beta_1B | \beta_2B \\
+            B \to \alpha_1 | \alpha_2  | \alpha_3 | \alpha_1B | \alpha_2B | \alpha_3B
+        \end{cases}
+    $
+\end{example}
+
+\begin{example}
+    $
+        \begin{cases}
+            S \to ABS | BAA \\
+            A \to BB | BAA \\
+            B \to aB | b
+        \end{cases} = \begin{cases}
+            S \to aBBBS | bBBS | aBAABS | bAABS 
+                    aBAA | bAA\\
+            A \to aBB | bB | aBAA | bAA \\
+            B \to aB | b
+        \end{cases}
+    $
+\end{example}
+
+步骤：
+\begin{outline}[enumerate]
+    \1 给变量排序
+    \1 从$A_1$到$A_n$逐一使产生式满足如下要求：
+
+    $A_i \to A_h \alpha, j \ge i$
+    \1 从$A_{n-1}$开始通过回代，逐一使$A_{n-1},A_{n-2}\dots$的产生式满足要求
+    \1 通过代入，使第二步中引入的新变量的产生式满足要求。
+
+    关键： \hl{去左递归}
+
+    如：
+
+    $$
+    \begin{cases}
+        A \to A\alpha_1 | A\alpha_2 | \dots | A\alpha_n \\
+        A \to \beta_1 | \beta_2 | \dots | \beta_m
+    \end{cases}
+    $$
+    为所有A产生式，且$\beta_1, \beta_2, \dots, \beta_m$的首字母不是A，可以用如下的产生式组替代：
+    $$
+    \begin{cases}
+        A \to \beta_1 | \beta_2 | \dots | \beta_m | \beta_1 A' | \beta_2 A' | \dots | \beta_, A' \\
+        A' \to \alpha_1 A' | \alpha_2 A' | \dots | \alpha_n A' | \alpha_1 | \alpha_2 | \dots | \alpha_n
+    \end{cases}
+    $$
+\end{outline}
+\begin{theorem}
+    对于$\forall$化简了的CFG，$\exists$ GNF 与之等价。
+\end{theorem}
+
+\section{PDA 下推自动机}
+\subsection{PDA的定义}
+\begin{definition}
+    PDA $M = (Q, \Sigma, \Gamma, \delta, q_0, z_0, F)$
+    其中：
+    \begin{description}
+        \item[$Q$]：状态的有穷集合
+        \item[$\Sigma$]： 输入字母表
+        \item[$\Gamma$]： 栈符号的非空有穷集
+        \item[$\delta$]： 状态转义函数\\
+            $Q\times (\Sigma \cup \set{\epsilon}) \times \Gamma \to 2^{Q \times \Gamma^*} $。 
+            
+            $\forall (q,a,A) \in Q\times (\Sigma \cup \set{\epsilon}) \times \Gamma$，
+            $\delta(q,a,A) = \set{(p_1,\gamma_1),\dots,(p_k,r_k)}$表示$M$在状态$q$，栈顶为$A
+            $时读到$a$，将栈顶符号$A$弹出，将$\gamma_i$依次压入栈，并将状态改为$p_i$。
+
+            $\forall (q,A) \in Q\times \Gamma$，
+            $\delta(q,\epsilon,A) = \set{(p_1,\gamma_1),\dots,(p_k,r_k)}$表示$M$在状态$q$，栈顶为$A
+            $时做空移动，将栈顶符号$A$弹出，将$\gamma_i$依次压入栈，并将状态改为$p_i$。
+        \item[$q_0$]：开始状态
+        \item[$z_0 \in \Gamma$]：栈底符号
+        \item[$F$]： 终止状态 
+    \end{description}
+\end{definition}
+
+\begin{definition}
+    PDA M的ID $(q, x, \alpha) = Q \times \Sigma^* \times \Gamma^*$
+
+    其中 $q$ 是M的当前状态， $x$是M的输入带上剩余串，$\alpha$是M的栈中当前的内容。
+
+    设M当前的ID是$(q, ax, A\alpha)$，如果$(p, \gamma) \in \delta(q, a, A)$，则M的ID变为$(p, x, \gamma \alpha)$，记作$(q, ax, A\alpha) \vdash_M (p, x, \gamma\alpha)$。
+
+    如果$(p, \gamma) \in \delta(q, \epsilon, A)$，则M的ID变为$(p, ax, \gamma \alpha)$，记作$(q, ax, A\alpha) \vdash_M (p, ax, \gamma\alpha)$。
+    
+    $\vdash_M$ 是 $Q \times \Sigma^* \times \Gamma^*$上的二元关系。
+\end{definition}
+
+\begin{definition}
+    $M = (Q, \Sigma, \Gamma, \delta, q_0, z_0, F)$
+
+    用终态识别的语言$L(M) = {x | (q_0, x, z_0) \vdash^* (q, \epsilon, \alpha) \text{ and } q \in F}$。
+
+    用空栈识别的语言$N(M) = {x | (q_0, x, z_0) \vdash^* (q, \epsilon, \epsilon) \text{ and } q \in F}$。
+\end{definition}
+
 \end{document}

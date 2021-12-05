@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{minted}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\titleformat*{\section}{\LARGE\scshape}
+\titleformat*{\subsection}{\Large\scshape}
+
+\title{\textsc{System Software Course Design Programming Test\\ Instructions Document}}
+% \author{卢雨轩}
+% \date{\today}
+% \ctexset{
+%     section = {
+%         titleformat = \raggedright,
+%         name = {,},
+%         number = \chinese{section}、
+%     },
+%     paragraph = {
+%         runin = false
+%     },
+%     today = small,
+%     figurename = 图,
+%     contentsname = 目录,
+%     tablename = 表,
+% }
+
+\begin{document}
+
+\maketitle
+
+\section{Instructions To Stride Scheduling}
+
+In pintos, we read the FCFS algorithm which shipped with pintos and implemented priority scheduling, MLFQ scheduling by hand. However, neither of these two algorithms can control the ratio of time running between processes. In the following, you are asked to implement the stride scheduling algorithm in the basic state of pintos.
+
+% 在pintos中，我们阅读了默认实现的FCFS算法，并亲手实现了优先级调度、MLFQ调度。但是，以上两种算法均不能控制进程之间运行的时间的比例。下面，请你在pintos的最基本状态下，实现stride调度算法。
+
+\subsection{Algorithm Steps}
+\begin{outline}[enumerate]
+    \1 Set a current \texttt{stride} for each process, which indicates the `length' that the process has been running. In addition, set its corresponding \texttt{pass} value (as far as the priority of the process is concerned), which indicates the accumulation value that the stride needs to perform after the process is scheduled.
+    \1 \emph{every time scheduling is needed}, selects the process with the smallest \texttt{stride} from among the processes in the current ready state and schedules it. For the process P that gets scheduled, the corresponding \texttt{pass} is added to its \texttt{stride}.
+    \1 After one time slice, go back to the previous step and reschedule the process with the smallest \texttt{stride}.
+\end{outline}
+
+It can be shown that if we make $\mathrm{P.pass = \frac{BigStride}{P.{priority}}}$, where P.priority denotes the priority of the process (greater than 1) and BigStride denotes a predefined large constant, the time allocated to each process by this scheduling scheme will be proportional to its priority proportional to its priority. We omit the proof process here, and interested students can find the relevant information on the Internet.
+
+\subsection{Implementation Details}
+\begin{outline}
+    \1 \texttt{stride} scheduling requires \emph{process priority $p \ge 2$}, so setting process priority $p \le 1$ will result in an error.
+    \1 The initial \texttt{stride} of process is set to 0.
+\end{outline}
+
+\subsection{Notes}
+In engineering practice, we use fixed-size data types (e.g. \texttt{int32\_t}) to store \texttt{stride}, and naturally, we will encounter overflow problems. Your algorithm should be able to correctly handle the comparison of \texttt{stride} after overflow under \emph{implementation details listed above}, ensuring that the process with the largest \texttt{stride} when not overflowing can be selected each time.
+
+\section{Test Requirements}
+\subsection{Task Description}
+You need to implement stride scheduling on \emph{modified pintos we provided}. The required constants and variables are already defined (\texttt{BIG\_STRIDE} and \texttt{stride}). You need to reuse the priority variables of pintos itself, used to implement priority scheduling (\texttt{struct thread.priority}) and ensure that \texttt{thread\_set\allowbreak\_priority} and \texttt{thread\_get\_priority} work properly.
+
+You should not modify the definition of \texttt{BIG\_STRIDE} in \texttt{threads.h}.
+
+\subsection{Tests Description}
+
+There are 4 tests in the test, and you can run \texttt{make check} in the \texttt{threads} folder to run those tests. \emph{Tests shipped with original pintos has been removed.} Two of the tests are \emph{hidden}. We will add the hidden tests during grading, for now, running the test will get a fixed `test failed'.
+
+\begin{table}[h]
+    \caption{Test content description}
+    \centering
+    \begin{tabularx}{\textwidth}{cXc} 
+    \toprule
+    Test name            & Test detail   & Hidden  \\
+    \midrule
+    stride-one      & Dose your code work properly with one process & false  \\
+    stride-two      & Does your code work properly with two processes and whether the runtime is proportional to the priority  & false     \\
+    stride-multiple & Does your code work properly with multiple processes and whether the runtime is proportional to the priority & true     \\
+    stride-overflow & Does your code work properly with multiple processes, considering overflow, and whether the runtime is proportional to the priority  & true \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\end{document}

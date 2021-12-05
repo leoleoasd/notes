@@ -41,7 +41,7 @@
 \maketitle
 
 \begin{run}
-    \l
+SELECT datname FROM pg_database WHERE datistemplate = false;
 \end{run}
 \begin{run}
 show databases;
@@ -53,7 +53,7 @@ create database test;
 
 \begin{run}
 select 1;
-select 1;
+select 2;
 \end{run}
 
 \end{document}
