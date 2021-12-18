@@ -128,7 +128,7 @@ $\forall x,y,z,w,v \in \Sigma^*$, given that $x=yz, w=yv$, then:
 	\item $z$ is the Suffix of $x$
 	\item if $z \neq \epsilon$, $y$ is "Proper Prefix" of $x$
 	\item if $y \neq \epsilon$, $z$ is "Proper Suffix" of $x$
-	\item $y$ is the "Common Suffix" of $x$ and $w$
+	\item $y$ is the "Common prefix" of $x$ and $w$
 \end{enumerate}
 For example, if $x = 0110$:
 \begin{itemize}
@@ -452,7 +452,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
         所以，某种意义上二者等价。其中，\emph{左线性文法的表述好。}\\
         \hl{\emph{左递归}？}
         \emph{线性文法不是正则文法！}
-    \1 $\forall G, \exists G', L(G') = L(G)$，但是$G'$中的开好似符号不出现在任何
+    \1 $\forall G, \exists G', L(G') = L(G)$，但是$G'$中的开始符号不出现在任何
     产生式的右部，且在$\epsilon \in L(G')$时，$G'$中只有$S' \to \epsilon$这样一个
     $\epsilon$产生式。
 \end{outline}
@@ -1244,7 +1244,7 @@ Note that: $L^+ = L^* \iff \epsilon \in L$
         \fill [black] (23.3,-23.1) -- (22.5,-22.6) -- (22.5,-23.6);
     \end{tikzpicture}
 
-    识别$\epsilon$的FA： \\
+    识别$\emptyset$的FA： \\
     \begin{tikzpicture}[scale=0.2]
         \tikzstyle{every node}+=[inner sep=0pt]
         \draw [black] (26.3,-23.1) circle (3);

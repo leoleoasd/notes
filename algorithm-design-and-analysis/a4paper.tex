@@ -1,0 +1,202 @@
+\documentclass[twocolumn,zihao=5,linespread=1,heading=false,autoindent=0pt]{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1cm,bottom=1cm,left=1cm,right=1cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\usepackage{cancel}
+\usepackage{multicol}
+\usepackage{bm}
+% \usepackage{breqn}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+% \usepackage{unicode-math}
+% \setmathfont{texgyrepagella-math.otf}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\makeatletter
+\DeclareRobustCommand{\em}{%
+  \@nomath\em \if b\expandafter\@car\f@series\@nil
+  \normalfont \else \heiti\bfseries \fi}
+\makeatother
+
+\usetikzlibrary{automata,positioning}
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+\newcommand{\tto}{\Rightarrow}
+\pagestyle{empty}
+\newenvironment{citemize}%
+{\begin{itemize}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,labelwidth=1em,leftmargin=*]}
+{\end{itemize}}
+\newenvironment{cenumerate}%
+{\begin{enumerate}[parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt,labelwidth=1em,leftmargin=*]}
+{\end{enumerate}}
+\linespread{1}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\baselineskip}{0pt}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+
+\setlength{\multicolsep}{0.0pt}% 50% of original values
+\setlength{\floatsep}{0pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{0pt plus 2pt minus 2pt}
+\setlength{\intextsep}{0pt plus 2pt minus 2pt}
+\setlength{\medskipamount}{2pt}
+
+\newcommand{\HRule}[1][\medskipamount]{\par
+  \vspace*{\dimexpr-\parskip-\baselineskip+#1}
+  \noindent\rule{\linewidth}{0.2mm}\par
+  \vspace*{\dimexpr-\parskip-.5\baselineskip+#1}}
+
+\newcommand{\includedrawio}[2][]{
+    \immediate\write18{echo open -a /Applications/draw.io.app --args `pwd`/#2 --crop -x -o `pwd`/#2.pdf 2>&1 > t.out}
+    % \immediate\write18{/Applications/draw.io.app/Contents/MacOS/draw.io #2 --crop -x -o #2.pdf}
+    \includegraphics[#1]{#2.pdf}
+}
+
+\ctexset{
+    section = {
+        % titleformat = \raggedright,
+        runin = true,
+        format += \small,
+        name = {,},
+    },
+    subsection/format += \small,
+    subsubsection/format += \small,
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\newtheoremstyle{exampstyle}
+  {0pt} % Space above
+  {0pt} % Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {} % Punctuation after theorem head
+  {2ex} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{exampstyle} \newtheorem{definition}{定义}[section]
+\theoremstyle{exampstyle} \newtheorem{example}{例}[section]
+\theoremstyle{exampstyle} \newtheorem{theorem}{定理}[section]
+\theoremstyle{exampstyle} \newtheorem{lemma}{引理}[section]
+\theoremstyle{exampstyle} \newtheorem{myproof}{证明}[section]
+
+\begin{document}
+\scriptsize
+\section{算法引论}
+\subsection{什么是算法}
+算法是一系列解决问题的清晰指令\\
+算法是满足下述性质的指令序列：有限性、确定性、输入、输出
+\subsection{算法的设计}
+\begin{outline}[citemize]
+    \1 问题建模：对输入和解给出形式化描述
+    \1 设计算法：确保正确
+    \1 分析算法：效率
+\end{outline}
+算法复杂性分析：需要的计算机资源量。时间、空间
+
+依赖与：算法本身，数据规模，算法输入
+
+符号：$O$上界，$\Omega$下界，$\Theta$同时上下界。
+\section{分治}
+将一个难以直接解决的规模较大的问题分解为若干个规模较小的子问题，这些子问题互相独立且与原问题相同。递归地解决这些子问题。然后将各个子问题的解合并得到原问题的解。
+
+\begin{outline}[citemize]
+    \1 如果规模小，直接解决
+    \1 将P划分为$P_1,  P_2, \dots, P_k$
+    \1 for $i \gets 1$ to $k$
+        \2 $y_i = $递归$(P_i)$
+    \1 $return Merge(y_1, y_2, \dots, y_k)$
+\end{outline}
+
+时间：$T(n) = \begin{cases}
+    \Theta(1) & n \le c \\
+    aT(n/b) + D(n) + C(n) & n > c \\
+\end{cases}$
+求解：换名法：
+
+令$ n = 2^k$，$g(k) = T(2^k) = T(n) =  \begin{cases}
+    1 & k = 0 \\
+    2g(k - 1) + 2^k & k > 0 \\
+\end{cases}$
+
+主方法：比较$D(n) + C(n)$与$n^{\log_ba}$。
+
+$T(n) = \begin{cases}
+    \Theta(n^{\log_ba}) & n^{\log_ba} > D(n) + C(n) \\
+    \Theta(n^{\log_ba} \lg n) & n^{\log_ba} = D(n) + C(n) \\
+    \Theta(D(n) + C(n)) & n^{\log_ba} < D(n) + C(n) \\
+\end{cases}$
+
+归并排序、二分检索、芯片测试、多数元素、快速排序、线性时间选择
+
+\section{贪心算法}
+组合优化问题：在某些约束条件下，决定某些\emph{可选择的变量}应该取何值，使所选定的\emph{目标函数达到最优}的问题。
+
+通过对数学方法的研究去寻找离散事件的最优编排、分组、次序或筛选等
+
+组合优化问题的数学模型
+\begin{align*}
+    & \min f(x) \\
+    & s.t.\ g(x) \ge 0 \\
+    & x \in \mathcal{D}
+\end{align*}
+f(x)目标函数，g(x)约束函数，x为决策变量，D表示有限个点组成的集合
+
+总是做出在当前看来最好的选择，即贪心算法并不是从整体最优考虑，它所做的选择只是在某种意义上的局部最优选择
+
+贪心算法则通常以自顶向下的方式进行，以迭代的方式作出相继的贪心选择，每做一次贪心选择就将所求问题简化为规模更小的子问题
+
+前提条件：\emph{贪心选择性质和最优子结构性质}
+
+贪心选择性质：算法可以通过局部最优达到全局最优。
+
+% \subsection{最优子结构性质}
+当一个问题的最优解包含其子问题的最优解时，称此问题具有最优子结构性质。
+
+正确性证明：数学归纳法（步数归纳、问题规模归纳）、交换论证、最优子结构性质+狭义的贪心选择性质
+
+\begin{outline}[citemize]
+    \1 贪心法适用于组合优化问题.
+    \1 求解过程是多步判断过程，最终的判断序列对应于问题的最优解 
+    \1 依据某种“短视的”贪心选择性质判断，性质好坏决定算法的成败
+    \1 贪心法必须进行正确性证明
+    \1 证明贪心法不正确的技巧：举反例
+\end{outline}
+\section{动态规划}
+基本要素：最优子结构、重叠字问题。
+
+基本思想：记忆化搜索
+
+动态规划的基本步骤：
+
+刻画一个最优解的结构特征——子问题划分——最优子结构性质分析证明
+递归地定义最优值——建立递归关系
+以自底向上的方式计算出最优值
+根据计算最优值时得到的信息，构造最优解。
+
+
+\end{document}

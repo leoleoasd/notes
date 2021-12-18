@@ -8,11 +8,23 @@
 \usepackage{outlines}
 \usepackage{graphicx}
 \usepackage{amsthm}
+\usepackage{tabu}
+\usepackage{minted}
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
 \renewcommand{\tableautorefname}{表}
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 \graphicspath{ {./images/} }
+\newcommand*{\fullref}[1]{
+\ifthenelse{\equal{\thepage}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
 
 \title{标题}
 \author{卢雨轩 19071125}
