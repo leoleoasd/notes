@@ -41,15 +41,21 @@
 
 \renewcommand{\fcolorbox}[4][]{#4}
 
+\newcounter{sqlcounter}
+
 \def\FVB@run{%
   \@bsphack%
   \begingroup%
+    \addtocounter{sqlcounter}{1}
     \FV@UseKeyValues%
     \FV@DefineWhiteSpace%
     \def\FV@Space{\space}%
     \FV@DefineTabOut%
     \def\FV@ProcessLine{\immediate\write\FV@OutFile}%
-    \immediate\openout\FV@OutFile temp.sql\relax%
+    \immediate\openout\FV@OutFile sql/temp.sql\relax%
+    \ifnum\c@sqlcounter=1
+        \immediate\write18{rm sql/diff.lock}
+    \fi
     \let\FV@FontScanPrep\relax%
 %% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
     \let\@noligs\relax
@@ -57,18 +63,28 @@
     \FV@Scan}
 
 \def\FVE@run{\immediate\closeout\FV@OutFile\endgroup\@esphack
-    \immediate\write18{rm psql.result}%
-    \immediate\write18{rm gsql.result}%
-    \immediate\write18{bash -c "$(cat gsql.env | xargs) psql -f temp.sql -P format=wrapped -P columns=95 -d \pgdb > gsql.result 2>&1 $()"}%
-    \immediate\write18{bash -c "$(cat psql.env | xargs) psql -f temp.sql -P format=wrapped -P columns=95 -d \pgdb > psql.result 2>&1 $()"}% 
+    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > \thesqlcounter.diff ; then 
+        touch sql/diff.lock;
+    fi;
+    if [ -f sql/diff.lock ] ; then
+        rm sql/*.sql;
+        rm sql/*.result;
+    fi;
+    if [ ! -f sql/diff.lock ] && [ ! -f sql/\thesqlcounter.sql ] ; then
+        mv sql/temp.sql sql/\thesqlcounter.sql;
+        $(cat gsql.env | xargs) psql -f sql/\thesqlcounter.sql -P format=wrapped -P columns=95 -d \pgdb > sql/\thesqlcounter.gsql.result 2>&1 $(); 
+        $(cat psql.env | xargs) psql -f sql/\thesqlcounter.sql -P format=wrapped -P columns=95 -d \pgdb > sql/\thesqlcounter.psql.result 2>&1 $();
+    fi;
+    "}%
+    % \immediate\write18{bash -c ""}% 
 \begin{tcbraster}[snippetraster]
-    \begin{tcolorbox}[listing file=temp.sql,minted language=postgresql]
+    \begin{tcolorbox}[listing file=sql/\thesqlcounter.sql,minted language=postgresql]
         \tcbuselistinglisting
     \end{tcolorbox}
-    \begin{tcolorbox}[listing file=psql.result, minted language=text]
+    \begin{tcolorbox}[listing file=sql/\thesqlcounter.psql.result, minted language=text]
         \tcbuselistinglisting
     \end{tcolorbox}
-    \begin{tcolorbox}[listing file=gsql.result, minted language=text]
+    \begin{tcolorbox}[listing file=sql/\thesqlcounter.gsql.result, minted language=text]
         \tcbuselistinglisting
     \end{tcolorbox}
 \end{tcbraster}
@@ -79,12 +95,13 @@
 \def\FVB@runsilent{%
   \@bsphack%
   \begingroup%
+  \addtocounter{sqlcounter}{1}%
     \FV@UseKeyValues%
     \FV@DefineWhiteSpace%
     \def\FV@Space{\space}%
     \FV@DefineTabOut%
     \def\FV@ProcessLine{\immediate\write\FV@OutFile}%
-    \immediate\openout\FV@OutFile temp.sql\relax%
+    \immediate\openout\FV@OutFile sql/temp.sql\relax%
     \let\FV@FontScanPrep\relax%
 %% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
     \let\@noligs\relax
@@ -92,10 +109,19 @@
     \FV@Scan}
 
 \def\FVE@runsilent{\immediate\closeout\FV@OutFile\endgroup\@esphack
-    \immediate\write18{rm psql.result}%
-    \immediate\write18{rm gsql.result}%
-    \immediate\write18{bash -c "$(cat gsql.env | xargs) psql -f temp.sql -d \pgdb > gsql.result 2>&1 $()"}%
-    \immediate\write18{bash -c "$(cat psql.env | xargs) psql -f temp.sql -d \pgdb > psql.result 2>&1 $()"}% 
+    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > \thesqlcounter.diff ; then 
+        touch sql/diff.lock;
+    fi;
+    if [ -f sql/diff.lock ] ; then
+        rm sql/*.sql;
+        rm sql/*.result;
+    fi;
+    if [ ! -f sql/diff.lock ] && [ ! -f sql/\thesqlcounter.sql ] ; then
+        mv sql/temp.sql sql/\thesqlcounter.sql;
+        $(cat gsql.env | xargs) psql -f sql/\thesqlcounter.sql -P format=wrapped -P columns=95 -d \pgdb > sql/\thesqlcounter.gsql.result 2>&1 $(); 
+        $(cat psql.env | xargs) psql -f sql/\thesqlcounter.sql -P format=wrapped -P columns=95 -d \pgdb > sql/\thesqlcounter.psql.result 2>&1 $();
+    fi;
+    "}%
 }
 
 \DefineVerbatimEnvironment{runsilent}{runsilent}{}

@@ -818,6 +818,7 @@ compare_script_name & text & &\tabularnewline
 \subsection{插入数据}
 \subsubsection{使用 \sql{insert} 指令插入数据}
 \begin{run}
+    \dt
     insert into users (username, nickname, email, password, created_at, updated_at, deleted_at) values 
     ('test1', 'test1', 'test1@test1.com', 'password', '2021-12-14 00:00:00', '2021-12-14 00:00:00', null),
     ('test2', 'test2', 'test2@test2.com', 'password', '2021-12-14 00:00:00', '2021-12-14 00:00:00', null),
@@ -1203,5 +1204,30 @@ CHECK、NOT NULL、UNIQUE、PRIMARY KEY、FOREIGN KEY、EXCLUDE。
 加快查询速度，也可以保证数据唯一。
 \subsection*{索引有哪几种类型？}
 B-tree、Hash、GiST和GIN。
+
+\ctexset{
+    chapter = {
+        titleformat = \raggedright,
+        name = {,},
+        number = {},
+    },
+}
+
+\chapter{EduOJ简要介绍}
+
+EduOJ是一个高性能、模块化、前后端分离的面向教学的程序在线评测系统，收到北京工业大学《星火基金》、《国家级大学生创新创业训练计划》资助。
+
+
+\begin{outline}
+    \1 设计满足单机 数百 QPS 级别的高并发系统架构（与之对比，广泛在ICPC  Regional/World Final 中使用的Domjudge系统面对每秒数十次提交就会显著卡顿乃至宕机），并使用了容器化、seccomp等技术建立沙盒环境确保评测数据安全
+    \1 系统可纵向、横向扩容，使用对象储存服务、分布式数据库。评测机容器化，可以处理考试和作业评测高峰时期的负载压力
+    \1 团队代码风格统一、质量满足要求。所有业务逻辑代码均有完善测试，并基于持续集成（CI）实现自动测试
+        \2 如：在自动测试期间发现bug，调试后发现是Go语言编译器的逃逸分析bug，与Google开发者联调解决
+        
+            详见\href{https://github.com/golang/go/issues/44614}{golang/go\#44614}
+    \1 项目在北京工业大学2019级计算机学院的数据结构与算法、在2021级计算机学院的高级语言程序设计课程中实测使用，已稳定运行接近一年，处理了来自448位同学的共15273次代码提交
+    \1 作为社区负责人和导师，参与中科院软件所、华为OpenEuler社区主办的『开源项目点亮计划』，提供研发指导，助力报名的学生完成开发任务
+        \2 2021年共指导4位学生，均顺利结题
+\end{outline}
 
 \end{document}
