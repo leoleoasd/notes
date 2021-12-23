@@ -16,8 +16,8 @@
 \DeclarePairedDelimiter{\paren}{(}{)}
 \graphicspath{ {./images/} }
 
-\title{系统软件课设上机考核说明文档}
-\author{卢雨轩}
+\title{系统软件课设Pintos项目上机题目与考核须知}
+% \author{卢雨轩}
 % \date{\today}
 \ctexset{
     section = {
@@ -40,7 +40,8 @@
 
 \section{Stride调度介绍}
 
-在pintos中，我们阅读了默认实现的FCFS算法，并亲手实现了优先级调度、MLFQ调度。但是，以上两种算法均不能控制进程之间运行的时间的比例。下面，请你在pintos的最基本状态下，实现stride调度算法。
+经过了一学期Pintos的『顶峰体验』，你一定受益良多。在Pintos中，我们阅读了默认实现的FCFS算法，并亲手实现了优先级调度、MLFQ调度。但是，以上两种算法均不能控制进程运行时间与其优先级的比例关系。下面，请你以本次上机测试给定的Pintos版本为基础，实现stride调度算法。
+
 
 \subsection{算法步骤}
 \begin{outline}[enumerate]
@@ -49,24 +50,26 @@
     \1 一个时间片后，回到上一步骤，重新调度当前 stride 最小的进程。
 \end{outline}
 
-可以证明，如果令 $\mathrm{P.{pass} = \frac{BigStride}{P.{priority}}}$，其中 P.priority 表示进程的优先权（大于 1），而 BigStride 表示一个预先定义的大常数，则该调度方案为每个进程分配的时间将与其优先级成正比。证明过程我们在这里略去，有兴趣的同学可以在网上查找相关资料。
+可以证明，如果令 $\mathrm{P.{pass} = \frac{BigStride}{P.{priority}}}$，其中 P.priority 表示进程的优先级（大于 1 的整数），而 BigStride 表示一个预先定义的大常数，则该调度方案为每个进程分配的时间将与其优先级成正比。证明过程我们在这里略去，有兴趣的同学可以于本次上机测试结束后在网上查找相关资料。
 
 \subsection{算法细节}
 \begin{outline}
-    \1 stride 调度要求\emph{进程优先级 $p \ge 2$}，所以设定进程优先级 $p \le 1$ 会导致错误。
+    \1 stride 调度要求\emph{进程优先级 $priority \ge 2$}，所以设定进程优先级 $p \le 1$ 会导致错误。
     \1 进程初始 stride 设置为 0 即可。
 \end{outline}
 
 \subsection{注意事项}
-在工程实践中，我们会使用固定大小的数据类型（如\texttt{int32\_t}）来存储stride，自然，我们会遇到溢出问题。你的算法应该能够在\emph{上列细节的条件}下正确处理溢出后stride的比较，保证每次能够选出不溢出时stride最大的进程。
+在工程实践中，我们会使用固定大小的数据类型（如\texttt{int32\_t}）来存储stride，自然，我们会遇到溢出问题。你的算法应该能够在\emph{上列细节的条件}下正确处理溢出后stride的比较，保证每次能够选出不溢出时stride最小的进程。
 
 \section{考核要求}
 \subsection{任务说明}
-你需要在\emph{我们提供的修改pintos}上实现stride调度。需要的常数和变量已经定义（\texttt{BIG\_STRIDE}和\texttt{stride}）。你需要复用pintos本身的、用于实现优先级调度的优先级变量（\texttt{struct thread}中的\texttt{priority}域）并保证\texttt{thread\_set\allowbreak\_priority}和\texttt{thread\_get\_priority}工作正常。
+你需要在\emph{我们给定的Pintos版本}上实现stride调度。需要的常数和变量已经定义（\texttt{BIG\_STRIDE}和\texttt{stride}）。你需要复用Pintos本身的、用于实现优先级调度的优先级变量（\texttt{struct thread}中的\texttt{priority}域）并保证\texttt{thread\_set\allowbreak\_priority}和\texttt{thread\_get\_priority}工作正常。
 
 你不应该修改\texttt{threads.h}中\texttt{BIG\_STRIDE}的定义。
+
+提示：使用 \mintinline{bash}{git diff 8850fb~2..8850fb src} 命令可以查看我们对于Pintos基础版做出的修改。
 \subsection{测试点说明}
-考核共有4个测试，在\texttt{threads}文件夹中运行\texttt{make check}即可运行测试。\emph{pintos自带的测试已经被删除。}其中2个测试点是\emph{隐藏的}。我们会在评测时补充隐藏测试点的内容，现在运行测试会得到固定的『测试不通过』。
+考核共有4个测试，在\texttt{threads}文件夹中运行\texttt{make check}即可运行测试（\emph{Pintos Project1 原有的测试已经被删除}）。其中，2个测试点是开放的，同学可以在上机测试中查看结果；另外2个测试点是隐藏的，我们会在评测时补充隐藏测试点的内容，在上机考试中，隐藏测试点的结果固定为『测试不通过』。
 
 \begin{table}[h]
     \caption{测试点内容说明}
@@ -82,5 +85,14 @@
     \bottomrule
     \end{tabularx}
 \end{table}
+
+\begin{appendix}
+\section{GIT操作简要教程}
+克隆代码： \mintinline{bash}{git clone --depth=1 <你的项目地址>}
+
+提交代码：\mintinline{bash}{git add .; git commit -a}
+
+推送代码：\mintinline{bash}{git push}
+\end{appendix}
 
 \end{document}

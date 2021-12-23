@@ -2,33 +2,100 @@
 \RequirePackage{minted}
 \RequirePackage{fancyvrb}
 \RequirePackage{tcolorbox}
-\def\run{\FV@Environment{}{run}}
+\tcbuselibrary{breakable}
+\tcbuselibrary{minted}
+\tcbuselibrary{raster}
+\tcbuselibrary{skins}
+
+\tcbset{
+    snippetraster/.style={
+        enhanced,
+        raster columns=1,
+        raster rows=3,
+        raster column skip=0pt,
+        raster row skip=-1pt,
+        listing only,
+        breakable,
+        raster row 1/.style={
+            sharp corners=south,
+            title=SQL code,
+            before title=\strut,
+            bottomrule=0pt,
+        },
+        raster row 2/.style={
+            % colback=black!20,
+            sharp corners=all,
+            title=Result on PostgreSQL,
+            before title=\strut,
+            toprule=0pt,
+        },
+        raster row 3/.style={
+            sharp corners=north,
+            title=Result on OpenGauss,
+            before title=\strut,
+            toprule=0pt,
+        },
+        % listing options={aboveskip=0pt, belowskip=0pt},
+    }
+}
+
+\renewcommand{\fcolorbox}[4][]{#4}
+
 \def\FVB@run{%
-  \@bsphack
-  \begingroup
-    \FV@UseKeyValues
-    \FV@DefineWhiteSpace
+  \@bsphack%
+  \begingroup%
+    \FV@UseKeyValues%
+    \FV@DefineWhiteSpace%
     \def\FV@Space{\space}%
-    \FV@DefineTabOut
+    \FV@DefineTabOut%
     \def\FV@ProcessLine{\immediate\write\FV@OutFile}%
-    \immediate\openout\FV@OutFile temp.sql\relax
-    \let\FV@FontScanPrep\relax
+    \immediate\openout\FV@OutFile temp.sql\relax%
+    \let\FV@FontScanPrep\relax%
 %% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
     \let\@noligs\relax
 %% DG/SR modification end
     \FV@Scan}
+
 \def\FVE@run{\immediate\closeout\FV@OutFile\endgroup\@esphack
-\begin{tcolorbox}[title=Code Example]%
-    \vspace{-12pt}%
-    \inputminted[bgcolor=bg]{sql}{temp.sql}%
-    \tcbsubtitle{Result on PostgreSQL}%
-    % \vspace{-12pt}%
-    \immediate\write18{rm temp.result}%
-    \immediate\write18{bash -c "$(cat test.env | xargs) psql -f temp.sql > temp.result 2>&1 $()"}% 
-    % empty $() here fixes latex workshop's code highlight.
-    % else there will be a single $, which will cause wrong highlight on whole tex file.
-    \inputminted[bgcolor=bg,breaklines=true]{text}{temp.result}%
-    \vspace{-12pt}%
-\end{tcolorbox}
+    \immediate\write18{rm psql.result}%
+    \immediate\write18{rm gsql.result}%
+    \immediate\write18{bash -c "$(cat gsql.env | xargs) psql -f temp.sql -P format=wrapped -P columns=95 -d \pgdb > gsql.result 2>&1 $()"}%
+    \immediate\write18{bash -c "$(cat psql.env | xargs) psql -f temp.sql -P format=wrapped -P columns=95 -d \pgdb > psql.result 2>&1 $()"}% 
+\begin{tcbraster}[snippetraster]
+    \begin{tcolorbox}[listing file=temp.sql,minted language=postgresql]
+        \tcbuselistinglisting
+    \end{tcolorbox}
+    \begin{tcolorbox}[listing file=psql.result, minted language=text]
+        \tcbuselistinglisting
+    \end{tcolorbox}
+    \begin{tcolorbox}[listing file=gsql.result, minted language=text]
+        \tcbuselistinglisting
+    \end{tcolorbox}
+\end{tcbraster}
 }
+
 \DefineVerbatimEnvironment{run}{run}{}
+
+\def\FVB@runsilent{%
+  \@bsphack%
+  \begingroup%
+    \FV@UseKeyValues%
+    \FV@DefineWhiteSpace%
+    \def\FV@Space{\space}%
+    \FV@DefineTabOut%
+    \def\FV@ProcessLine{\immediate\write\FV@OutFile}%
+    \immediate\openout\FV@OutFile temp.sql\relax%
+    \let\FV@FontScanPrep\relax%
+%% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
+    \let\@noligs\relax
+%% DG/SR modification end
+    \FV@Scan}
+
+\def\FVE@runsilent{\immediate\closeout\FV@OutFile\endgroup\@esphack
+    \immediate\write18{rm psql.result}%
+    \immediate\write18{rm gsql.result}%
+    \immediate\write18{bash -c "$(cat gsql.env | xargs) psql -f temp.sql -d \pgdb > gsql.result 2>&1 $()"}%
+    \immediate\write18{bash -c "$(cat psql.env | xargs) psql -f temp.sql -d \pgdb > psql.result 2>&1 $()"}% 
+}
+
+\DefineVerbatimEnvironment{runsilent}{runsilent}{}
