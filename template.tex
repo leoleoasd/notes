@@ -7,6 +7,7 @@
 \usepackage{caption}
 \usepackage{outlines}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{amsthm}
 \usepackage{tabu}
 \usepackage{minted}
@@ -16,8 +17,12 @@
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 \graphicspath{ {./images/} }
-\newcommand*{\fullref}[1]{
-\ifthenelse{\equal{\thepage}{\getpagerefnumber{#1}}}
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
   {
     \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
   }
