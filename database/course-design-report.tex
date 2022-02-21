@@ -17,6 +17,7 @@
 % \usepackage{markdown}
 \usepackage{underscore}
 \usepackage{longtable}
+\usepackage{csquotes}
 \renewcommand{\tableautorefname}{表}
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
@@ -1048,6 +1049,16 @@ CHECK、NOT NULL、UNIQUE、PRIMARY KEY、FOREIGN KEY、EXCLUDE。
         where ur.target_id = 4 group by user_id having count(*) >= 2
     ) as rr on users.id = rr.user_id
 \end{run}
+\subsubsection*{是否存在具有针对id为4的problem的read、change、update这3个权限中至少3个的用户有哪些？}
+\begin{run}
+    select exists(
+        select users.* from users inner join (
+            select ur.user_id from user_has_roles ur
+            inner join permissions p on ur.role_id = p.role_id
+            where ur.target_id = 4 group by user_id having count(*) >= 3
+        ) as rr on users.id = rr.user_id
+    );
+\end{run}
 \section{思考题}
 \subsection*{连接条件一定是对应属性相等吗？}
 不一定，可以是$\ge$等，甚至是 \sql{true}。
@@ -1211,8 +1222,35 @@ B-tree、Hash、GiST和GIN。
         name = {,},
         number = {},
     },
+    autoindent=true
 }
+\setlength\parindent{2\ccwd}
 
+\chapter{实验总结}
+\section{回顾与反思}
+
+在本次数据库课程的实验过程中，我收获很多。我一直有着很丰富的Web开发经验，从高一开始就在开发各种网站，也自然，设计过很多数据库。现在回顾我高中开发的网站，可以发现数据库的设计大多不是十分完善。
+
+随着经验的增长，我也有了更多数据库方面的理解。在设计EduOJ的数据库的过程中，我虽然没有系统的学习数据库的相关知识，但是仍然设计了高效、可用的数据库。但是，由于没有经过系统的学习，我的知识十分离散。如，在前期讨论的过程中，我和合作的孙天天同学各提出了一种数据库设计。直觉上我觉得另一种设计『不好』，但是我一直不知道怎么系统的区分『好』与『不好』的数据库。经过这次课程的学习，我更加系统的掌握了相关的知识，也更能按照符合通用规范的数据库。
+
+\section{对于OpenGauss以及开源软件的感悟}
+在搭建EduOJ过程中，我们综合比较了TiDB、MySQL、PostgreSQL等数据库后，选择了PostgreSQL数据库，主要是由于其强大的优化能力和对于JSONB数据的支持能力。
+
+在本次实验的过程中，我又接触到了OpenGauss这一个自主可控的数据库。而在实际使用过程中，除了文档的不完善之外，我并没有找到和PostgreSQL区别很大的地方。
+
+在与华为工程师交流的过程中，我了解到，OpenGauss的主要创新之处在于分布式这一在实验过程中我没有体验到的功能。既然OpenGauss是一个『开源』、自主、可控的分布式数据库，自然，就想到和同样开源自主可控的、由国人开发的分布式数据库 -- TiDB做一些对比。
+
+在使用的过程中，无论是从更为完善的文档、教学，还是从功能性上，TiDB显得更为『可用』。TiDB基于TiKV这一 Key-Value 数据库，使用KV数据库提供的分布式事物管理，把分布式数据库这一难题拆分为分布式事物管理和分布式执行SQL两方面分别解决。TiKV使用Raft共识算法解决分布式事物的难题；TiDB基于TiKV封装了对于SQL语句的查询。这样，组合二者就得到了一个高可用的分布式数据库。OpenGauss实现分布式的途径还不为人知，但是这种不开放核心代码的『假？』开源十分让人不满。
+
+我对于开源社区贡献中，体验最好的一次经历就是给GitLab做贡献。发现了GitLab的一个bug后，我提出了issue，并尝试写了一个patch来fix。但是，由于对于开发框架的不了解，我不知道如何写ruby on rails的单元测试。Gitlab的工作人员可以说是『手把手』的教我去写测试。PingCap作为『网红』开源公司，也同样花费大量人力做开源教学，鼓励自由开发者成为开源软件的贡献者。这种教学，对于公司来说是十分花钱，并且收益很小的（把这部分钱花在真正写代码上而不是教社区人员写代码上显然收益更大），但是PingCap仍然在这么做。PingCap的CTO看到我的EduOJ项目后，邀请我去实习。由于没有时间，我回复拒绝后，他说到：
+
+\begin{displayquote}
+    好的，如果有时间和兴趣可以参与一下我们的 tidb 项目做 contributor
+\end{displayquote}
+
+在我看来，这才是一个真正用心做开源的公司应有的做法。
+
+\begin{appendix}
 \chapter{EduOJ简要介绍}
 
 EduOJ是一个高性能、模块化、前后端分离的面向教学的程序在线评测系统，收到北京工业大学《星火基金》、《国家级大学生创新创业训练计划》资助。
@@ -1229,5 +1267,56 @@ EduOJ是一个高性能、模块化、前后端分离的面向教学的程序在
     \1 作为社区负责人和导师，参与中科院软件所、华为OpenEuler社区主办的『开源项目点亮计划』，提供研发指导，助力报名的学生完成开发任务
         \2 2021年共指导4位学生，均顺利结题
 \end{outline}
+
+% \section*{截图展示}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-7.png}
+    \caption{EduOJ 游客主页}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-8.png}
+    \caption{EduOJ 用户主页}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-6.png}
+    \caption{EduOJ 题目列表界面}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-5.png}
+    \caption{EduOJ 查看题目界面}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-4.png}
+    \caption{EduOJ提交代码界面}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-3.png}
+    \caption{EduOJ提交结果界面}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-1.png}
+    \caption{EduOJ提交列表界面}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{EduOJ-2.png}
+    \caption{EduOJ 个人信息界面}
+\end{figure}
+
+\end{appendix}
 
 \end{document}

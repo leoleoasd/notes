@@ -63,7 +63,7 @@
     \FV@Scan}
 
 \def\FVE@run{\immediate\closeout\FV@OutFile\endgroup\@esphack
-    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > \thesqlcounter.diff ; then 
+    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > > /dev/null ; then 
         touch sql/diff.lock;
     fi;
     if [ -f sql/diff.lock ] ; then
@@ -109,7 +109,7 @@
     \FV@Scan}
 
 \def\FVE@runsilent{\immediate\closeout\FV@OutFile\endgroup\@esphack
-    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > \thesqlcounter.diff ; then 
+    \immediate\write18{bash -c "if [ -f sql/\thesqlcounter.sql ] && ! diff sql/temp.sql sql/\thesqlcounter.sql > /dev/null ; then 
         touch sql/diff.lock;
     fi;
     if [ -f sql/diff.lock ] ; then

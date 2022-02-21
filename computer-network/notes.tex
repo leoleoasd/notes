@@ -1,0 +1,287 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabu}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{underscore}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{计网笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section{概述}
+\subsection{计算机网络的概念和使用}
+\begin{outline}
+    \1 计算机网络
+        \2 面向终端的计算机网络
+            \3 主机 -> 终端
+            \3 主机负荷重，线路利用率低。
+            \3 改进：增加前端通讯处理机
+        \2 计算机 -- 计算机网络
+            \3 主机 -> 主机
+            \3 ARPAnet
+            \3 基本结构：分层。
+            \4 资源子网
+            \4 控制子网
+            \3 里程碑：定义了网络、分类
+            \3 定义了两级网络id就恶狗
+            \3 报文分组交换
+            \3 TCP/IP协议发展
+        \2 网络体系结构研究：OSI，TCP/IP
+            \3 定义各种标准
+        \2 互联网应用，无线网络
+    \1 计算机网络的定义
+        \2 广义的观点：定义计算机通讯网络
+        \2 用户透明性的观点：定义了分布式计算机网络
+        \2 资源共享的观点：
+            \3 目的：实现资源共享
+            \3 分布在不同地理位置的多台独立计算机
+        \2 与分布式系统的区别：
+            \3 分布式系统的目的是提高整体性能，强调整体性
+                \4 一般软件
+            \3 计算机网络是共享资源
+                \4 一般硬件。
+    \1 计算机网络的应用
+\end{outline}
+\subsection{网络硬件}
+\begin{outline}
+    \1 网络分类 
+        \2 点到点
+            \3 关键：路由选择
+        \2 广播
+            \3 关键：介质访问控制方法
+    \1 互联网络
+        \2 子网和主机构成网络
+        \2 子网指一组路由器和一些通信线路
+        \2 多个不同的网络互相连接构成互联网
+\end{outline}
+\subsection{网路软件}
+\begin{outline}
+    \1 协议层次结构
+        \2 实体：某一层的活动单元
+        \2 最底层，物理层的通讯：实通信
+        \2 其他层的通讯：不直接，被成为虚拟通信
+        \2 相邻层之间是接口
+        \2 网络体系结构：层和协议的集合
+        \2 实现和接口的规范不属于网络体系结构
+        \2 好处：
+            \3 每一层的设计简单化
+            \3 各层独立：只需要知道接口
+            \3 灵活性好：每一层可以变化
+        \2 协议定义两种接口：
+            \3 服务接口：对上层
+            \2 对等实体接口：实现对等实体之间的交换信息，本层
+    \1 层次设计问题
+        \2 可靠性：错误控制，路由算法
+        \2 网络规模发展、互联：寻址呢命名
+        \2 资源分配：多路复用，流量控制，拥塞控制，保证服务质量（实时性和带宽）
+        \2 保密性，认证，完整性
+    \1 面向连接和无连接
+    \1 服务和协议的关系：
+        \2 服务是对上一层提供的操作
+        \2 协议是对同一层
+        \2 协议是水平的，服务是垂直的
+\end{outline}
+\subsection{典型计算机网络参考模型}
+\begin{outline}
+    \1 OSI模型 7层
+        \2 分层原则：
+            \3 在不同的抽象的地方创建一层
+            \3 每一层要执行明确定义的功能
+            \3 每层的功能有利于指定国际标准
+            \3 边界的选择要使得跨过接口的信息量尽可能少
+            \3 层数不能太多
+        \2 OSI参考模型
+            \3 物理层
+                \4 二进制位的传输
+            \3 数据链路层
+                \4 无差错的帧传输，差错控制，流量控制，介质访问控制
+            \3 网络层
+                \4 提供点到点的数据传送，选择路由和控制阻塞。
+            \3 传输层：提供端到端的服务
+                \4 网络层将分组传输到指定计算机
+                \4 传输层将消息传送给指定程序
+            \3 会话层：维护Session
+            \3 表示层：抽象数据结构
+            \3 应用层
+    \1 TCP/IP模型：
+        \2 合并会话、表示、应用
+        \2 合并数据链路层和物理层
+        \2 链路层：
+            \3 没有描述，能传输IP分组
+        \2 网络层（互联网层）：
+            \3 控制通信子网提供IP分组传送
+            \3 使用IP地址寻址、传输数据
+            \3 无连接
+        \2 传输层
+            \3 TCP、UDP
+        \2 应用层
+\end{outline}
+\section{物理层}
+\subsection{数据通讯的理论基础}
+\begin{equation*}
+    \text{最大数据速率 } = 2B \log_2 V
+\end{equation*}
+\begin{equation*}
+    \text{最大比特率 } = B \log_2 (1 + S/N)
+\end{equation*}
+\subsection{有导向传输介质}
+\begin{outline}
+    \1 磁带、磁盘
+    \1 双绞线
+    \1 同轴电缆
+    \1 光纤
+\end{outline}
+\subsection{数字调制与多路复用}
+
+\begin{outline}
+    \1 基带传输
+        \2 直接编码为二进制流
+    \1 通带传输
+        \2 加载到交流信号上
+\end{outline}
+\subsection{交换}
+\begin{outline}
+    \1 电路交换
+    \1 数据包交换
+\end{outline}
+\section{数据链路层}
+在数据连路层上两台相邻机器之间实现可靠、有效的通信而涉及到的一些算法。 
+\subsection{数据链路层的设计问题}
+\begin{outline}
+    \1 从网络层获取数据包，封装为帧。
+    \1 提供给网络层的服务：
+        \2 无确认无链接：如Ethernet
+        \2 有确认无连接：如WiFi
+        \2 有确认有链接
+    \1 成帧：
+        \2 字符计数法
+            \3 帧开始表示字符数
+        \2 字节填充的标志字节
+            \3 两个连续FLAG表示某帧结束和下一帧的开始
+            \3 包中的FLAG和ESC前面加ESC
+        \2 比特填充的标志比特法
+            \3 用01111110表示开始和结束
+            \3 遇到连续5个1，就插入1个0
+        \2 物理层的非法信号
+    \1 差错控制
+    \1 流量控制
+\end{outline}
+\subsection{协议}
+\begin{outline}
+    \1 乌托邦协议\ 无限制的单工协议
+    \1 无错信道上的单工停-等式协议
+        \2 发送每帧后等待一个确认帧
+    \1 有错信道上的单工停-等式协议
+        \2 引入一个计数器m，等待m的确认帧到了之后回复m+1
+        \2 模2计数器就够了，m的可能取值为0或1
+    \1 滑动窗口协议
+        \2 1位滑动窗口协议
+            \3 每帧带一个确认帧（ack）
+            \3 缺点：双方同时发第一个帧，会出问题。
+        \2 回退N协议
+            \3 利用率小于等于$w / 1 + 2BD$。W是窗口大小，BD是带宽乘延迟除以帧大小。
+            \3 窗口大小小于MAX_SEQ(也就是$2^n - 1$)
+        \2 选择重传协议
+            \3 选择重传：丢弃坏帧，缓存中间帧，直到重新收到好帧
+            \3 否定确认：收到坏帧时回复『没收到某帧』
+            \3 窗口大小小于$(MAX_SEQ + 1) / 2$ 也就是($2^{n-1}$)
+\end{outline}
+
+\section{介质访问子层}
+\subsection{多路访问协议}
+\subsubsection{ALOHA}
+\begin{outline}
+    \1 纯ALOHA
+        \2 发包，失败就随机时间重传
+        \2 18.4\%
+    \1 分槽ALOHA
+        \2 只能在每个时间槽的开始发包
+        \2 36.8\%
+\end{outline}
+\subsubsection{载波监听多路访问控制协议}
+\begin{outline}
+    \1 1-坚持CSMA
+        \2 如果空闲，就发送一帧。
+        \2 如果忙，就等到空闲。
+        \2 如果冲突，就等随机时间。
+    \1 非坚持CSMA
+        \2 如果忙，就等随机时间
+    \1 p-坚持CSMA
+        \2 如果空闲，有p的概率发送数据
+        \2 有1-p的概率推迟发送
+        \2 如果冲突吗重新开始
+    \1 冲突检测的CSMA
+        \2 如果发送过程中检测到冲突，等随机时间
+
+\end{outline}
+
+\subsection{无线局域网协议}
+\begin{outline}
+    \1 采用CSMA会导致隐藏站和暴露站问题。
+    \1 MACA：避免冲突的多路访问
+        \2 发送方刺激一下接受方，让接受收方发送一个短帧，这样接受方附近的站不会发帧。
+        \2 如果CTS帧发送失败，重试。
+\end{outline}
+\subsection{数据链路层交换}
+\begin{outline}
+    \1 网桥：链路层交换机
+    \1 学习过程：
+        \2 每个网桥存一个hash table
+        \2 记录每个数据包从哪儿来
+        \2 需要发包的时候，找，找不到就广播
+    \1 生成树过程：避免回路
+        \2 广播序列号，最小的成根
+        \2 每个网桥计算到根的路径，构造最短路径生成树
+        \2 故障时重新计算
+    \1 VLAN：染色算法
+        \2 由VLAN感知交换机和主机增加、删除标记帧
+\end{outline}
+
+\section{网络层}
+\end{document}
