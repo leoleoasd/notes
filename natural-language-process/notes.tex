@@ -1,0 +1,182 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabu}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{自然语言处理笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\section{绪论}
+平时成绩 40\%
+
+大作业 60\%
+
+\subsection{NLP的基本概念及发展历程}
+\begin{outline}
+    \1 基本概念
+        \2 自然语言处理（Natural Language Processing, NLP）
+
+            计算机通过可计算的方法对于自然语言的各级语言单位进行处理的方法
+
+        \2 语言
+        
+            人类特有的用来表达意思、交流思想的工具，是一种特殊的社会现象。
+        
+        \2 自然语言
+
+            指人类日常使用的语言，如汉语、英语等。
+
+            强调人类发展过程中自然产生的，而不是人工编制的。
+        
+        \2 语言学 
+            \3 对语言的科学研究
+            \3 研究语言的本质、结构和发展规律
+            \3 两个基本属性：文字和声音
+        \2 语言的三种类型
+            \3 孤立语：词的形态变化少，语法关系用词序和虚词表示，如汉语
+            \3 曲折语：用词的形态变化表示语法关系，如英语
+            \3 黏着语：同时具有两者的特性：日语，汉语
+        \2 处理：指对信息的接收、存储、转化、传送和发送
+            \3 两个层次：字符处理和内容处理
+            \3 内容处理：输入、存储、输出等
+            \3 内容处理：词语切分、词性标注、结构分析、意义理解、推理、翻译\dots
+        \2 中文信息处理：针对中文的自然语言处理
+    \1 相关提法
+        \2 自然语言处理
+        \2 自然语言理解
+        \2 计算机语言学
+        \2 统称为人类语言技术，Human Language Processing。
+\end{outline}
+\subsection{NLP的研究内容与基本问题}
+\begin{outline}
+    \1 研究内容：
+
+        从应用角度：
+
+        \2 机器翻译，Machine Translation
+        \2 信息检索，Information Retrieval
+        \2 自动文摘，Automacic Summarization
+        \2 问答系统，Quastion Answering System
+        \2 信息过滤，Information Filtering
+        \2 信息抽取，Information Extraction
+        \2 文档分类，Document Categorization
+        \2 语音识别，Automatic Speech Recognition
+        \2 语音合成，Text To Speach
+
+        \2 说明：一般把语音相关独立出来，把文字相关作为自然语言处理的主题。
+    
+        从基础研究角度：
+        
+        \2 分词
+        \2 词性标注
+        \2 短语切分
+        \2 语法分析
+        \2 语义分析
+        \2 篇章理解
+
+        从资源建设角度：
+
+        \2 语料库资源建设
+        \2 语言学知识库建设
+    \1 主要研究内容的分层：
+        \2 应用系统
+        \2 应用技术研究：自动问答等
+        \2 基础研究：词性标注、分词等
+        \2 资源建设：语料库建设
+    \1 基本问题：
+        \2 形态学问题
+            \3 研究词由有意义的基本单位-词素的构成问题
+        \2 举发问题
+            \3 研究句子结构成分之间的相互关系
+        \2 语义问题
+            \3 研究如何从词的意思推断语句的意义
+        \2 语用学问题
+            \3 研究不同上下文中语句的uzoyong
+        \2 语音学问题
+            \3 研究语音特性
+\end{outline}
+\subsection{现状、主要困难和基本方法}
+\begin{outline}
+    \1 发展现状
+        \2 缺乏理论基础和完整体系
+        \2 浅层问题尚未解决，但是已经开始挑战深层次问题
+        \2 深度学习得到广泛关注
+        \2 开放域问题处理
+    \1 主要困难
+        \2 大量的歧义现象
+            \3 词法歧义：
+                \4 I'll see Prof. Zhang home. \\
+                    'll 是缩写，两个`.'意义不同
+                \4 乒乓球拍卖完了 \\
+                    乒乓球/拍卖/完了 \\
+                    乒乓球拍/卖/完了
+            \3 结构歧义： \\
+                今天中午吃馒头 \\
+                今天中午吃食堂 
+            \3 语义歧义： \\
+                同一个词有不同意义
+            \3 语音歧义
+            \3 多音字以及韵律歧义
+        \2 大量未知的语言现象
+            \3 新词、人名、属于
+            \3 新含义
+            \3 新用法，新句型
+    \1 基本研究方法
+        \2 理性主义方法
+            \3 从理论为基础，解释歧义行为
+        \2 经验主义方法
+            \3 基于语料库应用数学方法进行统计分析，发现知识或抽取统计规律。
+        \2 区别：研究对象不同
+        \2 区别：理论基础不同
+        \2 区别：范围不同
+        \2 区别：方法不同
+\end{outline}
+\subsection{课程内容}
+\end{document}

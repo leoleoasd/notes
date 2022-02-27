@@ -1,0 +1,3 @@
+\usepackage{pgfplots}
+\tikzstyle{arrow} = [-latex',->, to path={-- (\tikztotarget)}]
+\tikzstyle{darrow} = [-latex',->, to path={-- (\tikztotarget)},double]

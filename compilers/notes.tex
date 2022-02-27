@@ -1,0 +1,313 @@
+\documentclass[oneside]{ctexbook}
+\usepackage[T1]{fontenc}
+\usepackage{ctex}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}{引理}[section]
+\crefname{equation}{方程}{方程}
+\crefname{algorithm}{算法}{算法}
+\crefname{lemma}{引理}{引理}
+\crefname{table}{表}{表}
+\crefname{figure}{图}{图}
+\crefname{example}{例}{例}
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+\tikzstyle{arrow} = [-latex',->, to path={-- (\tikztotarget)}]
+\tikzstyle{darrow} = [-latex',->, to path={-- (\tikztotarget)},double]
+
+\newcommand{\tdiagram}[5][]{
+\begin{scope}[local bounding box={#1},shift={#2}]
+    \draw [thick] (-2, 1) --  (2, 1) -- node[left] {#5} (2, 0) --  (1, 0) -- (1, -1) -- node[above]{#4} (-1, -1) -- (-1, 0) -- (-2, 0) -- node[right]{#3} cycle;
+\end{scope}
+}
+
+
+\title{编译原理课程笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\chapter{绪论}
+
+\section*{主要内容}
+\begin{tblr}{
+  column{1}={preto=\textbullet}
+}
+    编译原理及其设计概述  & 3学时        \\
+    语言与文法 &5学时     \\
+    词法问题   & 6学时   \\
+    语法分析  & 13学时 &自顶向下（LL）；自底向上（LR）； \\
+    语义分析 & 10学时 &\\
+    运行环境 &3学时 & 过程调用，符号管理 \\
+    优化与代码生成 & 2学时 \\
+    总结 \\
+\end{tblr}
+
+\section{计算机语言的发展}
+\begin{outline}
+    \1 机器语言\quad Machine Language
+        \2 二进制代码 \quad Binary Code
+    \1 汇编语言\quad Assemble Language
+        \2 二进制代码与助记符
+        \2 接近计算机硬件指令系统
+    \1 高级语言\quad High Level Language
+        \2 语句定义数据、描述算法
+    \1 命令语言\quad Command
+        \2 功能封装
+    \1 高级语言的分类
+        \2 命令式语言 Imperative Language
+            \3 Fortran, Basic, Pascal, C, COBOL, ALGOL
+        \2 函数式语言 Functional Language
+            \3 LISP, ML
+        \2 逻辑式语言 Logical Language
+            \3 Prolog
+        \2 面向对象语言
+\end{outline}
+\section{翻译系统}
+\begin{outline}
+    \1 翻译程序 -- Translator
+        \2 将某种语言描述的程序（源程序，Source Code）翻译为\emph{等价}的另一种语言描述的程序（目标程序，Object Code）的程序。
+    \1 编译程序 -- Compiler
+        \2 将某一种高级语言描述的程序翻译为汇编、机器语言描述的程序
+    \1 解释程序 -- Interpreter
+    \1 编译系统 = 编译程序 + 运行系统
+    \1 其他翻译程序
+        \2 诊断编译程序
+        \2 优化编译程序
+        \2 交叉编译程序
+        \2 可变目标编译程序
+        \2 并行编译程序
+        \2 汇编程序、交叉汇编程序、反汇编程序
+\end{outline}
+\begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node (sp) {Source Program};
+        % \node (compiler) [right=1 cm of sp] {Compiler};
+        \node (OP) [below of=sp] {Object Program};
+        \node (RS) [below of=OP] {Run System};
+        \node [right=0 cm of RS]{（支撑环境，运行时库）};
+        \node (input) [left=.4cm of RS] {Input};
+        \node (output) [below of=RS] {Output};
+        \draw [->,double] (sp) -- node[right] {Compiler} (OP);
+        \draw [->,double] (OP) -- (RS);
+        \draw [->] (input) -- (RS);
+        \draw [->,double] (RS) -- (output);
+    \end{tikzpicture}
+    \caption{编译系统 = 编译程序 + 运行系统}
+\end{figure}
+\section{翻译系统的功能分析}
+\begin{outline}
+    \1 分析
+        \2 词法，语法，语义
+    \1 翻译
+        \2 语句的翻译，代码生成
+    \1 例如：标识符左值与右值的绑定
+        \1 变量：存储单元\;\;\qquad 名字：值
+        \1 函数：目标代码序列\; 名字：入口地址
+\end{outline}
+\section{翻译系统的总体结构}
+\subsection{词法分析}
+
+\begin{wrapfigure}[8]{r}{.5\linewidth}
+    \centering
+    \begin{tikzpicture}
+        \node (0) {};
+        \node (lexer) [below=.5cm of 0]{词法分析器 Lexical Analyzer};
+        \node (parser) [below=.5cm of lexer] {语法分析器 Syntax Analyzer};
+        \node (semantic) [below=.5cm of parser] {语义分析 Semantic Analyzer};
+        \node (intermediate) [below = .5cm of semantic] {中间代码生成 Intermediate Code Generate};
+        \node (optimise) [below= .5cm of intermediate] {代码优化器 Optimiser};
+        \node (1) [below=.5cm of optimise] {目标代码生成器 Object Code Generator};
+        \node (2) [below=.5cm of 1] {};
+        \draw [darrow] (0) -- node[right]{源程序} (lexer);
+        \draw [darrow] (lexer) -> node[right]{单词符号} (parser);
+        \draw [darrow] (parser) -> node[right]{语法单元（AST）} (semantic) ;
+        \draw [darrow] (semantic) -> node[right]{语法单元（AST）} (intermediate) ;
+        \draw [darrow] (intermediate) -> node[right]{中间代码} (optimise) ;
+        \draw [darrow] (optimise) -> node[right]{中间代码} (1) ;
+        \draw [darrow] (1) -> node[right]{目标代码} (2) ;   
+
+        
+        \node [draw=black, thick, densely dotted,inner ysep=0,fit=(0) (lexer) (parser) (semantic) (intermediate) (optimise),label=left:{前端},color=purple!70!white] {};
+
+        \node [draw=red!30!black, thick, densely dotted,inner ysep=0,fit=(optimise) (1) (2),label=left:{后端}] {};
+    \end{tikzpicture}
+\end{wrapfigure}
+词法分析器（Lexical Analyzer）完成词法分析。扫描源程序，并转换为Token串，同时查找语法错误，进行标识符登记（管理符号表）。
+
+输入： 字符串。
+
+输出：（种类码，属性值）对。
+
+\subsection{语法分析}
+
+语法分析器（Syntax Analyzer）完成语法分析。实现『组词成句』，构造分析树，指出语法错误并指导翻译。
+
+输入：Token序列
+
+输出：语法成分（抽象语法树）
+
+\subsection{语义分析}
+
+语义分析器（Semantic Analyzer）分析由语法分析器给出的语法单位的语义。
+\begin{outline}
+    \1 获取标识符的属性：类型、作用域等
+    \1 语义检查：运算合法、取值范围
+    \1 子程序的静态绑定：代码的相对地址
+    \1 变量的静态绑定：数据的相对地址
+\end{outline}
+
+\subsection{中间代码生成}
+升层中间代码，如：前、后缀表达式、三地址表示、LLVM IR。
+
+\subsection{代码优化}
+对中间代码的优化处理：提高运行速度、节省储存空间
+\begin{outline}
+    \1 与机器无关的优化
+        \2 常量合并
+        \2 公共子表达式提取等
+    \1 与机器有关的优化
+        \2 循环展开
+        \2 向量化
+        \2 访存优化
+        \2 寄存器排布
+\end{outline}
+
+\subsection{目标代码生成}
+将中间代码转换为目标机器上的指令代码或者汇编代码。
+
+\subsection{表格管理}
+管理编译过程中的各种符号表，辅助完成语法、语义检查，完成静态绑定，管理编译过程。
+
+\subsection{错误处理}
+进行错误的检查、报告以及纠正。
+
+\begin{outline}
+    \1 词法错误：拼写、定义；
+    \1 语法错误：语句结构、表达式结构；
+    \1 语义错误：表达式类型不匹配；
+\end{outline}
+
+\subsection{前端与后端}
+将编译过程分为前端与后端。其中：
+\begin{outline}
+    \1 前端：与源语言有关，与目标机器无关的部分
+        \2 词法分析、语法分析、语义分析、中间代码生成、与机器无关的优化
+    \1 后端：与目标机器有关的部分
+        \2 与机器有关的代码优化、目标代码生成
+\end{outline}
+好处：实现新语言和新机器，只需要实现前端、后端中的某一个。
+
+
+\section{编译程序的生成}
+通过自动化技术来生成编译程序。
+
+\subsection{T形图}
+
+% \tikzset{
+%     pics/tdiagram/.style n args={3}{
+%         code={
+%             \draw [thick] (-2, 1) --  (2, 1) -- node[left]{123} (2, 0) --  (1, 0) -- (1, -1) -- node[above]{#3} (-1, -1) -- (-1, 0) -- (-2, 0) -- node[right]{#1} cycle;
+%             \node {123};
+%         }
+%     }
+% }
+
+\begin{wrapfigure}[3]{r}{0.3\linewidth}
+    \centering
+    \vspace{-2\baselineskip}
+    \begin{tikzpicture}
+        % \draw pic at (0,0) {tdiagram={源语言}{目标语言}{表示语言}};
+        \tdiagram{(0,0)}{源语言}{目标语言}{表示语言}
+    \end{tikzpicture}
+\end{wrapfigure}
+用T形图表示语言翻译：从源语言翻译为目标语言，而翻译器本身是表示语言。
+
+\subsection{交叉编译（Cross Compiling）、移植}
+\begin{example} \label{example1}
+    A机上有一个C语言编译器，是否可以利用此编译器实现B机器上的C语言编译器？
+\end{example}
+\begin{figure}[!htp]
+    \centering
+    \begin{tikzpicture}
+        \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
+        \node [below=.5cm of p0] {P0};
+        \tdiagram[p1]{(0, -1)}{C语言}{A机器}{A机器}
+        \node [below=.5cm of p1] {P1};
+        \tdiagram[p2]{(3, 0)}{C语言}{A机器}{B机器}
+        \node [below=.5cm of p2] {P2};
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
+        \node [below=.5cm of p0] {P0};
+        \tdiagram[p2]{(0, -1)}{C语言}{A机器}{B机器}
+        \node [below=.5cm of p2] {P2};
+        \tdiagram[p3]{(3, 0)}{C语言}{B机器}{B机器}
+        \node [below=.5cm of p3] {P3};
+    \end{tikzpicture}
+    \caption{\protect\fullref{example1} 图例}
+\end{figure}
+\begin{outline}[enumerate]
+    \1  用C语言编制B机器的编译程序P0（C $\rightarrow$ B）
+    \1  用P1编译P0，得到P2
+    \1  用P2编译P0，得到P3
+\end{outline}
+
+\subsection{本机编译器的利用}
+
+\section{编译技术的应用}
+
+
+\end{document}
