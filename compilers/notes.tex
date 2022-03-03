@@ -15,6 +15,9 @@
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
 \usepackage{cleveref}
 \usepackage{wrapfig}
+
+\xeCJKsetup{CJKmath=true}
+
 \usetikzlibrary{fit}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows}
@@ -60,11 +63,6 @@
 \author{卢雨轩 19071125}
 % \date{\today}
 \ctexset{
-    section = {
-        titleformat = \raggedright,
-        name = {,},
-        number = \chinese{section}、
-    },
     paragraph = {
         runin = false
     },
@@ -256,21 +254,11 @@
 
 \subsection{T形图}
 
-% \tikzset{
-%     pics/tdiagram/.style n args={3}{
-%         code={
-%             \draw [thick] (-2, 1) --  (2, 1) -- node[left]{123} (2, 0) --  (1, 0) -- (1, -1) -- node[above]{#3} (-1, -1) -- (-1, 0) -- (-2, 0) -- node[right]{#1} cycle;
-%             \node {123};
-%         }
-%     }
-% }
-
 \begin{wrapfigure}[3]{r}{0.3\linewidth}
     \centering
     \vspace{-2\baselineskip}
     \begin{tikzpicture}
-        % \draw pic at (0,0) {tdiagram={源语言}{目标语言}{表示语言}};
-        \tdiagram{(0,0)}{源语言}{目标语言}{表示语言}
+        \tdiagram{(0,0)}{源语言}{表示语言}{目标语言}
     \end{tikzpicture}
 \end{wrapfigure}
 用T形图表示语言翻译：从源语言翻译为目标语言，而翻译器本身是表示语言。
@@ -279,23 +267,23 @@
 \begin{example} \label{example1}
     A机上有一个C语言编译器，是否可以利用此编译器实现B机器上的C语言编译器？
 \end{example}
-\begin{figure}[!htp]
+\begin{figure}[t]
     \centering
     \begin{tikzpicture}
         \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
-        \node [below=.5cm of p0] {P0};
+        \node [below=.5cm of p0] {P0\textsubscript{(编写)}};
         \tdiagram[p1]{(0, -1)}{C语言}{A机器}{A机器}
-        \node [below=.5cm of p1] {P1};
+        \node [below=.5cm of p1] {P1\textsubscript{(原有)}};
         \tdiagram[p2]{(3, 0)}{C语言}{A机器}{B机器}
-        \node [below=.5cm of p2] {P2};
+        \node [below=.5cm of p2] {P2\textsubscript{(生成)}};
     \end{tikzpicture}
     \begin{tikzpicture}
         \tdiagram[p0]{(-3, 0)}{C语言}{C语言}{B机器}
-        \node [below=.5cm of p0] {P0};
+        \node [below=.5cm of p0] {P0\textsubscript{(编写)}};
         \tdiagram[p2]{(0, -1)}{C语言}{A机器}{B机器}
-        \node [below=.5cm of p2] {P2};
+        \node [below=.5cm of p2] {P2\textsubscript{(生成)}};
         \tdiagram[p3]{(3, 0)}{C语言}{B机器}{B机器}
-        \node [below=.5cm of p3] {P3};
+        \node [below=.5cm of p3] {P3\textsubscript{(生成)}};
     \end{tikzpicture}
     \caption{\protect\fullref{example1} 图例}
 \end{figure}
@@ -305,9 +293,110 @@
     \1  用P2编译P0，得到P3
 \end{outline}
 
-\subsection{本机编译器的利用}
+\chapter{高级语言及其文法}
+\section{语言概述}
+\begin{outline}
+    \1 什么是语言
+        \2 自然语言（Natural Language）
+            \3 是\emph{人与人}之间的通讯工具
+            \3 语义（Semantics）：环境，背景知识，语气，二义性，难以形式化
+        \2 计算机语言（Computer Language）
+            \3 计算机系统之间、人机之间的通讯工具
+            \3 严格的语法（Grammar）、语义（Semantics）
+                \4 易于形式化，从而实现自动化。
+    \1 语言的描述方法
+        \2 人类『已有』的语言基础
+            \3 自然语言：自然、方便 —— 非形式化
+            \3 数学语言（符号）：严格，准确 —— 形式化
+        \2 机器要『掌握』规则：形式化描述
+            \3 高度抽象 —— 表示（representation）
+            \3 方便计算机表示 —— 有穷描述（finite description）
+            \3 扎实的理论基础 —— 结构（structure）
+    \1 语言 —— 形式化内容的提取
+        \2 字符（Character）：语言中\emph{允许}出现的基本字符
+        \2 单词（Token）：满足一定\emph{规则}的字符串
+        \2 句子（Sentence）：满足一定规则的单词序列
+        \2 语言（Language）：满足一定规则的句子集合
+    \1 \emph{语言是字和组合字的规则 —— 结构性描述}
+    \1 程序设计语言 —— 形式化内容的提取
+        \2 字符（Character）：语言中可出现的所有字符——基本字符集
+        \2 单词（Token）：满足\emph{词法规则}的字符串（RL）
+        \2 语句（Sentence）：满足\emph{语法规则}的单词序列（CFL）
+        \2 程序（Program）：满足\emph{语法规则}的单词序列（CFL）
+        \2 程序设计语言：组成程序的所有语句的集合（CFL）
+    \1 描述形式 —— 文法
+        \2 语法 —— 语句
+            \3 语句的组成规则
+            \3 描述方法：BNF范式（Backus Normal Form，Backus-Naur Form）、语法描述图
+\end{outline}
+\section{基本定义}
+\begin{definition}
+    字母表（Alphabet） $\Sigma$ 是一个非空有穷集合，字母表中的元素称为字母表的一个字母（Letter），也叫字符（Character）
+\end{definition}
+\begin{definition}
+    字母表$\Sigma$上的符号串（String）
+    \begin{outline}[enumerate]
+        \1 $\epsilon$ 是 $\Sigma$ 上的一个符号串（叫做空串）；
+        \1 若$x$是$\Sigma$上的字符串，而$a \in \Sigma$，则$xa$是$\Sigma$上的符号串；
+        \1 $y$是$\Sigma$上的符号串，当且仅当它由 (1) 和 (2) 导出
+    \end{outline}
 
-\section{编译技术的应用}
+    非形式化描述：由字母表中的符号组成的任何有穷序列被成为在该字母表上的符号串，也称作『字』（Word）
+\end{definition}
+
+\begin{definition}
+    设 $\Sigma_1,\Sigma_2$ 是两个字母表，$\Sigma_1$ 与 $\Sigma_2$ 的\emph{乘积(Product)} $\Sigma_1 \Sigma_2 = \set{ab | a \in \Sigma_1, b \in \Sigma_2}$
+\end{definition}
+
+\begin{definition}
+    $\Sigma$的幂（Power）：
+    \begin{outline}[enumerate]
+        \1 $\Sigma^0 = \set{\epsilon}$
+        \1 $\Sigma^n = \Sigma^{n-1}\Sigma$ 
+    \end{outline}
+\end{definition}
+
+\begin{definition}
+    $\Sigma$的\emph{正闭包（Positive Closure）}：
+    \begin{outline}[enumerate]
+        \1 $\Sigma^+ = \set{x|x 是 \Sigma 上的非空字符串}$
+        \1 $\Sigma^+ = \Sigma \cup \Sigma^2 \cup \Sigma^3 \cup \dots$
+    \end{outline}
+
+    $\Sigma$的\emph{克林闭包（Kleene Closure）}：
+    
+    $\begin{aligned}
+        \Sigma^* &= \set{\epsilon} \cup \Sigma^+ \\
+                 &= \Sigma^0 \cup \Sigma \cup \Sigma^2 \cup \Sigma^3 \cup \dots
+    \end{aligned}$
+\end{definition}
+
+\begin{definition}
+    设 $\Sigma$ 是一个字母表， $\forall L \subseteq \Sigma^*$，$L$称为字母表$\Sigma$的一个\emph{语言(Language)}，$\forall x \in L$，$x$叫做$L$的一个\emph{句子}。
+\end{definition}
+
+\begin{definition}
+    设$s$是字符串：
+    \begin{outline}
+        \1 \emph{前缀}：移去$s$的尾部的若干（含0）个字符
+        \1 \emph{后缀}：移去$s$的头部的若干（含0）个字符
+        \1 \emph{子串}：从$s$中删去一个前缀和一个后缀
+        \1 \emph{字序列}：从$s$中删去0个或多个符号，\emph{不要求连续}
+        \1 \emph{长度}：符号串中符号的数目
+    \end{outline}
+\end{definition}
+\begin{definition}
+    设$x$和$y$是符号串，他们的\emph{连接（Concatenation）}$xy$是把$y$的符号写在$x$的符号之后得到的符号串
+\end{definition}
+\begin{definition}
+    设$x$是符号串，$x$的$n$次\emph{幂（Power）}为：
+    \begin{outline}
+        \1 $x^0 = \epsilon$
+        \1 $x^n = x^{n-1} x$
+    \end{outline}
+\end{definition}
+\section{文法的定义}
+\emph{如何实现语言结构的形式化描述？}
 
 
 \end{document}

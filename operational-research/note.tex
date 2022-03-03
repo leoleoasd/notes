@@ -17,7 +17,10 @@
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 \graphicspath{ {./images/} }
-
+\newtheorem{definition}{定义}[section]
+\newtheorem{example}{例}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}{引理}[section]
 \newcounter{fullrefcounter}
 \newcommand*{\fullref}[1]{%
 \addtocounter{fullrefcounter}{1}%
@@ -55,5 +58,31 @@ Notes for Operational Research}
 \maketitle
 
 \chapter*{绪论}
+
+只考原题 10道题 ppt原题 不改数。\emph{抄不完}
+
+\chapter{线性规划}
+
+
+\begin{definition}
+  设线性规划的标准形式：
+\begin{align}
+  \max z &= \Sigma c_j x_j \\
+  \label{eq:1-1} s.t. \Sigma a_{ij}x_j &= b_i \qquad i = 1,2,3,\dots,m \\
+  \label{eq:1-2} x_j &\ge 0 \qquad j = 1,2,\dots, n
+\end{align}
+  可行域：由约束条件\ref{eq:1-1} \ref{eq:1-2}约束的区域。
+
+
+\end{definition}
+
+\section{单纯形法}
+\begin{example}
+  \begin{equation}
+    \max z = 
+  \end{equation}
+\end{example}
+
+变换成一个正常量 减去一些变量
 
 \end{document}
