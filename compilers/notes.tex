@@ -398,5 +398,70 @@
 \section{文法的定义}
 \emph{如何实现语言结构的形式化描述？}
 
+\begin{definition}
+    文法（Grammar）G是一个四元组
+    $$
+        G = (V, T, P, S)
+    $$
+    其中，
+
+    V —— \emph{变量（Variable）}的非空有穷集。$\forall A \in V$，
+    $A$叫做语法变量（syntactic variable），也叫非终极符号（nonterminal）。
+    
+    T —— \emph{终极符（Terminal）}的非空有穷集。$\forall a \in T$，
+    $a$叫做终极符。 $V \cup T = \emptyset$。
+
+    P —— \emph{产生式（Production）}的非空有穷集。对于$a \to b$，
+    $a$是\emph{左部}，$b$是\emph{右部}。
+
+    S —— $S \in V$，文法G的\emph{开始符号（Start symbol）}。
+\end{definition}
+
+约定：
+\begin{outline}
+    \1 只写产生式，第一个产生式的左部为开始符号
+    \1 对一组有相同左部的产生式 \\
+        $\alpha \to \beta_1, \alpha \to \beta_2, \alpha \to \beta_3, \dots$
+        可以记为 $\alpha \to \beta_1 | \beta_2 | \beta_3 \dots$
+        $\beta_1 , \beta_2 , \beta_3$称为\emph{候选式}（Candidate）
+    \1 形如$\alpha \to \epsilon$的产生式叫做空产生式，也可叫做$\epsilon$产生式
+    \1 符号
+        \2 英文大写字母为\emph{语法变量}
+        \2 英文小写字母为\emph{终结符号}
+        \2 英文较后的大写字母为\emph{语法变量或者终极符号}
+        \2 英文较后的大写字母为\emph{终极符号行}
+        \2 希腊字母表示\emph{语法变量和终极符号组成的行}
+\end{outline}
+
+\begin{definition}
+    对于文法$G = (V, T, P, S)$：
+
+    语法范畴A $L(A) = \set*{w | w \in T^* \text{且} A \overset{*}\Rightarrow w}$
+
+    语言（Language） $L(G) = \set*{w | w \in T^* \text{且} S \overset{*}\Rightarrow w}$
+
+    句子（Sentence） $\forall w \in L(G)$
+
+    句型（Sentential Form） $\forall \alpha \in (V \cup T)^*$， 
+    如果$S \overset{*}\Rightarrow \alpha$，则称$\alpha$是$G$产生的一个句型。
+    
+\end{definition}
+
+\begin{example}
+    定义字母表 $\Sigma = \set{0,1}$ 上的字符串：
+    \begin{outline}
+        \1 $\epsilon$ 是 $\Sigma$ 的一个字符串（叫做空串）
+        \1 若$x$是$\Sigma$上的字符串，而$a$是$\Sigma$的元素，则$xa$是$\Sigma$上的字符串。
+    \end{outline}
+
+    $
+    \begin{aligned}
+        S & \to \epsilon \\
+        S & \to S0 | S1
+    \end{aligned}
+    $
+\end{example}
+
+
 
 \end{document}

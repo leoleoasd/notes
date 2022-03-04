@@ -1,0 +1,86 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\xeCJKsetup{CJKmath=true}
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{数据挖掘第一次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+  \item[4-1] 假定两个水平类似的班级（一班和二班）上同一门课，
+  两位任课老师的评分标准有差异，两个班成绩的均值和标准差都不一样。
+  一班分数的均值和标准差分别为78.53和9.43，二班的均值和标准差分别为70.19和7.00。
+
+  那么得到90分的一班的张颖和得到82分的二班的刘疏哪个成绩更好呢？说明理由
+
+    答：张颖同学的标准分数$Z_{张颖} = \frac{x_{张颖} - \mu}{\delta} = \frac{90 - 78.53}{9.43} \approx 1.21$
+
+    刘疏的标准分数$Z_{刘疏} = \frac{x_{刘疏} - \mu}{\delta} = \frac{82 - 70.19}{7} \approx 1.68 > Z_{张颖}$。
+
+    因此刘疏同学成绩更好。
+  
+    \item[4-2] 《大西洋月刊》的一篇文章中谈到了IQ值（智商）与出生率。IQ值呈钟形分布，其平均数为100，标准差为15。
+    \begin{enumerate}
+      \item IQ值在85\textasciitilde 115之间的人口所占百分比为多少？
+      
+      IQ值在85\textasciitilde 115之间，也就是在$\pm 15$范围内的人口占$68\%$。
+      \item IQ值在70\textasciitilde 130之间的人口所占百分比为多少？
+      
+      IQ值在 70 \textasciitilde 130 之间，也就是在$\pm 30$范围内的人口占$95\%$。
+
+      \item 凡是IQ值超过145的人都被视为天才，经验法则是否支持这一论断？试解释原因。
+      
+      经验法则支持本结论。IQ值在 55 \textasciitilde 145 之间，也就是在$\pm 45$范围外的人口占$1\%$，因此IQ值超过145的人可认为超越了$99.5\%$的人，可被视为天才。
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
