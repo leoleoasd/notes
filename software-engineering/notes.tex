@@ -1,4 +1,4 @@
-\documentclass{ctexbook}
+\documentclass[oneside]{ctexbook}
 \usepackage[T1]{fontenc}
 \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
 \usepackage{mathtools}
@@ -10,13 +10,28 @@
 \usepackage{float}
 \usepackage{amsthm}
 \usepackage{tabularray}
+\usepackage{latexcolors}
 \usepackage{minted}
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
 \usepackage{cleveref}
+\usepackage{environ}
+\makeatletter
+\newsavebox{\measure@tikzpicture}
+\NewEnviron{scaletikzpicturetowidth}[1]{%
+  \def\tikz@width{#1}%
+  \def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
+  \BODY
+  \end{lrbox}%
+  \pgfmathparse{#1/\wd\measure@tikzpicture}%
+  \edef\tikzscale{\pgfmathresult}%
+  \BODY
+}
+\makeatother
 \usetikzlibrary{fit}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
 \renewcommand{\tableautorefname}{表}
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
@@ -39,11 +54,6 @@
 \author{卢雨轩 19071125}
 % \date{\today}
 \ctexset{
-    section = {
-        titleformat = \raggedright,
-        name = {,},
-        number = \chinese{section}、
-    },
     paragraph = {
         runin = false
     },
@@ -170,5 +180,72 @@
         \2 单元测试
             \3 每个单元的功能的正确性
 \end{outline}
+
+\chapter{需求工程与结构化分析方法}
+\section{软件需求的问题和重要性}
+\begin{outline}
+    \1 什么是好的软件
+        \2 正确的软件：满足用户的需求，为用户创造价值
+        \2 软件运行正确
+\end{outline}
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=.8\linewidth]{image3.png}
+  \caption{不同阶段改变需求的成本}
+\end{figure}
+\section{软件需求的定义和层次}
+\begin{outline}
+    \1 需求的概念
+        \2 需求来源与用户的『需要』、『要求』
+        \2 这些『需要』被分析后形成完整的文档，详细的描述产品『应该』或者『必须』做什么
+    \1 官方定义
+        \2 用户解决问题或达到目标所需要的条件和能力
+        \2 系统或系统部件要满足合同、标准、规范或其他正式规定文档锁需有的条件或者能力
+        \2 一种反映上面两个描述的条件或能力的文档说明
+    \1 对定义的理解
+        \2 软件需求的概念涵盖了用户角度（从系统的外部行为）和开发人员角度（系统的内部特性）两个方面，其中的关键在于需求一定要文档化。
+\end{outline}
+\begin{figure}[htp]
+    \centering
+    \Large
+    \begin{scaletikzpicturetowidth}{\linewidth}
+        \begin{tikzpicture}[scale=\tikzscale]
+            \node (0) at (0,10) {};
+            \node [left=.1cm of 0] {功能需求};
+            \node [right=.1cm of 0] {非功能需求};
+            \node [ellipse,fill=violet!30!white] (1) at (-9, 9) {业务需求};
+            \node [below=.5cm of 1,fill=lemon!30!white] (2) {项目视图与范围文档};
+            \node [ellipse,fill=violet!30!white,below right=1cm of 2.south] (3) {用户需求};
+            \node [below right=.5cm of 3.south,fill=lemon!30!white] (4) {用例文档};
+            \node [ellipse,fill=violet!30!white,below right=1cm of 4.south] (5) {功能需求};
+            \node [ellipse,fill=violet!30!white,left = .5cm of 5] (6) {系统需求};
+            \node [fill=lemon!30!white] (base) at (0,0) {软件需求规格说明};
+            \draw  (base.north) -- (0, 10.5);
+    
+            \node [ellipse,fill=chromeyellow] (10) at (3,8) {业务规则};
+            \node [ellipse,fill=chromeyellow, below right=.3cm of 10] (11) {质量属性};
+            \node [ellipse,fill=chromeyellow, below right=1cm and .3cm of 11.south] (12) {外部接口};
+            \node [ellipse,fill=chromeyellow, below=.3cm of 12.south] (13) {约束条件};
+
+            \draw [-latex,thick] (1) -- (2);
+            \draw [-latex,thick] (2) -- (3);
+            \draw [-latex,thick] (3) -- (4);
+            \draw [-latex,thick] (4) -- (5);
+            \draw [-latex,thick] (6) -- (5);
+            \draw [-latex,thick] (5) -- (base);
+            \draw [-latex,thick] (10) -- (4);
+            \draw [-latex,thick] (10) -- (5);
+            \draw [-latex,thick] (10) -- (11);
+            \draw [-latex,thick] (11) -- (base);
+            \draw [-latex,thick] (11) -- (5);
+            \draw [-latex,thick] (12) -- (base);
+            \draw [-latex,thick] (13) -- (base);
+    
+        \end{tikzpicture}
+    \end{scaletikzpicturetowidth}
+\end{figure}
+\section{需求开发}
+\section{需求管理}
+\section{结构化分析方法}
 
 \end{document}
