@@ -1,0 +1,73 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{自然语言处理第一次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+假设某一种特殊的句法结构很少出现，平均大约每100,000个句子中才可能出现一次。我们开发了一个程序来判断某个句子中是否存在这种特殊的句法结构。如果句子中确实含有该特殊句法结构时，程序判断结果为“存在”的概率为0.95。如果句子中实际上不存在该句法结构时，程序错误地判断为“存在”的概率为0.005。那么，这个程序测得句子含有该特殊句法结构的结论是正确的概率有多大？
+
+假设G表示事件“句子确实存在该特殊句法结构”，T表示事件“程序判断的结论是存在该特殊句法结构”。求解上述问题
+
+答：由题知：
+\begin{gather}
+    P(G) = \frac{1}{100000} = 10^{ - 5} \qquad\qquad P(\overline{G}) = 1 - 10^{ - 5}\\
+    P(T | G) = 0.95\qquad\qquad P(T|\overline{G}) = 0.05 .
+\end{gather}
+由全概率公式可得：
+\begin{align}
+    P(T) &= P(T|G) \times P(G) + P(T|\overline{G}) \times P(\overline{G}) \\
+         &= 10^{ - 5} \times 0.95 + (1 - 10^{ - 5}) \times 0.05 \\
+         &= 0.050009 .
+\end{align}
+
+
+\end{document}

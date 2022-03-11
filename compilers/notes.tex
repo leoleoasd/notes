@@ -463,5 +463,95 @@
 \end{example}
 
 
+\section{文法的乔姆斯体系}
+\begin{definition}
+    对于文法$G = (V,T,P,S)$： \\
+    G叫做0型文法，Type 0 Grammar，也叫短语结构文法（PSG，Phrase Structure Grammar） \\
+    $L(G)$是0型语言，也叫短结构语言，可递归枚举集。
+\end{definition}
+\begin{definition}
+    对于0型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    则G是1型文法，或上下文有关文法。
+\end{definition}
+\begin{definition}
+    对于1型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$，均有$|\beta| \geq |\alpha|$，
+    并且$\alpha \in V$
+    则G是2型文法，或上下文无关文法。
+\end{definition}
+\begin{definition}
+    对于2型文法文法$G = (V,T,P,S)$： \\
+    如果对于$\forall \alpha \to \beta \in P$： \\
+    如果形如$A \to wB$和$A \to w$，其中$A,B \in V, w \in T^+$：G是右线性文法。 \\
+    如果形如$A \to Bw$和$A \to w$，其中$A,B \in V, w \in T^+$：G是左线性文法。 \\
+    则G是3型文法，或正则文法。
+\end{definition}
+
+\section{BNF范式}
+\begin{definition}
+    Backus-Normal：
+    \begin{outline}
+    \1 $\alpha \to \beta$ 表示为 $\alpha ::= \beta$
+    \1 非终极符：用$<>$扩起来
+    \1 终极符：基本符号集
+    \1 其他：
+        \2 $\beta(\alpha_1|\alpha_2|\dots|\alpha_n) = \beta\alpha_1 | \beta\alpha_2 | \dots | \beta\alpha_n$
+        \2 $\set{\alpha_1 | \alpha_2 | \dots | \alpha_n}^u_l$：出现$l$次到$u$次
+        \2 $\set{\alpha_1 | \alpha_2 | \dots | \alpha_n}m$：$l=0, u=m$
+        \2 $[\alpha] = \alpha | \epsilon$
+    \end{outline}
+\end{definition}
+
+\section{CFG的语法树}
+
+\begin{definition}
+    CFG $G=(V, T, P, S)$的语法树为满足如下条件的树：
+
+    \begin{outline}[enumerate]
+        \1 每个节点的标记$x \in V \cup T \cup \set{\epsilon}$
+        \1 如果节点V的标记为$A$，V从左到右的子节点$V_1,V_2,\dots,V_k$
+        的标记依次为$y_1,y_2,\dots,y_k$，则$A \to y_1y_2\dots y_k \in P$
+        \1 根节点标记为S
+        \1 中间节点的标记为变量$x \in V$
+        \1 从左到右的叶子节点$v_1,\dots,v_n$的标记$x_1,\dots,x_n$
+        组成的串$x_1x_2\dots x_n$为该树的结果。
+        \1 如果v的标记为$\epsilon$，则它没有兄弟。
+        % \1 如果节点V的标记为终结符号，则它是叶子节点。
+    \end{outline}
+\end{definition}
+\begin{example}
+    $X \to (S) | S | \epsilon$，请画出句型$((S))$的语法树。
+\end{example}
+\begin{definition}
+    满足语法树定义中除第三条外条件的树，称作A-子树。
+\end{definition}
+\begin{theorem}
+    有一颗结果为$\alpha$的语法树$\iff S \overset{*} \Rightarrow \alpha $
+\end{theorem}
+
+\begin{definition}
+    如果$S \overset{*}\Rightarrow \alpha A \beta$，且$A \overset{+}\Rightarrow \gamma$，则称$\gamma$是句型$\alpha \gamma \beta$相对于变量$A$的短语。
+
+    如果$S \overset{*}\Rightarrow \alpha A \beta$，且$A \Rightarrow \gamma$，则称$\gamma$是句型$\alpha \gamma \beta$相对于变量$A$的直接短语。
+
+    最左直接短语称为『句柄』。
+
+    用树解释短语：
+    \begin{outline}
+        \1 短语：子树的结果是相对于子树根的短语
+        \1 直接短语：只有父子两代的子树的结果
+        \1 句柄：一个句型的分析树中最左的、只有父子两代的子树的结果
+        \1 一个句型的短语数量等于非独子的中间结点数量
+    \end{outline}
+\end{definition}
+
+\chapter{作业}
+\section{练习}
+P59 2、3、5
+
+P60 9、11、12
+
+$G，L(G) = \set{x 0^{2n} 1^{3m} | n,m \ge 1, x \in \set{0,1}^*}$
 
 \end{document}
