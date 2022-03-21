@@ -1,0 +1,307 @@
+% Data flow diagram
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+\usetikzlibrary{positioning,calc}
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+\tikzset{>=latex}
+
+% Defines a `datastore' shape for use in DFDs.  This inherits from a
+% rectangle and only draws two horizontal lines.
+\makeatletter
+\pgfdeclareshape{datastore}{
+  \inheritsavedanchors[from=rectangle]
+  \inheritanchorborder[from=rectangle]
+  \inheritanchor[from=rectangle]{center}
+  \inheritanchor[from=rectangle]{base}
+  \inheritanchor[from=rectangle]{north}
+  \inheritanchor[from=rectangle]{north east}
+  \inheritanchor[from=rectangle]{east}
+  \inheritanchor[from=rectangle]{south east}
+  \inheritanchor[from=rectangle]{south}
+  \inheritanchor[from=rectangle]{south west}
+  \inheritanchor[from=rectangle]{west}
+  \inheritanchor[from=rectangle]{north west}
+  \backgroundpath{
+    %  store lower right in xa/ya and upper right in xb/yb
+    \southwest \pgf@xa=\pgf@x \pgf@ya=\pgf@y
+    \northeast \pgf@xb=\pgf@x \pgf@yb=\pgf@y
+    \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@ya}}
+    \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@yb}}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+ }
+}
+\makeatother
+
+\newcommand{\twoWayArrow}[4]{
+    \draw [-latex] ($(#1) + (1mm, 0)$) -- node[midway,right]{#3} ({$(#1) + (1mm, 0)$} |- #2);
+    \draw [latex-] ($(#1) + (-1mm, 0)$) -- node[midway,left]{#4} ({$(#1) + (-1mm, 0)$} |- #2);
+}
+\newcommand{\oneWayArrow}[3]{
+    \draw [-latex] ($(#1) + (0mm, 0)$) -- node[midway,right]{#3} ({$(#1) + (0mm, 0)$} |- #2);
+    % \draw [latex-] ($(#2) + (-3mm, 0)$) -- node[midway,left]{#4} ({$(#2) + (-3mm, 0)$} |- #1);
+}
+\newcommand{\oneWayArrowRev}[3]{
+    \draw [latex-] ($(#1) + (0mm, 0)$) -- node[midway,right]{#3} ({$(#1) + (0mm, 0)$} |- #2);
+    % \draw [latex-] ($(#2) + (-3mm, 0)$) -- node[midway,left]{#4} ({$(#2) + (-3mm, 0)$} |- #1);
+}
+\newcommand{\getProcessAndStore}[4]{
+    \node [process, right = .3cm of #1] (get_#2) {获取#4};
+    \node [datastore, below = .8cm of get_#2] (#2_store) {#4储存};
+    \oneWayArrow{#2_store.north}{get_#2.south}{#4};
+    \oneWayArrow{get_#2.north}{#3.south}{#4};
+}
+\newcommand{\manageProcessAndStore}[5]{
+    \node [process, right = .3cm of #1] (manage_#2) {管理#4};
+    \node [datastore, below = .8cm of manage_#2] (#2_store) {#4储存};
+    \twoWayArrow{#2_store.north}{manage_#2.south}{#4}{#5};
+    \twoWayArrow{manage_#2.north}{#3.south}{#4}{#5};
+}
+
+\begin{document}
+\section{第0层}
+\begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}[
+        font=\small, thick,
+        basic/.style={draw, thick},
+        entity/.style={basic},
+        process/.style={basic,circle,text width=1cm},
+        datastore/.style={basic,shape=datastore, minimum height=.8cm },
+        every node/.style={align=center},
+        auto
+    ]
+    \node [entity] (guest) {游客};
+    \node [entity, below=of guest] (sys_admin) {管理员};
+    \node [entity, below=of sys_admin] (teacher) {教师};
+    \node [entity, below=of teacher] (user) {用户};
+    \node [entity, below=of user] (student) {学生};
+    
+    \node [process, right=of teacher] (eduoj) {EduOJ};
+    \draw [latex-latex] (guest) -- (eduoj);
+    \draw [latex-latex] (sys_admin) -- (eduoj);
+    \draw [latex-latex] (teacher) -- (eduoj);
+    \draw [latex-latex] (user) -- (eduoj);
+    \draw [latex-latex] (student) -- (eduoj);
+
+    \end{tikzpicture}
+\end{figure}
+\section{第1层}
+\begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}[
+        font=\small, thick,
+        basic/.style={draw, thick},
+        entity/.style={basic},
+        process/.style={basic,circle,text width=1cm},
+        datastore/.style={basic,shape=datastore, minimum height=.8cm },
+        every node/.style={align=center},
+        auto
+      ]
+        \node [entity, text width=.18\linewidth] (guest) {游客};
+        \node [entity, text width=.45\linewidth, right=.3cm of guest] (sys_admin) {全局管理员};
+        \node [entity, text width=.3\linewidth, right=.3cm of sys_admin] (teacher) {教师};
+        
+        \node [process, below left=.8cm and -1.5cm of guest] (get_image) {获取图片};
+        \node [datastore, below = .8cm of get_image] (image_store) {图片};
+        \oneWayArrow{image_store.north}{get_image.south}{图片};
+        \oneWayArrow{get_image.north}{guest.south}{图片};
+        
+        % \node [process, right = .3cm of get_image] (get_problem) {获取题目};
+        % \node [datastore, below = .8cm of get_problem] (problem_store) {题目储存};
+        % \oneWayArrow{problem_store.north}{get_problem.south}{题目};
+        % \oneWayArrow{get_problem.north}{guest.south}{题目};
+        
+        \getProcessAndStore{get_image}{problem}{guest}{题目}
+
+        \node [process, right=.3cm of get_problem] (manage_problem) {管理题目};
+        \twoWayArrow{manage_problem.north}{sys_admin.south}{题目}{题目};
+        \draw [-latex] ($(problem_store.east) + (0,2mm)$) -| ($(manage_problem.south) + (-3mm,0)$);
+        \draw [latex-] ($(problem_store.east) + (0,-2mm)$) -| node[below, midway]{题目} ($(manage_problem.south) + (3mm,0)$);
+        \manageProcessAndStore{manage_problem}{user}{sys_admin}{用户}{用户}
+        \getProcessAndStore{manage_user}{logs}{sys_admin}{日志}
+        \manageProcessAndStore{get_logs}{scripts}{sys_admin}{脚本}{脚本}
+
+        \manageProcessAndStore{manage_scripts}{class}{teacher}{班级}{班级}
+
+        \node [process, right = .5cm of manage_class] (manage_problem_set) {管理题目集};
+        \node [datastore, below = .8cm of manage_problem_set] (problem_set_store) {题目集储存};
+        \twoWayArrow{problem_set_store.north}{manage_problem_set.south}{题目集}{题目集};
+        \twoWayArrow{manage_problem_set.north}{teacher.south}{题目集}{题目集};
+
+        
+        \node [process, right = .5cm of manage_problem_set] (manage_submission) {获取提交};
+        \node [datastore, below = .8cm of manage_submission] (submission_store) {提交储存};
+        \twoWayArrow{submission_store.north}{manage_submission.south}{提交}{提交};
+        \twoWayArrow{manage_submission.north}{teacher.south}{提交}{提交};
+
+        \node [process, below=.8cm of image_store] (upload_image) {上传图片};
+        \node [entity, text width=.5\linewidth, below=8cm of guest.west, anchor=west] (user) {用户};
+        
+        \oneWayArrow{upload_image.north}{image_store.south}{图片}
+        \oneWayArrow{upload_image.south}{user.north}{图片}
+        
+        \node [process, below=.8cm of user_store] (update_user) {更新信息};
+
+        \twoWayArrow{update_user.north}{user_store.south}{用户信息}{用户信息}
+        \twoWayArrow{update_user.south}{user.north}{用户信息}{用户信息}
+
+        
+        \node [process, below=.8cm of class_store] (get_class) {获取班级};
+        \node [process, below=.8cm of problem_set_store] (get_problem_Set) {获取题目集};
+        \node [process, below=.8cm of submission_store] (get_submission) {提交};
+        \node [entity, text width=.5\linewidth, right = .3cm of user] (student) {学生};
+        
+        
+        \oneWayArrow{class_store.south}{get_class.north}{班级}
+        \oneWayArrow{get_class.south}{student.north}{班级}
+        \oneWayArrow{problem_set_store.south}{get_problem_Set.north}{题目集}
+        \oneWayArrow{get_problem_Set.south}{student.north}{题目集}
+        \twoWayArrow{submission_store.south}{get_submission.north}{提交}{提交}
+        \twoWayArrow{get_submission.south}{student.north}{提交}{提交}
+
+        \end{tikzpicture}
+\end{figure}
+\clearpage
+\section{第2层}
+
+\begin{figure}[htp]
+    \centering
+    \begin{tikzpicture}[
+        font=\small, thick,
+        basic/.style={draw, thick},
+        entity/.style={basic},
+        process/.style={basic,circle,text width=1cm},
+        datastore/.style={basic,shape=datastore, minimum height=.8cm },
+        every node/.style={align=center},
+        auto
+      ]
+        \node [entity, text width=.18\linewidth] (guest) {游客};
+        \node [entity, text width=.75\linewidth, right=.3cm of guest] (sys_admin) {全局管理员};
+        
+        \node [process, below left=.8cm and -1.5cm of guest] (get_image) {获取图片};
+        \node [datastore, below = .8cm of get_image] (image_store) {图片};
+        \oneWayArrow{image_store.north}{get_image.south}{图片};
+        \oneWayArrow{get_image.north}{guest.south}{图片};
+        
+        % \node [process, right = .3cm of get_image] (get_problem) {获取题目};
+        % \node [datastore, below = .8cm of get_problem] (problem_store) {题目储存};
+        % \oneWayArrow{problem_store.north}{get_problem.south}{题目};
+        % \oneWayArrow{get_problem.north}{guest.south}{题目};
+        
+        \getProcessAndStore{get_image}{problem}{guest}{题目}
+
+        \node [process, right=.3cm of get_problem] (get2_problem) {查看题目};
+        \node [process, right=.3cm of get2_problem] (edit_problem) {管理题目};
+        \oneWayArrow{get2_problem.north}{sys_admin.south}{题目};
+        \oneWayArrowRev{edit_problem.north}{sys_admin.south}{题目};
+        % \twoWayArrow{manage_problem.north}{sys_admin.south}{题目}{题目};
+        \draw [-latex] ($(problem_store.east) + (0,2mm)$) -| ($(get2_problem.south) + (0mm,0)$);
+        \draw [latex-] ($(problem_store.east) + (0,-2mm)$) -| node[below, midway]{题目} ($(edit_problem.south) + (0,0)$);
+
+        \node [process, right = .3cm of edit_problem] (get_user) {获取用户};
+        \oneWayArrow{get_user.north}{sys_admin.south}{用户};
+        
+        \node [process, right = .3cm of get_user] (manage_user) {管理用户};
+        \node [datastore, below = .8cm of manage_user] (user_store) {用户储存};
+        \twoWayArrow{user_store.north}{manage_user.south}{用户}{用户};
+        \twoWayArrow{manage_user.north}{sys_admin.south}{用户}{用户};
+        \draw [-latex] ($(user_store.west) + (0,1mm)$) -| ($(get_user.south) + (0mm,0)$);
+
+        % \manageProcessAndStore{edit_problem}{user}{sys_admin}{用户}{用户}
+
+        \getProcessAndStore{manage_user}{logs}{sys_admin}{日志}
+        \manageProcessAndStore{get_logs}{scripts}{sys_admin}{脚本}{脚本}
+
+
+        \node [process, below=.8cm of image_store] (upload_image) {上传图片};
+        \node [entity, text width=\linewidth, below=8cm of guest.west, anchor=west] (user) {用户};
+        
+        \oneWayArrow{upload_image.north}{image_store.south}{图片}
+        \oneWayArrow{upload_image.south}{user.north}{图片}
+        
+        \node [process, below=.8cm of user_store] (update_me) {编辑信息};
+        \node [process, left=.3cm of update_me] (get_me) {查看信息};
+        % \oneWayArrow{get_me.south}{user.north}{用户信息}
+        
+        \draw [-latex] (get_me.south) -- node[midway,left]{用户信息} (get_me.south |- user.north);
+
+        \draw [-latex] ($(user_store.west) + (0,-1mm)$) -| ($(get_me.north) + (0mm,0)$);
+
+        \twoWayArrow{update_me.north}{user_store.south}{用户信息}{用户信息}
+        \twoWayArrow{update_me.south}{user.north}{用户信息}{用户信息}
+
+        
+        \node [entity, text width=\linewidth, below=.3cm of user.south west, anchor=north west] (teacher) {教师};
+
+        \node [below=1.2cm of teacher.south west] (ghost) {};
+
+        \manageProcessAndStore{ghost}{class}{teacher}{班级}{班级}
+
+        \node [process, right = 2cm of manage_class] (manage_problem_set) {管理题目集};
+        \node [datastore, below = .8cm of manage_problem_set] (problem_set_store) {题目集储存};
+        \twoWayArrow{problem_set_store.north}{manage_problem_set.south}{题目集}{题目集};
+        \twoWayArrow{manage_problem_set.north}{teacher.south}{题目集}{题目集};
+
+        
+        \node [process, right = 2cm of manage_problem_set] (manage_submission) {获取提交};
+        \node [datastore, below = .8cm of manage_submission] (submission_store) {提交储存};
+        \twoWayArrow{submission_store.north}{manage_submission.south}{提交}{提交};
+        \twoWayArrow{manage_submission.north}{teacher.south}{提交}{提交};
+        
+        \node [process, below=.8cm of class_store] (get_class) {获取班级};
+        \draw [-latex] (get_class.east) -- +(1,0) -- ({$(get_class.east) + (1,0)$} |- teacher.south);
+        \node [process, below=.8cm of problem_set_store] (get_problem_Set) {获取题目集};
+        \draw [-latex] (get_problem_Set.east) -- +(1,0) -- ({$(get_problem_Set.east) + (1,0)$} |- teacher.south);
+        \node [process, below=.8cm of submission_store] (get_submission) {获取提交};
+        \node [process, right=.8cm of get_submission] (create_submission) {创建提交};
+        \node [process, right=.8cm of create_submission] (judge) {评测提交};
+        \node [entity, text width=\linewidth, below = 7.4cm of teacher.west, anchor=west] (student) {学生};
+        
+        
+        \oneWayArrow{class_store.south}{get_class.north}{班级}
+        \oneWayArrow{get_class.south}{student.north}{班级}
+        \oneWayArrow{problem_set_store.south}{get_problem_Set.north}{题目集}
+        \oneWayArrow{get_problem_Set.south}{student.north}{题目集}
+        \oneWayArrow{submission_store.south}{get_submission.north}{提交}
+        \oneWayArrow{get_submission.south}{student.north}{提交}
+        
+        \draw [-latex] (create_submission.north) |- ($(submission_store.east) + (0,-1mm)$) ;
+        \oneWayArrowRev{create_submission.south}{student.north}{提交}
+        \draw [-latex] (create_submission) -> (judge);
+        \draw [-latex] (judge.north) |- ($(submission_store.east) + (0,1mm)$) ;
+
+        \end{tikzpicture}
+\end{figure}
+\end{document}
+
+% node[midway,right] {用户信息}

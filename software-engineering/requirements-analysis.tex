@@ -1,0 +1,142 @@
+\documentclass{ctexart}
+
+\usepackage{tabularray}
+% \usepackage{enumerate}
+\usepackage{enumitem}
+\UseTblrLibrary{booktabs}
+\setlist[itemize]{leftmargin=4\ccwd}
+% \setlist{leftmargin=4\ccwd}
+% \setlength{\leftmargin}{120em}
+
+\begin{document} 
+\title{\vspace{-3.8cm}EduOJ 需求分析}
+\author{卢雨轩~19071125\\ 孙天天19071110}
+\date{2022年3月14日}
+
+\maketitle
+
+\section{软件的用户}
+EduOJ作为一款面向教学的在线评测系统，其用户主要分为以下三类：
+\begin{itemize}
+    \item \texttt{全局管理员}：管理整个系统。
+    \item \texttt{教师}：管理某个班级的学生、作业。
+    \item \texttt{学生}：参与某个班级的学习。
+\end{itemize}
+
+\section{各种用户具有的功能}
+本系统中的各种功能对各类用户拥有的情况如下：
+\begin{center}
+    \begin{tblr}{c c c c}
+        \toprule
+        功能名称 & 全局管理员 & 教师 & 学生\\
+        \midrule
+        查看他人资料 & 有 & 有 & 有 \\
+        修改个人资料 & 有 & 有 & 有 \\
+        管理用户 & 有 & 有 & \\
+        \midrule
+        查看题目 & 全部 & 全部 & 班级内 \\
+        编辑题目 & 有 & 自己创建的 & \\
+        查看提交 & 全部 & 班级内 & 自己的 \\
+        创建提交 & 全部 & 班级内 & 班级内 \\
+        \midrule
+        查看班级成员 & 全部 & 教授的 & 参与的 \\
+        管理班级成员 & 全部 & 教授的 & \\
+        查看题目组 & 全部 & 教授的 & 参与的 \\
+        管理题目组 & 全部 & 教授班级的 & \\
+        \midrule
+        上传图片 & 有 & 有 & 有 \\
+        查阅日志 & 有 & & \\
+        添加脚本 & 有 & & \\
+        \bottomrule
+    \end{tblr}
+\end{center}
+
+\section{每个功能的流程说明}
+
+查看他人资料
+\begin{itemize}
+    \item 请求获取他人资料
+    \item 从数据库中查询他人资料
+\end{itemize}
+
+修改个人资料
+\begin{itemize}
+    \item 接收修改后的个人资料
+    \item 向数据库更新个人资料
+\end{itemize}
+
+管理用户
+\begin{itemize}
+    \item 确认申请者具有权限
+    \item 接收涉及的用户和修改后的资料
+    \item 向数据库更新用户资料
+\end{itemize}
+
+查看题目
+\begin{itemize}
+    \item 确认申请者身份、所在班级
+    \item 从数据库提取题目资料
+\end{itemize}
+
+编辑题目
+\begin{itemize}
+    \item 确认申请者身份、教授班级
+    \item 向数据库更新题目资料
+\end{itemize}
+
+查看提交
+\begin{itemize}
+    \item 确认申请者身份、所在班级、教授班级
+    \item 从数据库获取全部或个人的提交资料
+\end{itemize}
+
+创建提交
+\begin{itemize}
+    \item 确认申请者身份、所在班级
+    \item 接收代码，使用评测机评测
+    \item 整理评测结果，向数据库写入提交资料
+\end{itemize}
+
+查看班级成员
+\begin{itemize}
+    \item 确认申请者身份、所在班级
+    \item 从数据库获取指定班级成员
+\end{itemize}
+
+管理班级成员
+\begin{itemize}
+    \item 确认申请者身份、教授班级
+    \item 向数据库更新班级成员
+\end{itemize}
+
+查看题目组
+\begin{itemize}
+    \item 确认申请者身份、所在班级
+    \item 从数据库获取指定题目组
+\end{itemize}
+
+管理题目组
+\begin{itemize}
+    \item 确认申请者身份、教授班级
+    \item 向数据库更新指定题目组
+\end{itemize}
+
+上传图片
+\begin{itemize}
+    \item 接收图片，向数据库添加图片记录
+    \item 向文件服务器添加图片文件
+\end{itemize}
+
+查阅日志
+\begin{itemize}
+    \item 接收检索要求
+    \item 从数据库提取指定日志
+\end{itemize}
+
+添加脚本
+\begin{itemize}
+    \item 接收脚本，向数据库添加脚本记录
+    \item 向文件服务器添加脚本文件
+\end{itemize}
+
+\end{document}
