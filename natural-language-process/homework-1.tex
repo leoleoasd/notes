@@ -1,0 +1,145 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{subcaption}
+\UseTblrLibrary{diagbox}
+\renewcommand{\tableautorefname}{表}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{自然语言处理第二次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+假设（X，Y）服从如下联合概率分布：
+
+\begin{table}[htb]
+    \centering
+    \begin{tblr}{hlines,vlines,
+        cell{2-5}{2-5}={mode=math},
+        }
+        \diagbox{Y}{X} & 1 & 2 & 3 & 4 \\
+        1  & \frac{1}{8} & \frac{1}{16} & \frac{1}{32} & \frac{1}{32}\\
+        2 & \frac{1}{16} & \frac{1}{8} & \frac{1}{32} & \frac{1}{32}\\
+        3 & \frac{1}{16}& \frac{1}{16}& \frac{1}{16}& \frac{1}{16}\\
+        4 & \frac{1}{4} & 0 & 0 & 0
+    \end{tblr}
+\end{table}
+求$H(X), H(Y), H(X|Y), H(Y|X), H(X,Y)$
+
+\begin{table}[htb]
+    \centering
+    \begin{subtable}[b]{0.5\textwidth}
+        \centering
+        \begin{tblr}{hlines,vlines,
+            cell{2-6}{2-6}={mode=math},
+            }
+            \diagbox{Y}{X} & 1 & 2 & 3 & 4  & P(Y)\\
+            1  & \frac{1}{8} & \frac{1}{16} & \frac{1}{32} & \frac{1}{32} & \frac{1}{4}\\
+            2 & \frac{1}{16} & \frac{1}{8} & \frac{1}{32} & \frac{1}{32} & \frac{1}{4}\\
+            3 & \frac{1}{16}& \frac{1}{16}& \frac{1}{16}& \frac{1}{16} & \frac{1}{4}\\
+            4 & \frac{1}{4} & 0 & 0 & 0  & \frac{1}{4} \\
+            P(X) & \frac{1}{2} & \frac{1}{4} & \frac{1}{8} & \frac{1}{8} \\
+        \end{tblr}
+    \end{subtable}
+
+    \vspace{.2cm}
+
+    \begin{subtable}[b]{0.3\textwidth}
+        \centering
+        \begin{tblr}{hlines,vlines,
+            cell{2-5}{2-5}={mode=math},
+            }
+            \diagboxthree{Y}{P(Y|X)}{X} & 1 & 2 & 3 & 4 \\
+            1  & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4}\\
+            2 & \frac{1}{8} & \frac{1}{2} & \frac{1}{4} & \frac{1}{4}\\
+            3 & \frac{1}{8}& \frac{1}{4}& \frac{1}{2}& \frac{1}{2}\\
+            4 & \frac{1}{2} & 0 & 0 & 0
+        \end{tblr}
+    \end{subtable}
+    \begin{subtable}[b]{0.3\textwidth}
+        \centering
+        \begin{tblr}{hlines,vlines,
+            cell{2-5}{2-5}={mode=math},
+            }
+            \diagboxthree{Y}{P(X|Y)}{X} & 1 & 2 & 3 & 4 \\
+            1  & \frac{1}{2} & \frac{1}{4} & \frac{1}{8} & \frac{1}{8}\\
+            2 & \frac{1}{4} & \frac{1}{2} & \frac{1}{8} & \frac{1}{8}\\
+            3 & \frac{1}{4}& \frac{1}{4}& \frac{1}{4}& \frac{1}{4}\\
+            4 & 1 & 0 & 0 & 0
+        \end{tblr}
+    \end{subtable}
+\end{table}
+
+\begin{align*}
+    H(X) &= -\sum_{x \in X}p(x) \log_2 p(x) \\
+        &= - (\frac{1}{2} \times \log_2 \frac{1}{2} + \frac{1}{4} \times \log_2 \frac{1}{4} + 2 \times \frac{1}{8} \times \log_2 \frac{1}{8} ) \\
+        &= \frac{7}{4} \text{ bit }
+\end{align*}
+
+\begin{align*}
+    H(Y) &=  -\sum_{x \in Y}p(x) \log_2 p(x) \\
+         &= - 4 \times \frac{1}{4} \times \log_2 \frac{1}{4} \\
+         &= 2 \text{ bit }
+\end{align*}
+
+\begin{align*}
+    H(X|Y) &= -\sum_{x \in X}\sum_{y \in Y}p(x,y)\log_2P(x|y) \\
+           &= 1.375\text{ bit }
+\end{align*}
+
+\begin{align*}
+    H(Y|X) &= -\sum_{x \in X}\sum_{y \in Y}p(x,y)\log_2P(y|x) \\
+        %    &= \frac{1}{2} + \frac{3}{16} + \frac{1}{8} + \frac{1}{8} + \frac{7}{16} + \frac{1}{4} \\
+           &= 1.625\text{ bit }
+\end{align*}
+
+\begin{align*}
+    H(X, Y) = H(X) + H(Y|X) = 3.375\text{ bit }
+\end{align*}
+
+\end{document}
