@@ -15,6 +15,9 @@
 \usepackage[colorlinks=false, allcolors=blue]{hyperref}
 \usepackage{cleveref}
 \usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 
 \xeCJKsetup{CJKmath=true}
 
@@ -25,6 +28,7 @@
 \renewcommand{\tableautorefname}{表}
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
+\DeclareMathOperator{\first}{FIRST}
 \graphicspath{ {./images/} }
 
 \newtheorem{definition}{定义}[section]
@@ -51,6 +55,8 @@
 }
 \tikzstyle{arrow} = [-latex',->, to path={-- (\tikztotarget)}]
 \tikzstyle{darrow} = [-latex',->, to path={-- (\tikztotarget)},double]
+\newcommand*{\tto}[0]{\Rightarrow}
+\newcommand*{\ffrom}[0]{\Leftarrow}
 
 \newcommand{\tdiagram}[5][]{
 \begin{scope}[local bounding box={#1},shift={#2}]
@@ -571,5 +577,66 @@
     \2 改造文法，要求最近/最长匹配
 \1 消除左递归
     \2 将$A \to A\alpha | \beta$转换为$A \to \beta A'; A' \to \alpha A' | \epsilon$
+\end{outline}
+\section{First和Follow集}
+\begin{outline}
+    \1 希望寻找一类文法，可以根据当前输入的符号选择产生式。
+    \1 $A \to \alpha_1 | \alpha_2 | \dots | \alpha_n$：
+        \2 对于 $\forall \alpha \in (V\cup T)^*$：
+        \3 $\first(\alpha) = \set{a | \alpha \overset{*} \tto a\dots, \alpha \in T}$
+        \3 当$\alpha \overset{*} \tto \epsilon$ 时， $\epsilon \in \first(\alpha)$
+        \2 对于 $\forall A \in V$， $A$的后随符号集
+            \3 $FOLLOW(A) = \set{a | S \overset{*} \tto \dots Aa\dots, a \in T}$
+    \1 求$\first(X)$的算法
+\begin{algorithm}[H]
+    \caption{求FIRST(X)}
+    \begin{algorithmic}[1]
+        \label{algo:1}
+        \Procedure{FIRST}{}
+            \For{$X \in V \cup T$}
+                \If{$X \in T$}
+                    \State \textbf{return} $X$
+                \Else
+                    \State $\first(X) \gets \begin{cases}
+                        \set{a | X \to a\dots \in P} & X \to \epsilon \notin P \\
+                        \set{a | X \to a\dots \in P} \cup {\epsilon} & X \to \epsilon \in P
+                    \end{cases}$
+                \EndIf
+            \EndFor
+            \While{$X \in V$, and $\first(X)$ keeps changes}
+                \If{$X \to Y\dots \in P$, $Y \in V$}
+                    \State $\first(X) \gets \first(X) \cup (\first(Y) - \set{\epsilon})$
+                \EndIf
+                \If{$X \to Y_1Y_2\dots Y_n \in P$, $Y_1Y_2\dots Y_{i-1} \overset{*}\tto \epsilon$}
+                    \For{$X \in [1,i]$}
+                        \State $\first(X) \gets \first(X) \cup (\first(Y_i) - \set{\epsilon})$
+                    \EndFor
+                \EndIf
+                \If{$X \to Y_1Y_2\dots Y_n \in P$, $Y_1Y_2\dots Y_{n} \overset{*}\tto \epsilon$}
+                    \State $\first(X) \gets \first(X) \cup \set{\epsilon}$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+    \1 求$\first(\alpha)$的算法
+        \2 设$\alpha = X_1X_2X_3\dots X_n$
+\begin{algorithm}[H]
+    \caption{求FIRST($\alpha$)}
+    \begin{algorithmic}[1]
+        \label{algo:2}
+        \Procedure{FIRST}{}
+            \State $\first(\alpha) \gets \first(X_1) - \set{\epsilon}$
+            \State $k \gets 1$
+            \While {$\epsilon \in \first(X_k),\;k < n$}
+                \State $\first(\alpha) \gets \first(\alpha) \cup (\first(X_{k+1}) - \set{\epsilon})$
+                \State $k \gets k + 1$
+            \EndWhile
+            \If{$k = n,\;\epsilon \in \first(X_n)$}
+                \State $\first(\alpha) \gets \first(\alpha) \cup \set{\epsilon}$
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
 \end{outline}
 \end{document}
