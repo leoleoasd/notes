@@ -29,6 +29,7 @@
 \DeclarePairedDelimiter{\set}{\{}{\}}
 \DeclarePairedDelimiter{\paren}{(}{)}
 \DeclareMathOperator{\first}{FIRST}
+\DeclareMathOperator{\follow}{FOLLOW}
 \graphicspath{ {./images/} }
 
 \newtheorem{definition}{定义}[section]
@@ -638,5 +639,33 @@
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+    \1 求$\follow(A)$的算法
+\begin{algorithm}[H]
+    \caption{求($\follow(A)$)}
+    \begin{algorithmic}[1]
+        \Procedure{FOLLOW}{}
+            \State $\follow(S) \gets \#$
+            \If{$A \to \alpha B \beta$}
+                \State $\follow(A) \gets \follow(A) \cup (\first(B) - \set{\epsilon})$
+            \EndIf
+            \If{$A \to \alpha B or \alpha B \beta, \beta \overset{*}\tto \epsilon$}
+                \State $\follow(B) \gets \follow(B) \cup \follow(A) $
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{outline}
+\section{LL(1)文法}
+\begin{outline}
+    \1 对于语法$G$：
+        \2 $\forall A \in V, A \to \alpha_1| \alpha_2| \dots| \alpha_n \in P$
+        \2 $\forall i \ne j: \;\first(\alpha_i) \cap \first(\alpha_j) = \emptyset$
+        \2 当 $\epsilon \in \first(\alpha_j), \follow(A) \cap \first(\alpha_j) = \emptyset$
+        \2 则称他是LL（1）文法
+\end{outline}
+\chapter{自底向上分析}
+\section{自底向上分析}
+\begin{outline}
+    
 \end{outline}
 \end{document}
