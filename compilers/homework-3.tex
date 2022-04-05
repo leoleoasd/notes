@@ -1,0 +1,189 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{underscore}
+\renewcommand{\tableautorefname}{表}
+\UseTblrLibrary{booktabs}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\DeclareMathOperator{\first}{FIRST}
+\DeclareMathOperator{\follow}{FOLLOW}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{编译原理第三次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}
+    \1[4.] G':$
+    \begin{aligned}[t]
+        <bexpr> &\to <bterm> <bexpr>' \\
+        <bexpr>' &\to or <bterm> <bexpr>' | \epsilon \\
+        <bterm> &\to <bfactor> <bterm'> \\
+        <bterm>' &\to and <bfactor> <bterm'> | \epsilon \\
+        <bfactor> &\to not <bfactor> | (<bexpr>) | true | false
+    \end{aligned}$
+    \1[13.]
+        \2[$G_1$]
+            \3[(1)]
+                $\begin{aligned}[t]
+                    V &\to NV' \\
+                    V' &\to [E] | \epsilon \\
+                    E &\to V E' \\
+                    E' &\to +E | \epsilon \\
+                    N &\to i
+                \end{aligned}$
+            \3[(2)]
+                $\begin{aligned}[t]
+                    \first(V) &= \set{i} \\
+                    \first(V') &= \set{[, \epsilon} \\
+                    \first(N) &= \set{i} \\
+                    \first(E) &= \set{i} \\
+                    \first(E') &= \set{+, \epsilon} \\
+                    \\
+                    \follow(V) &= \set{\#, +} \\
+                    \follow(V') &= \set{\#, +} \\
+                    \follow(N) &= \set{\#, +, [, ]} \\
+                    \follow(E) &= \set{]} \\
+                    \follow(E') &= \set{]} \\
+                \end{aligned}$
+            \3[(3)]
+
+                    \begin{tblr}{hlines, vlines, cells={mode=math}, colspec={XXXXXX}}
+                        & i & + & [ & ] &  \# \\
+                        V & NV' \\
+                        V' & & \epsilon & [E]  & & \epsilon \\
+                        E & VE'  \\
+                        E' & & +E & & \epsilon & \\
+                        N & i \\
+                    \end{tblr}
+        \2[$G_2$]
+            \3[(1)]
+                $\begin{aligned}[t]
+                    S &\to aABe \\
+                    A &\to bA' \\
+                    A' &\to bcA'| \epsilon \\  
+                    B &\to d \\
+                \end{aligned}$
+            \3[(2)]
+                $\begin{aligned}[t]
+                    \first(S) &= \set{a} \\
+                    \first(A) &= \set{b} \\
+                    \first(A') &= \set{b, \epsilon} \\
+                    \first(B) &= \set{d} \\
+                    \\
+                    \follow(S) &= \set{\#} \\
+                    \follow(A) &= \set{d} \\
+                    \follow(A') &= \set{d} \\
+                    \follow(B) &= \set{d}
+                \end{aligned}$
+            \3[(3)]
+                \begin{tblr}{hlines,vlines,cells={mode=math}, colspec={XXXXXXX}}
+                      & a & b & c & d & e & \# \\
+                    S & aABe \\
+                    A &   & bA' \\
+                    A' &  & bcA' & & \epsilon \\
+                    B & & & & d \\
+                \end{tblr}
+        \2[$G_3$]
+            \3[(1)]
+                $\begin{aligned}[t]
+                    S &\to aAS' \\
+                    S' &\to bAS' | \epsilon \\
+                    A &\to Sdc | dc
+                \end{aligned}$
+            \3[(2)]
+                $\begin{aligned}[t]
+                    \first(S)  &= \set{a} \\
+                    \first(S') &= \set{b, \epsilon} \\
+                    \first(A) &= \set{a, d} \\
+                    \\
+                    \follow(S) &= \set{\#, d} \\
+                    \follow(S') &= \set{\#, d} \\
+                    \follow(A) &= \set{\#, d} 
+                \end{aligned}$
+            \3[(3)]
+                \begin{tblr}{hlines, vlines, cells={mode=math}, colspec={XXXXXX}}
+                      & a & b & c & d & \# \\
+                    S & aAS' \\
+                    S' &  & bAS' & & \epsilon & \epsilon \\
+                    A & Sdc & & & dc \\
+                \end{tblr}
+    \1[15]
+\begin{algorithm}[H]
+    \caption{递归下降分析器}
+    \begin{algorithmic}[1]
+        \label{algo:1}
+        \Procedure{lexp}{}
+            \If{lookahead = number}
+                \State MATCH(number)
+            \Else \If {lookahead = '('}
+                    \State MATCH('(')
+                    \State op()
+                    \State lexp_seq()
+                    \State MATCH(')')
+                \EndIf
+            \EndIf
+        \EndProcedure
+        \Procedure{op}{}
+            \If{lookahead $\in \set{+, -, *}$}
+                \State call MATCH accordingly
+            \EndIf
+        \EndProcedure
+        \Procedure{lexp_seq}{}
+            \State lexp()
+            \While {lookahead $\in \set{+, (}$}
+                \State lexp()
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\end{outline}
+
+\end{document}
