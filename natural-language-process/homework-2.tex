@@ -1,0 +1,75 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\newcommand*{\tto}[0]{\Rightarrow}
+\UseTblrLibrary{booktabs}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{自然语言处理作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+$G = \begin{cases}
+    E \to E+T | T \\
+    T \to T*F | F \\
+    F \to (E) | a
+\end{cases}$
+
+$\begin{aligned}
+    E & \tto E + T \\
+      & \tto E + T * F \\
+      & \tto E + T * a \\
+      & \tto E + F * a \\
+      & \tto E + a * a \\
+      & \tto T + a * a \\
+      & \tto F + a * a \\
+      & \tto a + a * a 
+\end{aligned}$
+
+\end{document}

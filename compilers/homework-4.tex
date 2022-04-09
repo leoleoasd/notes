@@ -1,0 +1,137 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\renewcommand{\tableautorefname}{表}
+\DeclareMathOperator{\firstop}{FIRSTOP}
+\DeclareMathOperator{\lastop}{LASTOP}
+\UseTblrLibrary{booktabs}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{编译原理第 4 次作业}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{outline}
+    \1[6.] 求LASTOP \par
+
+\begin{algorithm}[H]
+    \caption{求Lastop}
+    \begin{algorithmic}[1]
+        \label{algo:1}
+        \Procedure{LASTOP}{}
+            \For{$A \to \dots a \in P$}
+                \State $\lastop(A) \gets \lastop(A) \cup \set{a}$
+            \EndFor
+            \For{$A \to \dots aB \in P$}
+                \State $\lastop(A) \gets \lastop(A) \cup \set{a}$
+            \EndFor
+            \For{$A \to \dots B \in P$}
+                \State $\lastop(A) \gets \lastop(A) \cup \lastop(B)$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+    \1[9.] 文法$G = \begin{cases}
+        S \to S; G | G \\
+        G \to G(T) | H \\
+        H \to a | (S) \\
+        T \to T + S | S \\
+    \end{cases}$
+        \2[(1)] 构造G的算符优先关系表，判断G是否为算符优先文法
+        
+        \begin{table}[H]
+            \centering
+            \begin{tblr}{
+                colspec={X[c]X[c]X[c]},
+                width=.5\linewidth,
+                cell{2-5}{2-3}={mode=math}
+            }
+                \toprule
+                  & FIRSTOP{} & LASTOP \\
+                \midrule
+                S & \set{a, (, ;} & \set{a, ), ;} \\
+                G & \set{a, (}    & \set{a, )} \\
+                H & \set{a, (}    & \set{a, )} \\
+                T & \set{a, (, ;, +} & \set{a, ), +, ;} \\
+                \bottomrule
+            \end{tblr}
+        \end{table}
+        \begin{table}[H]
+            \centering
+            \begin{tblr}{
+                hlines,vlines,
+                cells={mode=math},
+                colspec={X[c]X[c]X[c]X[c]X[c]X[c]X[c]},
+                width=.6\linewidth
+            }
+                  & a & ( & ) & ; & + & \# \\
+                a &   & \gtrdot & \gtrdot & \gtrdot & \gtrdot & \gtrdot \\
+                ( & \lessdot & \lessdot & \equiv & \lessdot & \lessdot  \\
+                ) &  & \gtrdot & \gtrdot & \gtrdot & \gtrdot& \gtrdot \\
+                ; & \lessdot & \lessdot & \gtrdot & \gtrdot & \gtrdot & \gtrdot \\
+                + & \lessdot & \lessdot & \gtrdot & \lessdot & \gtrdot \\
+                \# & \lessdot & \lessdot &  & \lessdot & &acc \\
+            \end{tblr}
+        \end{table}
+        两个符号之间至多只有一种关系，是算符优先文法。
+        \2[(2)] 给出句型$a(T+S);H;(S)$的短语、句柄、素短语和最左素短语。
+
+            短语： $\set{a, T+S, a(T+S), a(T+S);H, H, (S), a(T+S);H;(S)}$
+
+            句柄： $\set{a}$
+
+            素短语： $\set{a, (T+S), (S)}$
+
+            最左素短语： $\set{a}$
+\end{outline}
+
+\end{document}

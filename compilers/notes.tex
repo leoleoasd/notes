@@ -18,6 +18,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
+\usepackage{amssymb}
 
 \xeCJKsetup{CJKmath=true}
 
@@ -30,6 +31,8 @@
 \DeclarePairedDelimiter{\paren}{(}{)}
 \DeclareMathOperator{\first}{FIRST}
 \DeclareMathOperator{\follow}{FOLLOW}
+\DeclareMathOperator{\firstop}{FIRSTOP}
+\DeclareMathOperator{\lastop}{LASTOP}
 \graphicspath{ {./images/} }
 
 \newtheorem{definition}{定义}[section]
@@ -666,6 +669,98 @@
 \chapter{自底向上分析}
 \section{自底向上分析}
 \begin{outline}
+    \1 思想：从输入传出发，反复利用产生式归约
+        \2 核心：找到句柄
+    \1 分析器操作：
+        \2 移进：符号入栈
+        \2 归约：用产生式左侧替换栈顶句柄
+        \2 接受：分析成功
+        \2 出错：处理错误
+    \1 问题：
+        \2 移进归约冲突
+        \2 归约归约冲突
+        \2 如何识别句柄的开始与结束？
+    \1 解决方案：
+        \2 优先法
+            \3 根据归约次序为文法符号规定优先级
+            \3 同时归约：同优先级
+            \3 句柄的端点符号要高于句柄外的、相邻的符号的优先级
+            \3 句柄内相邻符号具有相同的优先级。
+        \2 状态法
+            \3 句柄是否形成，取决于产生式的右部是否形成
+            \3 核心：根据句柄形成过程建立状态
+\end{outline}
+\section{算符优先分析法}
+\begin{outline}
+    \1 算符优先关系的定义
+        \2 $+ \lessdot \times$：  + 的优先级低于 $\times$
+        \2 $( \equiv  )$： （的优先级等于）
+        \2 $+ \gtrdot +$： +的优先级高于+
+    \2 方法：将句型中的终结符号当做算符
+\0
+\begin{definition}
+    如果文法$G = (T, V, P, S)$中不存在形如
+    \begin{eqnarray}
+        A \to \alpha BC\beta
+    \end{eqnarray}
+    的产生式，则称之为算符文法（Operator Grammar）
+
+    即：如果文法G中不存在具有\emph{相邻非终结符}的产生式，则成为算符文法。
+\end{definition}
+\begin{definition}
+    对于OG $G = (T, V, P, S)$：
+    \begin{itemize}
+        \item $a \equiv b \iff A \to \dots ab \dots \in P$ 或者 $A \to \dots aBb \dots \in P$
+        \item $a \lessdot b \iff A \to \dots aB \dots \in P$ 且 $B \overset{+} \tto b\dots$ 或者 $B \overset{+} \tto Cb \dots$
+        \item $a \lessdot b \iff A \to \dots Bb \dots \in P$ 且 $B \overset{+} \tto \dots a$ 或者 $B \overset{+} \tto aC \dots$
+    \end{itemize}
+\end{definition}
+\begin{definition}
+    对于OG $G = (T, V, P, S)$：如果$\forall a,b \in T, a \equiv b, a \lessdot b, a \gtrdot b$ 至多有一个成立，则称之为算符优先文法
+\end{definition}
+    \1 优先关系的确定：
+        \2 从定义看
+            \3 $a \lessdot b \iff A \to \dots aB \dots \in P$ 且 $B \overset{+} \tto b\dots$ 或者 $B \overset{+} \tto Cb \dots$
+            \3 需要求出B派生出的 \emph{第一个终结符构成的集合}
+            \3 $a \lessdot b \iff A \to \dots Bb \dots \in P$ 且 $B \overset{+} \tto \dots a$ 或者 $B \overset{+} \tto aC \dots$
+            \3 需要求出B派生出的 \emph{最后一个终结符构成的集合}
+        \2 所以定义：
+            \3 $\firstop(A) = {b | A\overset+ \tto b\dots \text{ or } A \overset+ \tto Bb \dots b, b \in T, B \in N}$
+            \3 $\lastop(A) = {b | A\overset+ \tto \dots b \text{ or }  A \overset+ \tto bB \dots b, b \in T, B \in N}$
+    \1 算法：
+        \2 初值
+            \3 if $A \to a \dots \in P$ or $ A \to Ba \dots \in P$
+                \4 $a \in \firstop(A)$
+            \3 if $A \to \dots a \in P$ or $ A \to  \dots aB \in P$
+                \4 $a \in \lastop(A)$
+        \2 迭代
+            \3 if $A \to B \dots \in P$, $\firstop(A) = \firstop(A) \cup \firstop(B)$
+            \3 if $A \to \dots B  \in P$, $\lastop(A) = \lastop(A) \cup \lastop(B)$
+    \1 算符优先关系的确定
+        \2 如果 $ A \to \dots ab \dots ; A \to \dots aBb \dots$， $a \equiv b$
+        \2 如果 $A \to \dots Bb \dots$，则 $\forall b \in \firstop(B),\; a \lessdot b$
+        \2 如果 $A \to \dots bB \dots$，则 $\forall b \in \lastop(B),\; a \lessdot b$
+    \1 算符优先关系表的构造
+        \2 $A \to X_1X_2\dots X_n$
+            \3 $X_i X_{i+1} \in TT \tto X_i \equiv X_{i+1}$
+            \3 $X_i X_{i+1}X_{i+2} \in TVT \tto X_i \equiv X_{i+2}$
+            \3 $X_i X_{i+1} \in TV \tto \forall a \in \firstop(X_{i+1}), X_i \lessdot a$
+            \3 $X_i X_{i+1} \in VT \tto \forall a \in \lastop(X_{i+1}), X_i \gtrdot a$
+    \1 改进需求：
+        \2 必须是算符优先文法
+        \2 效率低
+        \2 存在查不到的语法错误
+        \2 希望通过文法产生式进行派生或者归约
+\end{outline}
+\section{LR分析法}
+\begin{outline}
+    \1 基本概念 -- 项目
+        \2 LR（0）项目：产生式的右部的某个位置有「.」
+        \2 例如： $S \to X_1X_2\dots X_i . X_{i+1} \dots X_n$
+        \2 $X_i \in T$: 移进项目，表示需要读入$X_i$
+        \2 $X_i \in V$: 待约项目，表示需要归约$X_i$
+        \2 $X_i \dots X_n = \epsilon$: 归约项目，表示句柄已经形成
+
     
 \end{outline}
 \end{document}
