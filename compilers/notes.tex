@@ -4,7 +4,6 @@
 \usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
 \usepackage{mathtools}
 \usepackage{tikz}
-\usepackage{booktabs}
 \usepackage{caption}
 \usepackage{outlines}
 \usepackage{graphicx}
@@ -34,6 +33,7 @@
 \DeclareMathOperator{\firstop}{FIRSTOP}
 \DeclareMathOperator{\lastop}{LASTOP}
 \graphicspath{ {./images/} }
+\UseTblrLibrary{booktabs}
 
 \newtheorem{definition}{定义}[section]
 \newtheorem{example}{例}[section]
@@ -763,4 +763,61 @@
 
     
 \end{outline}
+
+
+\chapter{语法制导翻译与属性文法}
+\section{语法制导翻译}
+\begin{outline}
+    \1 语义分析任务
+        \2 语义检查：类型、运算、维数、越界
+        \2 翻译：
+            \3 变量的储存与分配
+            \3 表达式求值
+            \3 语句的翻译
+        \2 目标：
+            \3 生成（等价的）中间代码
+    \1 代码结构
+        \2 变换：源、目标、以及对应关系。
+\end{outline}
+\section{属性文法}
+\begin{outline}
+    \1 接近形式化的语义描述方法
+
+    \begin{tblr}{
+        cell{2-5}{1-2}={mode=math}
+    }
+        \toprule
+        产生式 & 属性、计算规则\\
+        \midrule
+        E \to E_1 + E_2 & E.val \gets E_1.val + E_2.val\\
+        E \to E_1 * E_2 & E.val \gets E_1.val * E_2.val \\
+        E \to (E_1) & E.val \gets E_1.val \\
+        E \to id & E.val \gets id.val \\
+        \bottomrule
+    \end{tblr}
+\0
+\begin{definition}
+    属性文法 $A = (G, V, F)$：
+    \begin{itemize}
+        \item $G$： 上下文无关文法
+        \item $V$： 属性的有穷集合
+        \item $V$： 关于属性的计算规则
+    \end{itemize}
+\end{definition}
+    \1  属性的设定
+        \2 根据文法符号的语义，为文法符号设计语义，用来表示文法符号的语义
+            \3 终结符使用单词的属性
+                \4 name
+                \4 type
+                \4 val
+            \3 语法变量根据实际设置属性
+                \4 表达式：类型、值
+                \4 变量：地址、类型、值
+    \1 属性的分类
+        \2 字面量、标识符：固有属性
+        \2 继承属性：直接继承孩子
+        \2 综合属性：综合多个孩子
+\end{outline}
+
+
 \end{document}
