@@ -1,0 +1,71 @@
+\markdownRendererDocumentBegin
+\markdownRendererHeadingTwo{users}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{9}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{username}{varchar(30)}{index}{}}{{nickname}{varchar(30)}{index}{}}{{email}{varchar(320)}{index}{}}{{password}{text}{}{}}{{created\_at}{timestamp}{}{}}{{updated\_at}{timestamp}{}{}}{{email\_verified}{timestamp}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{roles}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{name}{varchar(255)}{}{}}{{target}{varchar(255)}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_has\_roles}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{5}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{user\_id}{bigint}{}{users(id)}}{{role\_id}{bigint}{}{roles(id)}}{{target\_id}{bigint}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{permissions}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{role\_id}{bigint}{}{roles(id)}}{{name}{varchar(255)}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{tokens}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{6}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{user\_id}{bigint}{}{users(id)}}{{token}{varchar(32)}{}{}}{{created\_at}{timestamp}{}{}}{{remember\_me}{boolean}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{webauthn\_credentials}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{5}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{user\_id}{bigint}{}{users(id)}}{{content}{varchar(32)}{}{}}{{created\_at}{timestamp}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{6}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{name}{varchar(255)}{}{}}{{course\_name}{varchar(255)}{}{}}{{description}{text}{}{}}{{invite\_code}{varchar(255)}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_in\_classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{user\_id}{bigint}{}{users(id)}}{{class\_id}{bigint}{}{classes(id)}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{user\_managing\_classes}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{user\_id}{bigint}{}{users(id)}}{{class\_id}{bigint}{}{classes(id)}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{grades}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{6}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{total}{bigint}{}{}}{{detail}{text}{}{}}{{user\_id}{bigint}{}{users(id)}}{{class\_id}{bigint}{}{classes(id)}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problem\_sets}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{9}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{class\_id}{bigint}{}{classes(id)}}{{name}{varchar(255)}{}{}}{{description}{text}{}{}}{{start\_time}{timestamp}{}{}}{{end\_time}{timestamp}{}{}}{{created\_at}{timestamp}{}{}}{{updated\_at}{timestamp}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problem\_in\_problem\_sets}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{problem\_id}{bigint}{}{problems(id)}}{{problem\_set\_id}{bigint}{}{problem\_sets(id)}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problems}\markdownRendererInterblockSeparator
+{}\begin{center}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{10}{4}{cccc}{{字段名称}{类型}{索引}{外键}}{{id}{bigint}{primary}{}}{{name}{varchar(255)}{}{}}{{description}{text}{}{}}{{attach\_file\_name}{varchar(255)}{}{}}{{public}{boolean}{}{}}{{memory\_limit}{bigint}{}{}}{{time\_limit}{bigint}{}{}}{{build\_arg}{varchar(2047)}{}{}}{{compare\_script\_name}{text}{}{}}\markdownRendererInterblockSeparator
+{}\end{center}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problems}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{11}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{id}{bigint}{YES}{-}}{{compare\_script\_name}{text}{-}{Compares (~scripts)}}{{name}{varchar(255)}{-}{-}}{{description}{text}{-}{-}}{{attachment\_file\_name}{varchar(255)}{-}{-}}{{public}{boolean}{-}{-}}{{privacy}{boolean}{-}{-}}{{memory\_limit}{bigint}{-}{-}}{{time\_limit}{bigint}{-}{-}}{{build\_arg}{varchar(2047)}{-}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{test\_cases}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{7}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{id}{bigint}{YES}{-}}{{problem\_id}{bigint}{-}{Has (~problems)}}{{score}{bigint}{-}{-}}{{input\_file\_name}{varchar(255)}{-}{-}}{{output\_file\_name}{varchar(255)}{-}{-}}{{sample}{boolean}{-}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{submissions}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{8}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{id}{bigint}{YES}{-}}{{problem\_id}{bigint}{-}{For (~problems)}}{{language\_name}{text}{-}{In (~languages)}}{{file\_name}{text}{-}{-}}{{priority}{smallint}{-}{-}}{{score}{bigint}{-}{-}}{{status}{text}{-}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{runs}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{11}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{id}{bigint}{YES}{-}}{{test\_case\_id}{bigint}{-}{For (~test\_cases)}}{{submission\_id}{bigint}{-}{Has (~submissions)}}{{priority}{smallint}{-}{-}}{{status}{text}{-}{-}}{{memory\_used}{bigint}{-}{-}}{{time\_used}{bigint}{-}{-}}{{output\_hash}{text}{-}{-}}{{judger\_name}{text}{-}{-}}{{judger\_message}{text}{-}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{languages}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{4}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{name}{text}{YES}{-}}{{build\_script\_name}{text}{-}{Builds (~scripts)}}{{run\_script\_name}{text}{-}{Runs (~scripts)}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{scripts}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{3}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{name}{text}{YES}{-}}{{filename}{text}{-}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{tags}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{2}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{name}{text}{YES}{-}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problem\_allows\_language}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{3}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{problem\_id}{bigint}{YES}{Allows (~problems)}}{{language\_name}{text}{YES}{Allows (~languages)}}\markdownRendererInterblockSeparator
+{}\markdownRendererHeadingTwo{problem\_labeled\_tag}\markdownRendererInterblockSeparator
+{}\markdownRendererTable{}{3}{4}{cccc}{{字段名}{类型}{主属性}{外键}}{{problem\_id}{bigint}{YES}{Labeled (~problems)}}{{tag\_name}{text}{YES}{Labeled (~tags)}}\markdownRendererDocumentEnd
