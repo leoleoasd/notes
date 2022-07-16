@@ -1,0 +1,203 @@
+\documentclass{ctexart}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{tabularray}
+\usepackage{underscore}
+\usepackage{minted}
+\usepackage[colorlinks=false, allcolors=blue]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\tableautorefname}{表}
+\UseTblrLibrary{booktabs}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\graphicspath{ {./images/} }
+\crefname{equation}{方程}{方程}
+\crefname{algorithm}{算法}{算法}
+\crefname{lemma}{引理}{引理}
+\crefname{table}{表}{表}
+\crefname{figure}{图}{图}
+\crefname{example}{例}{例}
+
+\newcounter{fullrefcounter}
+\newcommand*{\fullref}[1]{%
+\addtocounter{fullrefcounter}{1}%
+\label{--ref-\thefullrefcounter}%
+\ifthenelse{\equal{\getpagerefnumber{--ref-\thefullrefcounter}}{\getpagerefnumber{#1}}}
+  {
+    \hyperref[{#1}]{\Cref*{#1} \nameref*{#1}}
+  }
+  {% false case
+    \hyperref[{#1}]{第 \pageref*{#1} 页 \Cref*{#1} \nameref*{#1}}
+  }
+}
+
+\title{托福口语笔记}
+\author{卢雨轩 19071125}
+% \date{\today}
+\ctexset{
+    section = {
+        titleformat = \raggedright,
+        name = {,},
+        number = \chinese{section}、
+    },
+    paragraph = {
+        runin = false
+    },
+    today = small,
+    figurename = 图,
+    contentsname = 目录,
+    tablename = 表,
+}
+
+\begin{document}
+
+\maketitle
+
+from my perspective / in my opinion / as far as i am concerned,  i am more into / partial to the former / later idea that ____.
+There are two reasons why I think so / here my reasons / generally because well , first of all, ... and besides
+
+pros certianly out weights the cons
+
+\section{校园话题}
+义务： obligated
+
+长单词的辅音转换
+
+正序读
+
+architecture
+\begin{outline}
+
+\end{outline}
+
+
+\section{Open up one's mind}
+\begin{outline}
+    \1 旅游、holidays、Journey、Activities、Extra course
+    \1 Journey and holiday arrangement
+        \2  offers brand new experiences beyond my expectations
+
+            give examples: The decoration of the airport, the architectural styles of buildings along the way, the local delicacies,
+
+            local customs / livestyles and traditions, natural wonders, local museums and gallery
+    \1 activity and extra couses
+        \2 new experinences and a wider scope of knowledge
+            \3 video games, sports, financial courses
+            \3 relaxing stuff / take a break from my everyday work / and mean while learn / enlarge my skillset
+        \2 give us an opportunity strengthen our abilities and communicative skills, people skills and leadership and organization skills
+            \3 be in the student union, and I'm reponsible for organizing our programming contests.
+        \2 refresh our mind, energetic/ full of vigor and improve efficiency and productivity
+        \2 know different people from other departments and majors // all walks of life
+            \3 sometimes we may bump into the ones who share common interest with us.
+    \1 risk-taking activities : bravery or foolish?
+        \2 put our life in danger / in peril for the sake of some silly game.   
+            \3 there are other things to do, like travling to new places, which is safer 
+            \3 tell the dange of extreme sports: reports show that / statistics show that there are millions of people dying of skydiving and rock climbing every year. e.g. people are always seeking for the most dangerous cliffs/ hills and canyons to conquer. however, such environment usually comes with unfathonmable / unpredictable elements, like the sharp rock may cut through your rope or your palm, that lead you to danger. a sudden wind may blow you off the cliff.
+            \3 we shoud allocate our time wisely, that means we can spare our time for something more worthwhile. For example, ..
+    \1 High-tech products and study / use PC during the class / e-book vs paper book / online course ( meetings )
+        \2 Free us from the boundary of time and space.
+        \2 we can have an improved effiencency. For example if we record our classes, this means that I can have a re-examine time of the key points conveniently and fastly. Since with the video I can adjust the playback speed or jump to the chapter I may not understand or followed during the class. 
+        \2 PC: Internet during the class / search for studying materials.
+        \2 E-book: easy to carry around / no need to bring piles of heavy textbooks around the classroom building. Get into a huge online database instead of turn from pages to pages. -- no need to wait, get the books we want instantly with one click. instead of waiting for the delivery time.
+            \3 down side: take notes, cross referencesing
+        \2 Phones:
+            \3 chat / video chat with friends
+            \3 update daly moments or catch up with the latest trend
+            \3 relaxation and entertainment: watch funny clips on tiktok
+            \3 food delivery / online shopping
+\end{outline}
+
+\subsection{People's personality and quality}
+\begin{outline}
+    \1 Should parents control their children's use of social media  
+        \2 parents: right \& responsibility
+        \2 parents: mature, responsible, experienced
+            \3 stronger judgement to see the whole picture of sth.
+            \3 ask for the best / provide the best of their child.
+            \3 they have worked in their discipline for decades.
+                \4 they got plenty of experience to deal with such occation.
+                \4 parents are capable of sth.
+            \3 parents are the perfect person to offer suggestions and guidence
+        \2 childs: immature, irresponsible / rebellious, inpulsive / weak judgements / naive
+            \3 we can always catch up with the latest trend (we are trendy)
+                \4 we can utilize the tools well, better than parents.
+            \3 we have to be independent someday. 
+                \4 Independence are vital to us. after we reach certain age, we must be independence, so while we can, our parents should teach us how to be independent, instead of tossing the answers to us already.
+        \2 be vulnerable to sth.
+    \1 Celebrities should use their money and influence to help people.
+        \2 famous person: stars, leading characters.
+            \3 hard-working, perserverence, strong self-discipline
+                \4 their success doesn't based on pure luck, instead, it's achieved by day to day practice.
+                \4 for example, it takes thousands of hours of practice to become a successful pianolist. their character can have positive influence on their fans.
+            \3 strong influence or impact to people.
+                \4 do charity work -> fans follow their foodsteps.
+                \4 advocate for people in need -> others will notice and join to help
+        \2 social responsibility:
+            \3 with more power comes more responsibility.
+            \3 they should use their influence to ....
+            \3 fans will imitate or copy their behaviours.
+        \2 we can not force them to do charity, they are not obliged to donate. whatever they should do, is their business.
+        \2 promote 8-hour working day, work-life balance
+        \2 for example, a compaine called ant-foriest started by 马云 aim to plant trees in the desert. By now, thousands of millions of people have joined and millions of trees have been planted.
+    \1 negative behavior: smoking and use of drugs.
+        \2 teenagers who want to be cool may copy that as well.
+    \1 Celebrities live a luxirious life style. Others may copy this, to by branded bags for example, resulting teenagers have poor management on their money.
+    \1 leader:
+        \2 good social / people skill.
+        \2 build up wide connections with potential partners.
+        \2 build up your own social network
+        \2 take advantage of other's resource.
+        \2 
+        \2 sometimes they need to be reserve so that they can  set a serious profile / forge rules and regulations
+    \1 accommodate
+    \1 ask way, cell phone or locals?
+        \2 improved effiency
+\end{outline}
+\section{学术综合口语}
+先预习再听课。预习部分只需要一句话总结theory，15秒以内。
+
+听力部分要理解教授给的例子是什么，总结好例子。
+\subsection{一个长例子}
+\begin{outline}
+    \1 具体经历 、 一个事物的发展过程
+        \2 总结过程很重要
+    \1 Reading （理论背景，一句话）
+        \2 The reading passage introduced a theory called ....., which means .....
+        \2 The reading passage introduced a theory called agonistic behavior, which refers to a physical competition two animal engage to solve the conflict over territory or food.
+    \1 Listening
+        \2 \emph{按照顺序总结}
+        \2 背景
+            \3 In this lecture, the professor illustrates it by offering us an example / experiment about rattle snakes (对象以及介绍) who loves to eat animals from holes underground.
+        \2 第一步
+            \3 提到对象：会介绍，然后例子展开
+            \3 \emph{同等重要}
+            \3 At first, two rattle snakes found food in the same hole and they both want the food.
+        \2 第二步...
+            \3 At first / then / after that / in the end
+            \3 So, what happened was they faced each other, made them self as tall as possible.
+            \3 Then they started pushing wrestling with each other.
+            \3 Each snake is trying to get control of the other snake, but neither of them tried to bite or hurt the other snake.
+            \3 Finally, one of the snakes gain the control of the other snake. The snake released the other snake instead of bite or hurt it even if it's easy to do that.
+            \3 so this is how xxxx  works.
+        \2 最终
+\end{outline}
+\subsection{两个例子}
+
+\begin{outline}
+    \1 什么人，做了什么行为，产生了什么结果
+    \1 如果有对比、差别，最后说
+        \2 the telephone company sell smartphone to young people.
+        \2 the company place the ads in the program that young people watch and present it with bright colors and show how much fun of using it.
+        \2 young will buy.
+        \2 solve business easily and maybe save money.
+        \2 actually, the two commercial presents the same phone, but they emphasis different aspects.
+\end{outline}
+\end{document}
